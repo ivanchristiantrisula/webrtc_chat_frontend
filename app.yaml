@@ -1,6 +1,6 @@
 env: standard
 runtime: nodejs10
-service: app-engine-react-demo
+service: default
 handlers:
   - url: /static
     static_dir: build/static
