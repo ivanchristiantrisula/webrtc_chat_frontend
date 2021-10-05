@@ -118,17 +118,12 @@ const ChangePasswordDialog = (props: {
   };
   const handleSave = () => {
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/changePassword`,
-        {
-          old: oldPassword,
-          new: newPassword,
-          confirm: confirmPassword,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/changePassword`, {
+        old: oldPassword,
+        new: newPassword,
+        confirm: confirmPassword,
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {
         console.log(res);
         if (res.status == 200) {
@@ -263,16 +258,11 @@ export default (props: { user: any }) => {
   const saveProfileEdit = () => {
     // send post to backend
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/updateProfile`,
-        {
-          name: name,
-          bio: bio,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/updateProfile`, {
+        name: name,
+        bio: bio,
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {
         if (res.status == 200) {
           localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -299,9 +289,8 @@ export default (props: { user: any }) => {
     axios
       .post(
         `${process.env.REACT_APP_BACKEND_URI}/api/user/uploadProfilePicture`,
-        fd,
+        { fd, token: localStorage.getItem("token") },
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",
           },

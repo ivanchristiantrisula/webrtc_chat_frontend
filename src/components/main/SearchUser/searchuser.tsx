@@ -57,9 +57,11 @@ export default () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URI}/api/user/getPendingFriends`, {
-        withCredentials: true,
-      })
+      .get(
+        `${
+          process.env.REACT_APP_BACKEND_URI
+        }/api/user/getPendingFriends?token=${localStorage.getItem("token")}`
+      )
       .then((res) => {
         console.log(res);
         setPendings(res.data.pendings);
@@ -70,10 +72,11 @@ export default () => {
   const handleKeywordChange = (keyword: string) => {
     axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/findUser?keyword=${keyword}`,
-        {
-          withCredentials: true,
-        }
+        `${
+          process.env.REACT_APP_BACKEND_URI
+        }/api/user/findUser?keyword=${keyword}&token=${localStorage.getItem(
+          "token"
+        )}`
       )
       .then((res) => {
         setUsers(res.data);
@@ -85,15 +88,10 @@ export default () => {
 
   const addFriend = (user: any) => {
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/addFriend`,
-        {
-          user: user,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/addFriend`, {
+        user: user,
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {
         if (res.data.error) alert(res.data.error);
         if (res.status == 200) {
@@ -111,9 +109,7 @@ export default () => {
         `${process.env.REACT_APP_BACKEND_URI}/api/user/acceptFriendRequest`,
         {
           target: target,
-        },
-        {
-          withCredentials: true,
+          token: localStorage.getItem("token"),
         }
       )
       .then((res) => {
@@ -128,9 +124,7 @@ export default () => {
         `${process.env.REACT_APP_BACKEND_URI}/api/user/rejectFriendRequest`,
         {
           target: target,
-        },
-        {
-          withCredentials: true,
+          token: localStorage.getItem("token"),
         }
       )
       .then((res) => {

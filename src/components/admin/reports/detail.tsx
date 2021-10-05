@@ -122,18 +122,13 @@ const ReportAction = (props: { report: any }) => {
 
   const handleSubmit = () => {
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/report/closeReport`,
-        {
-          reportID: props.report._id,
-          reporterID: props.report.reporter,
-          reporteeID: props.report.reportee,
-          banReportee: ban,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/api/report/closeReport`, {
+        reportID: props.report._id,
+        reporterID: props.report.reporter,
+        reporteeID: props.report.reportee,
+        banReportee: ban,
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {
         if (res.status === 200) {
         }

@@ -209,16 +209,11 @@ export default () => {
       .join("");
 
     axios
-      .post(
-        process.env.REACT_APP_BACKEND_URI + "/api/user/updateMBTI",
-        {
-          rawResult: result,
-          type: typeString,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(process.env.REACT_APP_BACKEND_URI + "/api/user/updateMBTI", {
+        rawResult: result,
+        type: typeString,
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {})
       .catch((error) => {
         console.log(error);

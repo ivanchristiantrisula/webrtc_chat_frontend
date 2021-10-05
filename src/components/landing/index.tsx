@@ -74,21 +74,17 @@ function App() {
   const handleLogin = (e: any) => {
     e.preventDefault();
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/login`,
-        {
-          email: email,
-          password: password,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/login`, {
+        email: email,
+        password: password,
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {
         if (res.status == 200) {
           localStorage.setItem("user", JSON.stringify(res.data.user));
           const cookies = new Cookies();
           cookies.set("token", res.data.token, { path: "/" });
+          localStorage.setItem("token", res.data.token);
           history.push("/chat");
         }
       })

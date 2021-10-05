@@ -51,12 +51,11 @@ export default function Report(props: {
       category: category,
       proof: props.chat || null,
       description: description,
+      token: localStorage.getItem("token"),
     };
     console.log(payload);
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/report/create`, payload, {
-        withCredentials: true,
-      })
+      .post(`${process.env.REACT_APP_BACKEND_URI}/api/report/create`, payload)
       .then((res) => {
         //do something
         if (res.status === 200) props.closeDialog();

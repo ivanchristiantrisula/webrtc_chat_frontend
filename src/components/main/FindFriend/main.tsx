@@ -14,10 +14,9 @@ export default () => {
     axios
       .get(
         process.env.REACT_APP_BACKEND_URI +
-          "/api/user/getFriendsRecommendation",
-        {
-          withCredentials: true,
-        }
+          `/api/user/getFriendsRecommendation?token=${localStorage.getItem(
+            "token"
+          )}`
       )
       .then((res) => {
         setUsers(res.data);
@@ -36,15 +35,10 @@ export default () => {
 
   const addFriend = (id: string) => {
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/addFriend`,
-        {
-          user: { _id: id },
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/addFriend`, {
+        user: { _id: id },
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {
         if (res.data.error) alert(res.data.error);
         if (res.status == 200) {

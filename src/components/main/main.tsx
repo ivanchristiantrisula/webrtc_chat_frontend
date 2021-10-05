@@ -94,7 +94,7 @@ const App = () => {
 
   const initSocketListener = () => {
     socket.current = io.connect(process.env.REACT_APP_BACKEND_URI, {
-      withCredentials: true,
+      query: `token=${localStorage.getItem("token")}`,
     });
 
     socket?.current?.on("connect", () => {
@@ -280,9 +280,11 @@ const App = () => {
 
   const fetchUserFriends = () => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URI}/api/user/getFriends`, {
-        withCredentials: true,
-      })
+      .get(
+        `${
+          process.env.REACT_APP_BACKEND_URI
+        }/api/user/getFriends?token=${localStorage.getItem("token")}`
+      )
       .then((res) => {
         let allFriends = res.data.friends;
         console.log(allFriends);

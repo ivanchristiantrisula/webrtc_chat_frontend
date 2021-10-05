@@ -36,9 +36,11 @@ export default function AdminReports(props: { openReportDetail: Function }) {
 
   const fetchReports = () => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URI}/api/report/getAllReports`, {
-        withCredentials: true,
-      })
+      .get(
+        `${
+          process.env.REACT_APP_BACKEND_URI
+        }/api/report/getAllReports?token=${localStorage.getItem("token")}`
+      )
       .then((res) => {
         if (res.status === 200) {
           setReports(res.data);
