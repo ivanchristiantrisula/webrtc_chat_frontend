@@ -161,12 +161,19 @@ const App = () => {
       trickle: true,
       config: {
         iceServers: [
-          // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
-          // set your own servers here
+          { urls: ["stun:ss-turn1.xirsys.com"] },
           {
-            urls: "turn:numb.viagenie.ca",
-            credential: "muazkh",
-            username: "webrtc@live.com",
+            username:
+              "nloss6_TEUhewwxb10DhQRBHngGwWTL3PGaL7GePBHQiynZGSMUXdz13rAYTPQY4AAAAAGFcdZhwdWdob2xl",
+            credential: "c12003b8-25f4-11ec-8db2-0242ac140004",
+            urls: [
+              "turn:ss-turn1.xirsys.com:80?transport=udp",
+              "turn:ss-turn1.xirsys.com:3478?transport=udp",
+              "turn:ss-turn1.xirsys.com:80?transport=tcp",
+              "turn:ss-turn1.xirsys.com:3478?transport=tcp",
+              "turns:ss-turn1.xirsys.com:443?transport=tcp",
+              "turns:ss-turn1.xirsys.com:5349?transport=tcp",
+            ],
           },
         ],
       },
