@@ -12,6 +12,7 @@ import { Box, Grid, Link, makeStyles, Theme } from "@material-ui/core";
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import Background from "./background.svg";
 import { url } from "inspector";
+import Cookies from "universal-cookie";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -86,6 +87,8 @@ function App() {
       .then((res) => {
         if (res.status == 200) {
           localStorage.setItem("user", JSON.stringify(res.data.user));
+          const cookies = new Cookies();
+          cookies.set("token", res.data.token, { path: "/" });
           history.push("/chat");
         }
       })
