@@ -13,6 +13,7 @@ import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineO
 import Background from "./background.svg";
 import { url } from "inspector";
 import Cookies from "universal-cookie";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -66,6 +67,8 @@ function App() {
   let history = useHistory();
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [loginStatus, setLoginStatus] = useState(0);
 
   const toRegister = () => {
     history.push("/register");
@@ -73,6 +76,7 @@ function App() {
 
   const handleLogin = (e: any) => {
     e.preventDefault();
+    setLoginStatus(1);
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/login`, {
         email: email,
@@ -89,7 +93,11 @@ function App() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data.errors);
+        setErrors(error.response.data.errors);
+      })
+      .finally(() => {
+        setLoginStatus(0);
       });
   };
 
@@ -119,6 +127,17 @@ function App() {
               </span>
               <span className={classes.name2}>App</span>
             </Box>
+          </Grid>
+          <Grid
+            item
+            alignItems="center"
+            justify="center"
+            xs={12}
+            style={{ marginBottom: "1.5rem" }}
+          >
+            {errors.map((err) => (
+              <Alert severity="error">{err}</Alert>
+            ))}
           </Grid>
           <Grid item alignItems="center" justify="center" xs={12}>
             <Box>
@@ -162,9 +181,10 @@ function App() {
                   onClick={handleLogin}
                   variant="contained"
                   color="primary"
+                  disabled={loginStatus === 1}
                   fullWidth
                 >
-                  Login
+                  {loginStatus === 0 ? "Login" : "Logging In..."}
                 </Button>
               </FormControl>
             </Box>

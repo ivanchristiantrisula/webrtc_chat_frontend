@@ -10,6 +10,7 @@ import axios from "axios";
 import { Box, Grid, Link, makeStyles, Theme } from "@material-ui/core";
 import Background from "./background.svg";
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
+import Alert from "@material-ui/lab/Alert";
 require("dotenv").config();
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -60,6 +61,8 @@ function App() {
   let [username, setUsername] = useState("");
   let [password, setPassword] = useState("");
   let [confirm, setConfirm] = useState("");
+  const [registerLoading, setRegisterLoading] = useState(false);
+  const [errors, setErrors] = useState([]);
 
   const toLogin = () => {
     history.push("/");
@@ -67,6 +70,7 @@ function App() {
 
   const handleRegister = (e: any) => {
     e.preventDefault();
+    setRegisterLoading(true);
     axios
       .post(process.env.REACT_APP_BACKEND_URI + "/api/user/register", {
         email: email,
@@ -79,7 +83,10 @@ function App() {
         if (res.status == 200) history.push("/");
       })
       .catch((error) => {
-        console.log(error);
+        setErrors(error.response.data.errors);
+      })
+      .finally(() => {
+        setRegisterLoading(false);
       });
   };
 
@@ -109,6 +116,17 @@ function App() {
               </span>
               <span className={classes.name2}>App</span>
             </Box>
+          </Grid>
+          <Grid
+            item
+            alignItems="center"
+            justify="center"
+            xs={12}
+            style={{ marginBottom: "1.5rem" }}
+          >
+            {errors.map((err) => (
+              <Alert severity="error">{err}</Alert>
+            ))}
           </Grid>
           <Grid item alignItems="center" justify="center" xs={12}>
             <Box>
@@ -184,8 +202,9 @@ function App() {
                   variant="contained"
                   color="primary"
                   fullWidth
+                  disabled={registerLoading}
                 >
-                  Sign Up
+                  {registerLoading ? "Signing you up..." : "Sign Up"}
                 </Button>
               </FormControl>
             </Box>
