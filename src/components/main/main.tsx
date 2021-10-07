@@ -34,20 +34,27 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 
   friendlist: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: "white",
     width: "30rem",
   },
 
   chatContainer: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: "white",
     borderLeft: "solid #d7d9d7 1px",
   },
 
-  meeting: { backgroundColor: theme.palette.background.default },
+  meeting: { backgroundColor: "white" },
 
-  findfriend: { backgroundColor: theme.palette.background.default },
+  findfriend: {
+    backgroundColor: "white",
+    width: "30rem",
+  },
 
-  profile: { backgroundColor: theme.palette.background.default },
+  personalitytest: {
+    backgroundColor: "white",
+  },
+
+  profile: { backgroundColor: "white" },
 }));
 
 const initState = {
@@ -114,7 +121,7 @@ const App = () => {
 
     socket?.current?.on("disconnect", () => {
       setSocketConnection(false);
-      console.info("Disconnected! Reconnecting to signalling server");
+      console.info("Disconnected from signalling server");
     });
 
     socket.current.on("sdpTransfer", handleReceivingSDP);
@@ -425,8 +432,16 @@ const App = () => {
           ) : (
             ""
           )}
-          {openMenu == "findfriend" ? (
-            <Grid item xs className={classes.findfriend}>
+          {openMenu == "findfriend" || openMenu == "personalitytest" ? (
+            <Grid
+              item
+              xs={openMenu == "personalitytest"}
+              className={
+                openMenu == "findfriend"
+                  ? classes.findfriend
+                  : classes.personalitytest
+              }
+            >
               <FindFriend />
             </Grid>
           ) : null}

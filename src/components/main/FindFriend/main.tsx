@@ -1,7 +1,14 @@
-import { Box, Fade, Popper } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  Fade,
+  Popper,
+  CardHeader,
+  Avatar,
+  IconButton,
+} from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import UserCard from "./usercard";
 import ProfileCard from "../ProfileCard";
 
 export default () => {
@@ -19,6 +26,7 @@ export default () => {
           )}`
       )
       .then((res) => {
+        console.log(res.data);
         setUsers(res.data);
       })
       .catch((error) => {
@@ -71,9 +79,20 @@ export default () => {
         {users.map((user, i) => {
           if (user) {
             return (
-              <Box onClick={handleClickUserCard(user)} key={i}>
-                <UserCard user={user} />
-              </Box>
+              <Card
+                onClick={handleClickUserCard(user)}
+                style={{ margin: "0.5rem" }}
+              >
+                <CardHeader
+                  avatar={
+                    <Avatar
+                      src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${user.profilepicture}.png`}
+                    />
+                  }
+                  title={user.name}
+                  subheader={user.MBTI}
+                />
+              </Card>
             );
           }
         })}
