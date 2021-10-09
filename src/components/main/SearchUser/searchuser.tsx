@@ -20,12 +20,13 @@ import SearchIcon from "@material-ui/icons/Search";
 import Grid from "@material-ui/core/Grid";
 import UserCardInvite from "./UserCardInvite";
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
+import { useSnackbar } from "notistack";
 require("dotenv").config();
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: "white",
       broderRight: "solid black 1px",
       height: "100vh",
     },
@@ -54,6 +55,7 @@ export default () => {
   let [users, setUsers] = useState([]);
   let [openSearchUserModal, setOpenSearchUserModal] = useState(false);
   let [pendings, setPendings] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     axios
@@ -87,6 +89,7 @@ export default () => {
   };
 
   const addFriend = (user: any) => {
+    setUsers([]);
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/addFriend`, {
         user: user,
@@ -95,11 +98,18 @@ export default () => {
       .then((res) => {
         if (res.data.error) alert(res.data.error);
         if (res.status == 200) {
-          alert("sukses add friend");
+          setUsers(
+            users.filter((x) => {
+              return x !== user;
+            })
+          );
+          enqueueSnackbar(`Friend request sent to ${user.name}`, {
+            variant: "info",
+          });
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error.response);
       });
   };
 
@@ -113,8 +123,18 @@ export default () => {
         }
       )
       .then((res) => {
-        if (res.status == 200) alert("Sukses acc friend req");
-        console.log(res);
+        setPendings(
+          users.filter((x) => {
+            return x !== target;
+          })
+        );
+
+        enqueueSnackbar(`${target.name} is now in your friendlist`, {
+          variant: "info",
+        });
+      })
+      .catch((error) => {
+        console.log(error.response);
       });
   };
 
@@ -128,7 +148,19 @@ export default () => {
         }
       )
       .then((res) => {
-        if (res.status == 200) alert("Sukses reject friend req");
+        if (res.status === 200) {
+          setPendings(
+            users.filter((x) => {
+              return x !== target;
+            })
+          );
+          enqueueSnackbar(
+            `You have rejected friend request from ${target.name}`,
+            {
+              variant: "info",
+            }
+          );
+        }
       });
   };
   return (
@@ -199,7 +231,7 @@ export default () => {
           </FormControl>
 
           <div>
-            {users.map((obj) => {
+            {users.map((obj, idx) => {
               if (!_.isEmpty(obj))
                 return (
                   <UserCard

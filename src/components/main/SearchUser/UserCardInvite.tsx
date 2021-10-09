@@ -15,8 +15,8 @@ import {
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
 import { useEffect, useRef, useState } from "react";
-import CancelIcon from "@material-ui/icons/Cancel";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ClearIcon from "@material-ui/icons/Clear";
+import CheckIcon from "@material-ui/icons/Check";
 import ProfileCard from "../ProfileCard";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -86,8 +86,9 @@ export default function (props: {
                         onClick={() => {
                           props.accept(props.user);
                         }}
+                        color="green"
                       >
-                        <CheckCircleIcon />
+                        <CheckIcon fontSize="large" />
                       </Box>
                     </Grid>
                     <Grid item>
@@ -95,8 +96,9 @@ export default function (props: {
                         onClick={() => {
                           props.reject(props.user);
                         }}
+                        color="red"
                       >
-                        <CancelIcon />
+                        <ClearIcon fontSize="large" />
                       </Box>
                     </Grid>
                   </Grid>
