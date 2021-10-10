@@ -10,13 +10,11 @@ import {
   makeStyles,
   Snackbar,
   ThemeProvider,
-  createTheme,
 } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import AdminPage from "./components/admin";
-import useGATracker from "./useGATracker";
 
-const theme = createTheme({
+const theme = createMuiTheme({
   palette: {
     type: "light",
   },
@@ -29,8 +27,6 @@ const useStyles = makeStyles({
 
 function App() {
   const classes = useStyles();
-
-  useGATracker();
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
