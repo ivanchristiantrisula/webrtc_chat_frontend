@@ -6,8 +6,14 @@ import {
   Paper,
   Theme,
   Button,
+  Dialog,
+  Slide,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import LinearProgress, {
   LinearProgressProps,
 } from "@material-ui/core/LinearProgress";
@@ -16,6 +22,7 @@ import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import "./style.css";
 import axios from "axios";
 import { isTypeAssertion } from "typescript";
+import { TransitionProps } from "@material-ui/core/transitions";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -93,6 +100,43 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & { children?: React.ReactElement<any, any> },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const InfoDialog = (props: { open: boolean; handleClose: Function }) => {
+  return (
+    <Dialog
+      open={props.open}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={() => props.handleClose()}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <DialogTitle id="alert-dialog-slide-title">
+        {"MBTI Personality Test"}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+          In order for us to give you accurate friend recommendations, you need
+          to complete this MBTI personality test. You will be given 90 set of
+          multiple choice questions. This test will take aproximately 15 minutes
+          to finish. Good luck!
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.handleClose()} color="primary">
+          Lets Go!
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 export default () => {
   const classes = useStyles();
   const [questions, setQuestions] = useState(
@@ -101,6 +145,8 @@ export default () => {
   const [answers, setAnswers] = useState([]);
   const [currQuestionNum, setCurrQuestionNum] = useState(0);
   const [result, setResult] = useState("");
+  const [infoDialogShown, setInfoDialogShown] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const nextQuestion = () => {
     if (answers[9] !== undefined) {
@@ -278,6 +324,9 @@ export default () => {
           </Button>
         </Box>
       </Box>
+      {!infoDialogShown && currQuestionNum === 0 ? (
+        <InfoDialog open={true} handleClose={() => setInfoDialogShown(true)} />
+      ) : null}
     </Container>
   );
 };

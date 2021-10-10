@@ -1,4 +1,4 @@
-import { createStyles, Theme } from "@material-ui/core";
+import { Box, createStyles, Theme, Typography } from "@material-ui/core";
 import { useEffect } from "react";
 import ChatCard from "./ChatCard";
 import Paper from "@material-ui/core/Paper";
@@ -25,7 +25,10 @@ export default function (props: any) {
   const classes = useStyles();
 
   return (
-    <div>
+    <>
+      <Box padding="1rem 1rem 1rem 1.5rem" marginBottom="1rem">
+        <Typography variant="h4">Chats</Typography>
+      </Box>
       {Object.keys(props.chats).map((keyName, i) => {
         if (props.users[keyName] !== undefined)
           return (
@@ -37,6 +40,6 @@ export default function (props: any) {
             </div>
           );
       })}
-    </div>
+    </>
   );
 }

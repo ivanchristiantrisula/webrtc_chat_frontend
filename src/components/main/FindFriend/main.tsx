@@ -6,6 +6,7 @@ import {
   CardHeader,
   Avatar,
   IconButton,
+  Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -76,6 +77,14 @@ export default () => {
         )}
       </Popper>
       <Box>
+        <Box padding="1rem 1rem 0rem 1.5rem">
+          <Typography variant="h4">Friend Recommendations</Typography>
+        </Box>
+        <Box padding="1rem 1rem 1rem 1.5rem" marginBottom="1rem">
+          <Typography variant="body1" color="textSecondary">
+            Your MBTI : {JSON.parse(localStorage.getItem("user")).MBTI}
+          </Typography>
+        </Box>
         {users.map((user, i) => {
           if (user) {
             return (
