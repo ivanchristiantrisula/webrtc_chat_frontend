@@ -1,6 +1,5 @@
 import { Box, createStyles, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { Socket } from "net";
 import { useEffect, useRef, useState } from "react";
 import BottomBar from "./bottombar";
 
@@ -32,7 +31,12 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export default (props: any) => {
+export default (props: {
+  peer: any;
+  closeVideoCall: Function;
+  socket: any;
+  sid: string;
+}) => {
   const classes = useStyles();
   const [userStream, setUserStream] = useState<any>();
   const [partnerStream, setPartnerStream] = useState<any>();
@@ -59,11 +63,22 @@ export default (props: any) => {
           userVideo.current.srcObject = stream;
         }
       });
+
+    props.socket.on("endVideoCall", () => {
+      endCall(false);
+    });
   }, []);
 
-  const endCall = () => {
-    alert("msok");
-    props.peer.removeStream(userStream);
+  const endCall = (init: boolean) => {
+    if (init) {
+      emitEndCall();
+      props.peer.removeStream(userStream);
+    }
+    props.closeVideoCall();
+  };
+
+  const emitEndCall = () => {
+    props.socket.emit("endVideoCall", { to: props.sid });
   };
 
   const muteAudio = () => {
@@ -78,32 +93,6 @@ export default (props: any) => {
 
   return (
     <>
-      {/* <Box className={classes.videoArea}>
-        <Box className={classes.partner}>
-          <video
-            className={classes.partnerVideo}
-            playsInline
-            muted
-            ref={partnerVideo}
-            autoPlay
-          />
-        </Box>
-        <Box className={classes.user}>
-          <video
-            className={classes.userVideo}
-            playsInline
-            muted
-            ref={userVideo}
-            autoPlay
-          />
-        </Box>
-      </Box>
-      <BottomBar
-        className={classes.bottomBar}
-        endCall={() => {
-          endCall();
-        }}
-      /> */}
       <Grid container>
         <Grid item xs={12}>
           <video
@@ -117,7 +106,7 @@ export default (props: any) => {
         <Grid item xs={12}>
           <Box className={classes.bottomBar}>
             <BottomBar
-              handleEndCall={endCall}
+              handleEndCall={() => endCall(true)}
               handleMuteAudio={muteAudio}
               handleMuteVideo={muteVideo}
             />

@@ -300,8 +300,9 @@ export default (props: a) => {
       {videoCall ? (
         <VideoCall
           peer={props.peer}
-          userSocketID={props.userSocketID}
           socket={props.socket}
+          closeVideoCall={() => setVideoCall(false)}
+          sid={props.recipientSocketID}
         />
       ) : null}
       <UserPicker
