@@ -279,9 +279,7 @@ export default (props: a) => {
                   );
                 })}
               </>
-            ) : (
-              ""
-            )}
+            ) : null}
           </div>
         </Box>
         {renderReplyCard()}
