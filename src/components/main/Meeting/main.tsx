@@ -2,7 +2,14 @@ import { useRef, useState, useEffect } from "react";
 import Peer from "simple-peer";
 import UserPicker from "../UserPicker";
 import _ from "underscore";
-import { Box, createStyles, makeStyles, Modal, Theme } from "@material-ui/core";
+import {
+  Box,
+  createStyles,
+  Grid,
+  makeStyles,
+  Modal,
+  Theme,
+} from "@material-ui/core";
 import React from "react";
 import BottomBar from "./bottombar";
 import { Socket } from "socket.io-client";
@@ -18,33 +25,26 @@ const useStyle = makeStyles((theme: Theme) =>
     },
 
     videoArea: {
-      minWidth: "100%",
-      height: "93%",
+      width: "100%",
+      height: "90%",
       alignItems: "center",
       justifyContent: "center",
     },
     video: {
       width: "100%",
-      height: "auto",
+      height: "100%",
     },
 
     vidContainer: {
-      minWidth: "49%",
-      maxWidth: "99%",
-      height: "auto",
+      height: "50%",
     },
 
     bottomBar: {
-      height: "7%",
-      width: "100%",
+      height: "10%",
       backgroundColor: "white",
     },
 
     userVidContainer: {
-      alignSelf: "flex-end",
-      justifyContent: "flex-end",
-      marginRight: "10px",
-      marginBottom: "10px",
       textAlign: "right",
     },
 
@@ -339,66 +339,77 @@ export default (props: {
 
   return (
     <>
-      <Box display="flex" flexDirection="column" className={classes.root}>
-        <Box
-          className={`${classes.videoArea} ${
-            whiteboardMode ? classes.noDisplay : null
-          }`}
-          display="flex"
-          flexWrap="wrap"
-          flexDirection="row"
-        >
-          {peers.map((peer, i) => {
-            return (
-              <Box className={classes.vidContainer}>
-                <Video key={i} peer={peer} />
-              </Box>
-            );
-          })}
-          <Box
-            height="150px"
-            zIndex="99"
-            alignSelf="flex-end"
-            justifyContent="flex-end"
-            flex="1"
-          ></Box>
-          <Box
-            width="300px"
-            height="150px"
-            zIndex="99"
-            className={classes.userVidContainer}
+      <Box className={classes.root}>
+        <Grid container>
+          <Grid
+            item
+            xs={12}
+            className={`${classes.videoArea} ${
+              whiteboardMode ? classes.noDisplay : null
+            }`}
           >
-            <video
-              className={classes.userVid}
-              playsInline
-              //ref={(stream) => (streams.current[0] = stream)}
-              ref={myStreamRef}
-              autoPlay
-              muted
-            />
-          </Box>
-        </Box>
+            <Grid container>
+              <Grid item xs={6} className={classes.vidContainer}>
+                {!_.isUndefined(peers[0]) ? (
+                  <Video key={0} peer={peers[0]} />
+                ) : (
+                  <Box width="100%" height="100%">
+                    Kosong
+                  </Box>
+                )}
+              </Grid>
+              <Grid item xs={6} className={classes.vidContainer}>
+                {!_.isUndefined(peers[1]) ? (
+                  <Video key={1} peer={peers[1]} />
+                ) : (
+                  <Box width="100%" height="100%">
+                    Kosong
+                  </Box>
+                )}
+              </Grid>
+              <Grid item xs={6} className={classes.vidContainer}>
+                {!_.isUndefined(peers[2]) ? (
+                  <Video key={2} peer={peers[2]} />
+                ) : (
+                  <Box width="100%" height="100%">
+                    Kosong
+                  </Box>
+                )}
+              </Grid>
+              <Grid item xs={6} className={classes.vidContainer}>
+                {!_.isUndefined(peers[3]) ? (
+                  <Video key={3} peer={peers[3]} />
+                ) : (
+                  <Box width="100%" height="100%">
+                    Kosong
+                  </Box>
+                )}
+              </Grid>
 
-        {whiteboardMode ? (
-          <Box
-            width="100%"
-            height="100%"
-            className={!whiteboardMode ? classes.noDisplay : ""}
-          >
-            <Whiteboard handleCaptureStream={startWhiteboard} />
-          </Box>
-        ) : null}
-        <Box className={classes.bottomBar}>
-          <BottomBar
-            meetingID={props.meetingID}
-            handleLeaveMeeting={leaveMeeting}
-            handleInviteUser={() => setOpenUserPicker(true)}
-            handleMuteVideo={toggleVideo}
-            handleMuteAudio={toggleAudio}
-            handleScreenShare={toggleScreenShare}
-            handleWhiteboard={toggleWhiteboard}
-          />
-        </Box>
+              {whiteboardMode ? (
+                <Grid
+                  item
+                  xs={12}
+                  style={{ height: "100%" }}
+                  className={!whiteboardMode ? classes.noDisplay : ""}
+                >
+                  <Whiteboard handleCaptureStream={startWhiteboard} />
+                </Grid>
+              ) : null}
+            </Grid>
+          </Grid>
+          <Grid item xs={12} className={classes.bottomBar}>
+            <BottomBar
+              meetingID={props.meetingID}
+              handleLeaveMeeting={leaveMeeting}
+              handleInviteUser={() => setOpenUserPicker(true)}
+              handleMuteVideo={toggleVideo}
+              handleMuteAudio={toggleAudio}
+              handleScreenShare={toggleScreenShare}
+              handleWhiteboard={toggleWhiteboard}
+            />
+          </Grid>
+        </Grid>
       </Box>
 
       <UserPicker
@@ -409,6 +420,24 @@ export default (props: {
         onPickedUser={inviteUser}
         handleClose={() => setOpenUserPicker(false)}
       />
+
+      <Box
+        width="300px"
+        height="150px"
+        position="fixed"
+        top="0"
+        right="0"
+        className={classes.userVidContainer}
+      >
+        <video
+          className={classes.userVid}
+          playsInline
+          //ref={(stream) => (streams.current[0] = stream)}
+          ref={myStreamRef}
+          autoPlay
+          muted
+        />
+      </Box>
     </>
   );
 };
