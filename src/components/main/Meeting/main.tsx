@@ -135,8 +135,7 @@ export default (props: {
     props.socket.on("meetingSDPTransfer", (data: any) => {
       if (data.from !== data.to) {
         let peerIdx = peersRef.current.findIndex((p) => p.socket == data.from);
-        console.log(data);
-        //alert(peerIdx);
+
         if (peerIdx == -1) {
           let x = createPeer(data.from, false);
           x.signal(data.signal);
@@ -146,8 +145,6 @@ export default (props: {
           });
           setPeers((p) => [...p, x]);
         } else {
-          //console.log(peersRef.current[peerIdx].peer);
-          //console.log(peerRef);
           peersRef.current[peerIdx].peer.signal(data.signal);
         }
       }
@@ -267,7 +264,7 @@ export default (props: {
     if (!isScreensharing) {
       navigator.mediaDevices
         //@ts-ignore
-        .getDisplayMedia({ audio: false, video: true })
+        .getDisplayMedia({ audio: true, video: true })
         .then((stream: MediaStream) => {
           console.log(stream.getVideoTracks()[0]);
           screenShareRef.current = stream;

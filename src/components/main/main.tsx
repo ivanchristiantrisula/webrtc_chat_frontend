@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   friendlist: {
     backgroundColor: "white",
-    width: "30rem",
+    width: "20rem",
   },
 
   chatContainer: {
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   findfriend: {
     backgroundColor: "white",
-    width: "30rem",
+    width: "20rem",
   },
 
   personalitytest: {
@@ -394,7 +394,7 @@ const App = () => {
             />
           </Grid>
           {openMenu == "searchUser" ? (
-            <Grid item style={{ width: "30rem" }}>
+            <Grid item style={{ width: "20rem" }}>
               <SearchUser />
             </Grid>
           ) : (
