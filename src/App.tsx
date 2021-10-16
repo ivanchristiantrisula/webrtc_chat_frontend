@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import AdminPage from "./components/admin";
+import ForgotPasswordPage from "./components/main/ForgotPassword";
 
 const theme = createMuiTheme({
   palette: {
@@ -44,6 +45,7 @@ function App() {
             <Route path="/register" component={RegisterPage} />
             <Route path="/chat" component={MainPage} />
             <Route path="/admin" component={AdminPage} />
+            <Route path="/forgot-password" component={ForgotPasswordPage} />
           </Switch>
         </SnackbarProvider>
       </ThemeProvider>
