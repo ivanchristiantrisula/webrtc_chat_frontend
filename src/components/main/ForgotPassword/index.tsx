@@ -150,7 +150,6 @@ export default () => {
       )
       .then((res) => {
         if (res.status === 200) {
-          alert(res.data.code);
           setVerificationCode(res.data.code);
           setStep(1);
         }
