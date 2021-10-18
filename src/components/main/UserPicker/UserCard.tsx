@@ -1,4 +1,12 @@
-import { createStyles, makeStyles, Theme, Grid } from "@material-ui/core";
+import {
+  createStyles,
+  makeStyles,
+  Theme,
+  Grid,
+  Card,
+  CardHeader,
+  IconButton,
+} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
 import { useEffect } from "react";
@@ -36,20 +44,17 @@ export default function (props: any) {
   }, []);
 
   return (
-    <div style={{ height: "auto" }}>
-      <Grid container spacing={1} className={classes.root}>
-        <Grid item xs={2} className={classes.avatar}>
-          <Avatar className={classes.purple}>
-            {props.user.name.charAt(0)}
-          </Avatar>
-        </Grid>
-        <Grid item xs={8}>
-          {props.user.name}
-        </Grid>
-        <Grid item xs={2}>
-          <Radio checked={props.selected}></Radio>
-        </Grid>
-      </Grid>
-    </div>
+    <Card>
+      <CardHeader
+        avatar={
+          <Avatar
+            className={classes.avatar}
+            src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
+          />
+        }
+        title={props.user.name}
+        action={<Radio checked={props.selected}></Radio>}
+      />
+    </Card>
   );
 }
