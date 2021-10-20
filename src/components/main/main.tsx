@@ -142,16 +142,16 @@ const App = () => {
       //set as receiver
       addPeer(data.from, false);
       peers.current[data.from].signal(data.signal);
-      setOpenChatSocket(data.from);
     }
   };
 
   const handleReceivingMeetingInvitation = (data: any) => {
+    console.log(data);
     setMeetingID(data.meetingID);
     setAlertDialogProps({
       open: true,
       title: "You are invited to join a meeting",
-      body: "User XXX invited you to join their meeting.",
+      body: `${data.senderInfo.name} invited you to join their meeting.`,
       positiveTitle: "Join meeting",
       negativeTitle: "Decline Meeting",
       fromSocket: data.from,
