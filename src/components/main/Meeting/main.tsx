@@ -135,7 +135,8 @@ export default (props: {
     props.socket.on("meetingSDPTransfer", (data: any) => {
       if (data.from !== data.to) {
         let peerIdx = peersRef.current.findIndex((p) => p.socket == data.from);
-
+        console.log(data);
+        //alert(peerIdx);
         if (peerIdx == -1) {
           let x = createPeer(data.from, false);
           x.signal(data.signal);
@@ -145,6 +146,8 @@ export default (props: {
           });
           setPeers((p) => [...p, x]);
         } else {
+          //console.log(peersRef.current[peerIdx].peer);
+          //console.log(peerRef);
           peersRef.current[peerIdx].peer.signal(data.signal);
         }
       }
@@ -194,11 +197,19 @@ export default (props: {
       trickle: true,
       config: {
         iceServers: [
-          { urls: ["stun:stun.ivanchristian.me"] },
+          { urls: ["stun:ss-turn1.xirsys.com"] },
           {
-            username: "ivan",
-            credential: "5521",
-            urls: ["turn:turn.ivanchristian.me"],
+            username:
+              "nloss6_TEUhewwxb10DhQRBHngGwWTL3PGaL7GePBHQiynZGSMUXdz13rAYTPQY4AAAAAGFcdZhwdWdob2xl",
+            credential: "c12003b8-25f4-11ec-8db2-0242ac140004",
+            urls: [
+              "turn:ss-turn1.xirsys.com:80?transport=udp",
+              "turn:ss-turn1.xirsys.com:3478?transport=udp",
+              "turn:ss-turn1.xirsys.com:80?transport=tcp",
+              "turn:ss-turn1.xirsys.com:3478?transport=tcp",
+              "turns:ss-turn1.xirsys.com:443?transport=tcp",
+              "turns:ss-turn1.xirsys.com:5349?transport=tcp",
+            ],
           },
         ],
       },
@@ -264,7 +275,7 @@ export default (props: {
     if (!isScreensharing) {
       navigator.mediaDevices
         //@ts-ignore
-        .getDisplayMedia({ audio: true, video: true })
+        .getDisplayMedia({ audio: false, video: true })
         .then((stream: MediaStream) => {
           console.log(stream.getVideoTracks()[0]);
           screenShareRef.current = stream;

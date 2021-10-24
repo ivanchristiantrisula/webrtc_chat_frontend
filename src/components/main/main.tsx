@@ -161,7 +161,6 @@ const App = () => {
   const addPeer = (
     socket_id: string,
     isInitiator: boolean,
-    signalData?: any
   ) => {
     peers.current[socket_id] = new Peer({
       initiator: isInitiator,
