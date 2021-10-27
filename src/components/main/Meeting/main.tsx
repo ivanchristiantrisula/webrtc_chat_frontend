@@ -174,10 +174,12 @@ export default (props: {
         if (myStreamRef.current) {
           myStreamRef.current.srcObject = stream;
         }
-
-        //wait untill user stream is available, then request meeting members
+      })
+      .finally(() => {
         requestMeetingMembers();
       });
+
+    requestMeetingMembers();
   }, []);
 
   useEffect(() => {
@@ -205,7 +207,7 @@ export default (props: {
           },
         ],
       },
-      stream: myStreamRef.current.srcObject,
+      stream: myStreamRef.current.srcObject ?? null,
     });
 
     peer.on("signal", (data: any) => {
