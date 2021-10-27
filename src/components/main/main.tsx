@@ -106,6 +106,9 @@ const App = () => {
 
     socket?.current?.on("connect", () => {
       console.info("Connected to signalling server");
+      enqueueSnackbar(`Connected to signalling server!`, {
+        variant: "info",
+      });
       setSocketConnection(true);
     });
 
@@ -122,6 +125,9 @@ const App = () => {
     socket?.current?.on("disconnect", () => {
       setSocketConnection(false);
       console.info("Disconnected from signalling server");
+      enqueueSnackbar(`Disconnected to signalling server!`, {
+        variant: "error",
+      });
     });
 
     socket.current.on("sdpTransfer", handleReceivingSDP);
@@ -158,10 +164,7 @@ const App = () => {
     });
   };
 
-  const addPeer = (
-    socket_id: string,
-    isInitiator: boolean,
-  ) => {
+  const addPeer = (socket_id: string, isInitiator: boolean) => {
     peers.current[socket_id] = new Peer({
       initiator: isInitiator,
       trickle: true,
