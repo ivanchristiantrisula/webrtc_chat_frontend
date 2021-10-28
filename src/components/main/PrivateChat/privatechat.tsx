@@ -260,7 +260,7 @@ export default (props: a) => {
             startVideoCall={() => {
               startVideoCall(true);
             }}
-            user={props.myInfo}
+            user={props.users[props.recipientSocketID]}
           />
         </Box>
         <Box order={2} className={classes.chatArea} flexGrow={1}>

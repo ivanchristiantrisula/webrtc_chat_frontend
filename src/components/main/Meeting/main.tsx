@@ -41,10 +41,8 @@ const useStyle = makeStyles((theme: Theme) =>
     },
 
     userVidContainer: {
-      alignSelf: "flex-end",
-      justifyContent: "flex-end",
-      marginRight: "10px",
-      marginBottom: "10px",
+      marginTop: "20px",
+      marginRight: "20px",
       textAlign: "right",
     },
 
@@ -161,6 +159,8 @@ export default (props: {
 
         setPeers([...peers.splice(idx, 1)]);
       }
+
+      if (isUserAlone) leaveMeeting();
     });
 
     props.socket.on("screenshareMode", ({ sid, status }) => {
@@ -178,8 +178,6 @@ export default (props: {
       .finally(() => {
         requestMeetingMembers();
       });
-
-    requestMeetingMembers();
   }, []);
 
   useEffect(() => {
@@ -210,13 +208,7 @@ export default (props: {
       stream: myStreamRef.current.srcObject ?? null,
     });
 
-    peer.on("signal", (data: any) => {
-      props.socket.emit("transferSDPMeeting", {
-        signal: data,
-        to: socketID,
-        from: props.userSocketID,
-      });
-    });
+    peer.on("signal", (data: any) => handleReceivingSignal(data, socketID));
 
     peer.on("connect", (data: any) => {
       //do somtheing when connected
@@ -226,6 +218,21 @@ export default (props: {
     });
 
     return peer;
+  };
+
+  const handleReceivingSignal = (data: any, socketID: String) => {
+    props.socket.emit("transferSDPMeeting", {
+      signal: data,
+      to: socketID,
+      from: props.userSocketID,
+    });
+  };
+
+  const isUserAlone = () => {
+    if (peersRef.current.length < 1) {
+      return true;
+    }
+    return false;
   };
 
   const isMeetingAdmin = () => {
@@ -350,17 +357,12 @@ export default (props: {
             );
           })}
           <Box
-            height="150px"
-            zIndex="99"
-            alignSelf="flex-end"
-            justifyContent="flex-end"
-            flex="1"
-          ></Box>
-          <Box
             width="300px"
             height="150px"
-            zIndex="99"
             className={classes.userVidContainer}
+            position="fixed"
+            top="0"
+            right="0"
           >
             <video
               className={classes.userVid}
