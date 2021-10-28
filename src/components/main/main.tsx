@@ -82,6 +82,7 @@ const App = () => {
   let [meetingID, setMeetingID] = useState("");
   let [meetingMode, setMeetingMode] = useState(false);
   let fileTransfers = useRef({});
+  let [stringifiedChats, setStringifiedChats] = useState("");
 
   let [alertDialogProps, setAlertDialogProps] = useState(
     initState.meetingProps
@@ -98,6 +99,13 @@ const App = () => {
   useEffect(() => {
     fetchUserFriends();
   }, [allUsers]);
+
+  useEffect(() => {
+    setStringifiedChats(JSON.stringify(chats));
+    console.log(JSON.stringify(chats));
+  }, [chats]);
+
+  const convertSocketIdToUserId = () => {};
 
   const initSocketListener = () => {
     socket.current = io.connect(process.env.REACT_APP_BACKEND_URI, {
