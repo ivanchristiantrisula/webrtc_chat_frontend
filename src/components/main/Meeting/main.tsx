@@ -7,6 +7,7 @@ import React from "react";
 import BottomBar from "./bottombar";
 import { Socket } from "socket.io-client";
 import Whiteboard from "./whiteboard";
+import { useSnackbar } from "notistack";
 // @ts-ignore
 
 const useStyle = makeStyles((theme: Theme) =>
@@ -92,6 +93,7 @@ export default (props: {
   const [isScreensharing, setIsScreensharing] = useState(false);
   const [focusedOn, setFocusedOn] = useState("");
   const [whiteboardMode, setWhiteboardMode] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   //const [streams, setStreams] = useState([]);
 
   useEffect(() => {
@@ -126,8 +128,11 @@ export default (props: {
       }
     });
 
-    props.socket.on("newMeetingMember", (data: any) => {
-      setUserSockets((old) => [...old, data]);
+    props.socket.on("newMeetingMember", ({ sid, userData }) => {
+      setUserSockets((old) => [...old, sid]);
+      enqueueSnackbar(`${userData.name} has joined this meeting`, {
+        variant: "info",
+      });
     });
 
     props.socket.on("meetingSDPTransfer", (data: any) => {
