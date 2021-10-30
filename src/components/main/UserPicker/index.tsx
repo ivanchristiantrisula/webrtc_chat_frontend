@@ -70,10 +70,12 @@ export default (props: {
 
   const handleConfirm = () => {
     props.onPickedUser(pickedUsers);
+    setPickedUsers({});
   };
 
   const handleClose = () => {
     props.handleClose();
+    setPickedUsers({});
   };
 
   return (

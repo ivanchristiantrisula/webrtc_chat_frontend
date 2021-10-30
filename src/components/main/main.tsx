@@ -2,7 +2,7 @@ import { Grid, Paper, Box, createStyles, Theme } from "@material-ui/core";
 import { useState, useEffect, useRef } from "react";
 import Sidebar from "./Sidebar";
 import Friendlist from "./Friendlist/friendlist";
-import _, { omit } from "underscore";
+import _, { keys, omit } from "underscore";
 import Peer from "simple-peer";
 import PrivateChat from "./PrivateChat/privatechat";
 import { makeStyles } from "@material-ui/styles";
@@ -304,24 +304,22 @@ const App = () => {
         }/api/user/getFriends?token=${localStorage.getItem("token")}`
       )
       .then((res) => {
-        let allFriends = res.data.friends;
-        console.log(allFriends);
-        //intersects all user array with all friends array to find online ones
-        let intersects = {};
-        for (const key in allUsers) {
-          if (Object.prototype.hasOwnProperty.call(allUsers, key)) {
-            if (key != userSocketID) {
-              const element = allUsers[key];
-              let friendIdx = allFriends.findIndex(
-                (friend: any) => friend._id == element._id
-              );
-              if (friendIdx != -1) {
-                intersects[key] = allUsers[key];
-              }
-            }
-          }
-        }
-        setOnlineFriends(intersects);
+        let allFriends: [] = res.data.friends;
+
+        let intersectsA = Object.keys(allUsers).filter((a: any) => {
+          return allFriends.some((b: any) => {
+            return b._id == allUsers[a]._id;
+          });
+        });
+
+        let intersectsB = {};
+
+        intersectsA.forEach((sid: any) => {
+          let user = allUsers[sid];
+          intersectsB[sid] = user;
+        });
+
+        setOnlineFriends(intersectsB);
       })
       .catch((err) => {
         console.error(err);

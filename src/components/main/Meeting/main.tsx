@@ -67,9 +67,7 @@ const Video = (props: { peer: any }) => {
     });
   }, []);
 
-  return (
-    <video className={classes.video} playsInline autoPlay muted ref={ref} />
-  );
+  return <video className={classes.video} playsInline autoPlay ref={ref} />;
 };
 
 export default (props: {
