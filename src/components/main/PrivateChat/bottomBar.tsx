@@ -12,7 +12,7 @@ import TextField, { TextFieldProps } from "@material-ui/core/TextField";
 import SendIcon from "@material-ui/icons/Send";
 import ImageIcon from "@material-ui/icons/Image";
 import PublishOutlinedIcon from "@material-ui/icons/PublishOutlined";
-import { useRef, useState, useLayoutEffect } from "react";
+import React, { useRef, useState, useLayoutEffect } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,6 +57,13 @@ export default function (props: {
     fileInputRef.current.value = null;
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendText();
+    }
+  };
+
   return (
     <Container maxWidth={false} className={classes.root}>
       <Grid
@@ -82,6 +89,7 @@ export default function (props: {
               multiline
               onChange={(e) => setText(e.target.value)}
               inputRef={textInput}
+              onKeyPress={handleKeyPress}
             />
           </FormControl>
         </Grid>
