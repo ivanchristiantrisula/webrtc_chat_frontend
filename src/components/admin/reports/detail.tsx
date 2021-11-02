@@ -131,6 +131,7 @@ const ReportAction = (props: { report: any }) => {
       })
       .then((res) => {
         if (res.status === 200) {
+          //props.handleCloseReport();
         }
       })
       .catch((err) => {

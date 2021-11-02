@@ -189,25 +189,20 @@ export default (props: a) => {
     let targetUID = props.users[props.recipientSocketID]._id;
 
     //get previous and afterward the reported message so admin can get better context about the whole situation
-    props.chat[idx - 1] !== undefined
-      ? chats.push(props.chat[idx - 1])
-      : chats.push(null);
+    props.chat[idx - 1] !== undefined ? chats.push(props.chat[idx - 1]) : null;
 
     if (props.chat[idx] !== undefined) {
       //mark as reported
       let a = props.chat[idx];
       a.isReported = true;
       chats.push(a);
-    } else {
-      chats.push(null);
     }
 
-    props.chat[idx + 1] !== undefined
-      ? chats.push(props.chat[idx + 1])
-      : chats.push(null);
+    props.chat[idx + 1] !== undefined ? chats.push(props.chat[idx + 1]) : null;
 
     //replace socket id with user id
     chats.forEach((element) => {
+      //console.log(element);
       if (element.from === props.userSocketID) {
         element.from = props.myInfo._id;
       } else {

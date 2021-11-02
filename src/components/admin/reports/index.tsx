@@ -30,9 +30,7 @@ export default function AdminReports(props: { openReportDetail: Function }) {
     fetchReports();
   }, []);
 
-  useEffect(() => {
-    console.log(reports);
-  }, [reports]);
+  useEffect(() => {}, [reports]);
 
   const fetchReports = () => {
     axios
@@ -49,6 +47,15 @@ export default function AdminReports(props: { openReportDetail: Function }) {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const closeReport = (idx: number) => {
+    setOpenReportID({});
+
+    let old = reports[idx];
+    old.status = "Closed";
+
+    setReports(old);
   };
 
   const handleClick = (report: {}) => {

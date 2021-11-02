@@ -174,9 +174,7 @@ export default (props: {
       .getUserMedia({ video: true, audio: true })
       .then((stream: MediaStream) => {
         setMyStream(stream);
-        if (myStreamRef.current) {
-          myStreamRef.current.srcObject = stream;
-        }
+        myStreamRef.current.srcObject = stream;
       })
       .finally(() => {
         requestMeetingMembers();

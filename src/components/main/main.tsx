@@ -100,6 +100,12 @@ const App = () => {
     fetchUserFriends();
   }, [allUsers]);
 
+  const checkCurrentOpenChatSocketUserWentOffline = (users: any) => {
+    if (users[openChatSocket] === undefined) {
+      setOpenChatSocket("");
+    }
+  };
+
   useEffect(() => {
     setStringifiedChats(JSON.stringify(chats));
     console.log(JSON.stringify(chats));
@@ -127,6 +133,7 @@ const App = () => {
     socket?.current?.on("allUsers", (users: any) => {
       console.info("Fetched all users");
       let a = users;
+      checkCurrentOpenChatSocketUserWentOffline(users);
       setAllUsers(a);
     });
 
