@@ -142,12 +142,9 @@ export default () => {
   const submitEmail = (email: string) => {
     setEmail(email);
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/sendResetPasswordCode`,
-        {
-          email: email,
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/sendResetPasswordCode`, {
+        email: email,
+      })
       .then((res) => {
         if (res.status === 200) {
           setVerificationCode(res.data.code);
@@ -170,7 +167,7 @@ export default () => {
 
   const submitResetPassword = (password: string) => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/resetPassword`, {
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/resetPassword`, {
         code: verificationCode,
         password: password,
         email: email,

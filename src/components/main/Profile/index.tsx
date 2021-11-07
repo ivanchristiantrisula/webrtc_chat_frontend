@@ -118,7 +118,7 @@ const ChangePasswordDialog = (props: {
   };
   const handleSave = () => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/changePassword`, {
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/changePassword`, {
         old: oldPassword,
         new: newPassword,
         confirm: confirmPassword,
@@ -258,7 +258,7 @@ export default (props: { user: any }) => {
   const saveProfileEdit = () => {
     // send post to backend
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/updateProfile`, {
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/updateProfile`, {
         name: name,
         bio: bio,
         token: localStorage.getItem("token"),
@@ -288,7 +288,7 @@ export default (props: { user: any }) => {
     );
     axios
       .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/uploadProfilePicture`,
+        `${process.env.REACT_APP_BACKEND_URI}/user/uploadProfilePicture`,
         { fd, token: localStorage.getItem("token") },
         {
           headers: {

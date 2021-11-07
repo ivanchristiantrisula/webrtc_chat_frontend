@@ -122,7 +122,7 @@ const ReportAction = (props: { report: any }) => {
 
   const handleSubmit = () => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/report/closeReport`, {
+      .post(`${process.env.REACT_APP_BACKEND_URI}/report/closeReport`, {
         reportID: props.report._id,
         reporterID: props.report.reporter,
         reporteeID: props.report.reportee,

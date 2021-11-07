@@ -55,7 +55,7 @@ export default function Report(props: {
     };
     console.log(payload);
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/report/create`, payload)
+      .post(`${process.env.REACT_APP_BACKEND_URI}/report/create`, payload)
       .then((res) => {
         //do something
         if (res.status === 200) props.closeDialog();

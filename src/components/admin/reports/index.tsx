@@ -37,7 +37,7 @@ export default function AdminReports(props: { openReportDetail: Function }) {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/api/report/getAllReports?token=${localStorage.getItem("token")}`
+        }/report/getAllReports?token=${localStorage.getItem("token")}`
       )
       .then((res) => {
         if (res.status === 200) {

@@ -22,7 +22,7 @@ export default () => {
     axios
       .get(
         process.env.REACT_APP_BACKEND_URI +
-          `/api/user/getFriendsRecommendation?token=${localStorage.getItem(
+          `/user/getFriendsRecommendation?token=${localStorage.getItem(
             "token"
           )}`
       )
@@ -44,7 +44,7 @@ export default () => {
 
   const addFriend = (id: string) => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/addFriend`, {
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/addFriend`, {
         user: { _id: id },
         token: localStorage.getItem("token"),
       })

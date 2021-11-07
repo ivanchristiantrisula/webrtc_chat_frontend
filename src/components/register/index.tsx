@@ -72,7 +72,7 @@ function App() {
     e.preventDefault();
     setRegisterLoading(true);
     axios
-      .post(process.env.REACT_APP_BACKEND_URI + "/api/user/register", {
+      .post(process.env.REACT_APP_BACKEND_URI + "/user/register", {
         email: email,
         password: password,
         name: name,

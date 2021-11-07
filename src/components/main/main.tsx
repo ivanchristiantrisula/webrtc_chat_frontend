@@ -308,7 +308,7 @@ const App = () => {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/api/user/getFriends?token=${localStorage.getItem("token")}`
+        }/user/getFriends?token=${localStorage.getItem("token")}`
       )
       .then((res) => {
         let allFriends: [] = res.data.friends;

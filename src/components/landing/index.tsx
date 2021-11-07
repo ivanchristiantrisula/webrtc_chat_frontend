@@ -78,7 +78,7 @@ function App() {
     e.preventDefault();
     setLoginStatus(1);
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/login`, {
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/login`, {
         email: email,
         password: password,
         token: localStorage.getItem("token"),

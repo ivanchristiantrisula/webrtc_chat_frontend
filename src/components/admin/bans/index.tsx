@@ -51,7 +51,7 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
 
   const handleClick = () => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/unbanUser`, {
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/unbanUser`, {
         userID: props.user._id,
         token: localStorage.getItem("token"),
       })
@@ -175,7 +175,7 @@ const BannedUsers = () => {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/api/user/getBannedUsers?token=${localStorage.getItem("token")}`
+        }/user/getBannedUsers?token=${localStorage.getItem("token")}`
       )
       .then((res) => {
         if (res.status === 200) setUsers(res.data);

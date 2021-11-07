@@ -62,7 +62,7 @@ export default () => {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/api/user/getPendingFriends?token=${localStorage.getItem("token")}`
+        }/user/getPendingFriends?token=${localStorage.getItem("token")}`
       )
       .then((res) => {
         console.log(res);
@@ -76,7 +76,7 @@ export default () => {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/api/user/findUser?keyword=${keyword}&token=${localStorage.getItem(
+        }/user/findUser?keyword=${keyword}&token=${localStorage.getItem(
           "token"
         )}`
       )
@@ -91,7 +91,7 @@ export default () => {
   const addFriend = (user: any) => {
     setUsers([]);
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/api/user/addFriend`, {
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/addFriend`, {
         user: user,
         token: localStorage.getItem("token"),
       })
@@ -115,13 +115,10 @@ export default () => {
 
   const handleAcceptFriendReq = (target: any) => {
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/acceptFriendRequest`,
-        {
-          target: target,
-          token: localStorage.getItem("token"),
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/acceptFriendRequest`, {
+        target: target,
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {
         setPendings(
           users.filter((x) => {
@@ -140,13 +137,10 @@ export default () => {
 
   const handleRejectFriendReq = (target: any) => {
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/api/user/rejectFriendRequest`,
-        {
-          target: target,
-          token: localStorage.getItem("token"),
-        }
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/rejectFriendRequest`, {
+        target: target,
+        token: localStorage.getItem("token"),
+      })
       .then((res) => {
         if (res.status === 200) {
           setPendings(
