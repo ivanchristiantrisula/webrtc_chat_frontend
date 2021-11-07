@@ -164,7 +164,7 @@ export default (props: {
       // }
       delete peersRef.current[socketID];
 
-      let idx = userSockets.findIndex(socketID);
+      let idx = userSockets.findIndex((x) => x == socketID);
       setUserSockets([...userSockets.splice(idx, 1)]);
 
       isUserAlone() && leaveMeeting();
@@ -217,6 +217,23 @@ export default (props: {
 
     peer.on("connect", (data: any) => {
       //do somtheing when connected
+      enqueueSnackbar(
+        `Peer-to-peer connection with ${props.friends[socketID].name} has been established!`,
+        {
+          variant: "info",
+        }
+      );
+    });
+
+    peer.on("error", () => {
+      //try reconnect
+      enqueueSnackbar(
+        `Peer-to-peer connection with ${props.friends[socketID].name} has encountered an error. Attempting to reconnect...`,
+        {
+          variant: "info",
+        }
+      );
+      peersRef.current[socketID] = createPeer(socketID, isInitiator);
     });
 
     return peer;
@@ -231,7 +248,7 @@ export default (props: {
   };
 
   const isUserAlone = () => {
-    if (Object.keys(peersRef.current).length < 1) {
+    if (userSockets.length < 1) {
       return true;
     }
     return false;
@@ -262,7 +279,9 @@ export default (props: {
     //   element.peer.destroy();
     // });
     Object.keys(peersRef.current).forEach((element: any) => {
-      element.destroy();
+      if (peersRef.current[element]) {
+        peersRef.current[element].destroy();
+      }
     });
     props.endMeeting();
   };
