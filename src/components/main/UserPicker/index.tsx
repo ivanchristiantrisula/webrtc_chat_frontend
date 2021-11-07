@@ -57,7 +57,7 @@ export default (props: {
       if (_.isUndefined(x[idx])) {
         x[idx] = props.users[idx];
       } else {
-        x[idx] = undefined;
+        delete x[idx];
       }
 
       setPickedUsers({ ...x });
@@ -69,13 +69,14 @@ export default (props: {
   };
 
   const handleConfirm = () => {
-    props.onPickedUser(pickedUsers);
+    let temp = pickedUsers;
     setPickedUsers({});
+    props.onPickedUser(temp);
   };
 
   const handleClose = () => {
-    props.handleClose();
     setPickedUsers({});
+    props.handleClose();
   };
 
   return (

@@ -229,9 +229,6 @@ export default (props: a) => {
     }
 
     setOpenUserPickerModal(false);
-    //setChat([...chat, payload]);
-    //props.addChatFromSender(payload);
-    //props.peer.send(Buffer.from(JSON.stringify(payload)));
   };
   const renderReplyCard = () => {
     if (!_.isEmpty(replyChat)) {

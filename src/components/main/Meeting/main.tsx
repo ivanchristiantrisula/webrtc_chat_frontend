@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import Peer from "simple-peer";
+import Peer, { SimplePeerData } from "simple-peer";
 import UserPicker from "../UserPicker";
 import _ from "underscore";
 import { Box, createStyles, makeStyles, Modal, Theme } from "@material-ui/core";
@@ -8,6 +8,7 @@ import BottomBar from "./bottombar";
 import { Socket } from "socket.io-client";
 import Whiteboard from "./whiteboard";
 import { useSnackbar } from "notistack";
+import SimplePeer from "simple-peer";
 // @ts-ignore
 
 const useStyle = makeStyles((theme: Theme) =>
@@ -62,6 +63,7 @@ const Video = (props: { peer: any }) => {
   const classes = useStyle();
 
   useEffect(() => {
+    //console.log(props.peer);
     props.peer.on("stream", (stream: any) => {
       ref.current.srcObject = stream;
     });
@@ -78,7 +80,7 @@ export default (props: {
   endMeeting: Function;
 }) => {
   const classes = useStyle();
-  let peersRef = useRef([]);
+  let peersRef = useRef({});
   let myStreamRef = useRef<any>();
   let screenShareRef = useRef<MediaStream>();
   let whiteboardRef = useRef();
@@ -99,35 +101,26 @@ export default (props: {
       //do something when user has responed meeting invitation
     });
 
-    props.socket.on("meetingMembers", (data: any) => {
-      console.log(data);
-      setUserSockets(data);
+    props.socket.on("meetingMembers", (data: []) => {
+      data.splice(
+        data.findIndex((x) => x == props.userSocketID),
+        1
+      );
+      //alert(data.length);
 
       //connect to everyone
       data.forEach((socket: any) => {
-        //check if peer connection doesn't exist, then create the connection
-        if (
-          _.isUndefined(peersRef.current.find((p) => p.socket === socket)) &&
-          socket != props.userSocketID
-        ) {
-          console.log(myStream);
-          let peer = createPeer(socket, true);
-          peersRef.current.push({
-            peer: peer,
-            socket: socket,
-          });
-          setPeers((p) => [...p, peer]);
-        }
+        peersRef.current[socket] = createPeer(socket, true);
       });
 
+      setUserSockets(data);
+
       //check if user just created the room
-      if (data.length === 1) {
-        setOpenUserPicker(true);
-      }
+      data.length === 0 && setOpenUserPicker(true);
     });
 
     props.socket.on("newMeetingMember", ({ sid, userData }) => {
-      setUserSockets((old) => [...old, sid]);
+      peersRef.current[sid] = null;
       enqueueSnackbar(`${userData.name} has joined this meeting`, {
         variant: "info",
       });
@@ -135,35 +128,46 @@ export default (props: {
 
     props.socket.on("meetingSDPTransfer", (data: any) => {
       if (data.from !== data.to) {
-        let peerIdx = peersRef.current.findIndex((p) => p.socket == data.from);
-        console.log(data);
-        //alert(peerIdx);
-        if (peerIdx == -1) {
-          let x = createPeer(data.from, false);
-          x.signal(data.signal);
-          peersRef.current.push({
-            peer: x,
-            socket: data.from,
-          });
-          setPeers((p) => [...p, x]);
-        } else {
-          //console.log(peersRef.current[peerIdx].peer);
-          //console.log(peerRef);
-          peersRef.current[peerIdx].peer.signal(data.signal);
+        // let peerIdx = peersRef.current.findIndex((p) => p.socket == data.from);
+        // //alert("sdp from " + props.friends[data.from].name);
+        // if (peerIdx == -1) {
+        //   let x = createPeer(data.from, false);
+        //   x.signal(data.signal);
+        //   peersRef.current.push({
+        //     peer: x,
+        //     socket: data.from,
+        //   });
+        //   setPeers((p) => [...p, x]);
+        // } else {
+        //   peersRef.current[peerIdx].peer.signal(data.signal);
+        //   //console.log(peers[peerIdx]);
+        //   //peers[peerIdx].signal(data.signal);
+        // }
+        if (
+          peersRef.current[data.from] === null ||
+          peersRef.current[data.from] === undefined
+        ) {
+          peersRef.current[data.from] = createPeer(data.from, false);
+          setUserSockets((old) => [...old, data.from]);
         }
+        peersRef.current[data.from].signal(data.signal);
       }
     });
 
     props.socket.on("removeMeetingPeer", ({ socketID }) => {
-      let idx = peersRef.current.findIndex((p) => p.socket === socketID);
+      // let idx = peersRef.current.findIndex((p) => p.socket === socketID);
 
-      if (idx > -1) {
-        peersRef.current.splice(idx, 1);
+      // if (idx > -1) {
+      //   peersRef.current.splice(idx, 1);
 
-        setPeers([...peers.splice(idx, 1)]);
-      }
+      //   setPeers([...peers.splice(idx, 1)]);
+      // }
+      delete peersRef.current[socketID];
 
-      if (isUserAlone) leaveMeeting();
+      let idx = userSockets.findIndex(socketID);
+      setUserSockets([...userSockets.splice(idx, 1)]);
+
+      isUserAlone() && leaveMeeting();
     });
 
     props.socket.on("screenshareMode", ({ sid, status }) => {
@@ -195,7 +199,7 @@ export default (props: {
   const createPeer = (socketID: string, isInitiator: boolean) => {
     let peer = new Peer({
       initiator: isInitiator,
-      trickle: true,
+      trickle: false,
       config: {
         iceServers: [
           { urls: ["stun:stun.ivanchristian.me"] },
@@ -213,9 +217,6 @@ export default (props: {
 
     peer.on("connect", (data: any) => {
       //do somtheing when connected
-      // let x = userSockets;
-      // x[socketID].status = "Connected. Waiting for stream";
-      // setUserSockets(x);
     });
 
     return peer;
@@ -230,7 +231,7 @@ export default (props: {
   };
 
   const isUserAlone = () => {
-    if (peersRef.current.length < 1) {
+    if (Object.keys(peersRef.current).length < 1) {
       return true;
     }
     return false;
@@ -257,8 +258,11 @@ export default (props: {
 
   const leaveMeeting = () => {
     props.socket.emit("leaveMeeting", { meetingID: props.meetingID });
-    peersRef.current.forEach((element) => {
-      element.peer.destroy();
+    // peersRef.current.forEach((element) => {
+    //   element.peer.destroy();
+    // });
+    Object.keys(peersRef.current).forEach((element: any) => {
+      element.destroy();
     });
     props.endMeeting();
   };
@@ -279,15 +283,13 @@ export default (props: {
         //@ts-ignore
         .getDisplayMedia({ audio: false, video: true })
         .then((stream: MediaStream) => {
-          console.log(stream.getVideoTracks()[0]);
           screenShareRef.current = stream;
-          peersRef.current.forEach((element) => {
-            element.peer.replaceTrack(
-              element.peer.streams[0].getVideoTracks()[0],
+          Object.keys(peersRef.current).forEach((element: any) => {
+            element.replaceTrack(
+              element.streams[0].getVideoTracks()[0],
               stream.getVideoTracks()[0],
               myStreamRef.current.srcObject
             );
-            //element.peer.addStream(stream);
           });
 
           stream.getVideoTracks()[0].onended = () => endScreenShare();
@@ -296,15 +298,13 @@ export default (props: {
     } else {
       endScreenShare();
     }
-
-    //console.log(stream);
   };
 
   const endScreenShare = () => {
     screenShareRef.current.getVideoTracks()[0].stop();
-    peersRef.current.forEach((element) => {
-      element.peer.replaceTrack(
-        element.peer.streams[0].getVideoTracks()[0],
+    Object.keys(peersRef.current).forEach((element: any) => {
+      element.replaceTrack(
+        element.streams[0].getVideoTracks()[0],
         myStreamRef.current.srcObject.getVideoTracks()[0],
         myStreamRef.current.srcObject
       );
@@ -320,9 +320,9 @@ export default (props: {
   };
 
   const startWhiteboard = (stream: MediaStream) => {
-    peersRef.current.forEach((element) => {
-      element.peer.replaceTrack(
-        element.peer.streams[0].getVideoTracks()[0],
+    Object.keys(peersRef.current).forEach((element: any) => {
+      element.replaceTrack(
+        element.streams[0].getVideoTracks()[0],
         stream.getVideoTracks()[0],
         myStreamRef.current.srcObject
       );
@@ -330,9 +330,9 @@ export default (props: {
   };
 
   const endWhiteboard = () => {
-    peersRef.current.forEach((element) => {
-      element.peer.replaceTrack(
-        element.peer.streams[0].getVideoTracks()[0],
+    Object.keys(peersRef.current).forEach((element: any) => {
+      element.replaceTrack(
+        element.streams[0].getVideoTracks()[0],
         myStreamRef.current.srcObject.getVideoTracks()[0],
         myStreamRef.current.srcObject
       );
@@ -350,10 +350,10 @@ export default (props: {
           flexWrap="wrap"
           flexDirection="row"
         >
-          {peers.map((peer, i) => {
+          {userSockets.map((socketID, i) => {
             return (
-              <Box className={classes.vidContainer}>
-                <Video key={i} peer={peer} />
+              <Box className={classes.vidContainer} key={i}>
+                <Video peer={peersRef.current[socketID]} />
               </Box>
             );
           })}
@@ -385,7 +385,7 @@ export default (props: {
             <Whiteboard handleCaptureStream={startWhiteboard} />
           </Box>
         ) : null}
-        <Box className={classes.bottomBar}>
+        <Box className={classes.bottomBar} position="fixed" bottom="0" left="0">
           <BottomBar
             meetingID={props.meetingID}
             handleLeaveMeeting={leaveMeeting}
