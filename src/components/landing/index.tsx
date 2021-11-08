@@ -89,7 +89,12 @@ function App() {
           const cookies = new Cookies();
           cookies.set("token", res.data.token, { path: "/" });
           localStorage.setItem("token", res.data.token);
-          history.push("/chat");
+
+          if (res.data.user.isVerified) {
+            history.push("/chat");
+          } else {
+            history.push("/verify-email");
+          }
         }
       })
       .catch((error) => {
@@ -142,29 +147,27 @@ function App() {
           <Grid item alignItems="center" justify="center" xs={12}>
             <Box>
               <form onSubmit={handleLogin}>
-                <FormControl fullWidth>
-                  <TextField
-                    id="email"
-                    label="Email"
-                    required
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                    fullWidth
-                    className={classes.textField}
-                  />
-                  <TextField
-                    id="password"
-                    label="Password"
-                    type="password"
-                    required
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
-                    fullWidth
-                    className={classes.textField}
-                  />
-                </FormControl>
+                <TextField
+                  id="email"
+                  label="Email"
+                  required
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  fullWidth
+                  className={classes.textField}
+                />
+                <TextField
+                  id="password"
+                  label="Password"
+                  type="password"
+                  required
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  fullWidth
+                  className={classes.textField}
+                />
               </form>
             </Box>
           </Grid>

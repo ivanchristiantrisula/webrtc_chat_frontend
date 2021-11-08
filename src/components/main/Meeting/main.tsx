@@ -63,7 +63,6 @@ const Video = (props: { peer: any }) => {
   const classes = useStyle();
 
   useEffect(() => {
-    //console.log(props.peer);
     props.peer.on("stream", (stream: any) => {
       ref.current.srcObject = stream;
     });
@@ -106,7 +105,6 @@ export default (props: {
         data.findIndex((x) => x == props.userSocketID),
         1
       );
-      //alert(data.length);
 
       //connect to everyone
       data.forEach((socket: any) => {
@@ -128,21 +126,6 @@ export default (props: {
 
     props.socket.on("meetingSDPTransfer", (data: any) => {
       if (data.from !== data.to) {
-        // let peerIdx = peersRef.current.findIndex((p) => p.socket == data.from);
-        // //alert("sdp from " + props.friends[data.from].name);
-        // if (peerIdx == -1) {
-        //   let x = createPeer(data.from, false);
-        //   x.signal(data.signal);
-        //   peersRef.current.push({
-        //     peer: x,
-        //     socket: data.from,
-        //   });
-        //   setPeers((p) => [...p, x]);
-        // } else {
-        //   peersRef.current[peerIdx].peer.signal(data.signal);
-        //   //console.log(peers[peerIdx]);
-        //   //peers[peerIdx].signal(data.signal);
-        // }
         if (
           peersRef.current[data.from] === null ||
           peersRef.current[data.from] === undefined
@@ -155,13 +138,6 @@ export default (props: {
     });
 
     props.socket.on("removeMeetingPeer", ({ socketID }) => {
-      // let idx = peersRef.current.findIndex((p) => p.socket === socketID);
-
-      // if (idx > -1) {
-      //   peersRef.current.splice(idx, 1);
-
-      //   setPeers([...peers.splice(idx, 1)]);
-      // }
       delete peersRef.current[socketID];
 
       let idx = userSockets.findIndex((x) => x == socketID);
@@ -275,9 +251,6 @@ export default (props: {
 
   const leaveMeeting = () => {
     props.socket.emit("leaveMeeting", { meetingID: props.meetingID });
-    // peersRef.current.forEach((element) => {
-    //   element.peer.destroy();
-    // });
     Object.keys(peersRef.current).forEach((element: any) => {
       if (peersRef.current[element]) {
         peersRef.current[element].destroy();

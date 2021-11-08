@@ -14,6 +14,7 @@ import {
 import { SnackbarProvider } from "notistack";
 import AdminPage from "./components/admin";
 import ForgotPasswordPage from "./components/main/ForgotPassword";
+import VerifyEmailPage from "./components/main/VerifyEmail";
 
 const theme = createMuiTheme({
   palette: {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/chat" component={MainPage} />
             <Route path="/admin" component={AdminPage} />
             <Route path="/forgot-password" component={ForgotPasswordPage} />
+            <Route path="/verify-email" component={VerifyEmailPage} />
           </Switch>
         </SnackbarProvider>
       </ThemeProvider>

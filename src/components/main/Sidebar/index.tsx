@@ -20,6 +20,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
 import ProfileMenu from "../Profile/menu";
+import PersonPinCircleIcon from "@material-ui/icons/PersonPinCircle";
 
 const useStyles = makeStyles((theme: Theme) => ({
   open: {
@@ -202,7 +203,7 @@ function App(props: { user: any; openMenu: Function }) {
           }}
         >
           <ListItemIcon>
-            <PersonAddIcon
+            <PersonPinCircleIcon
               style={{ display: "block", margin: "auto" }}
               className={
                 openMenu === "personalitytest" || openMenu === "findfriend"

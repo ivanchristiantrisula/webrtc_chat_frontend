@@ -72,6 +72,10 @@ export default () => {
   }, []);
 
   const handleKeywordChange = (keyword: string) => {
+    if (keyword.length < 1) {
+      setUsers([]);
+      return;
+    }
     axios
       .get(
         `${
