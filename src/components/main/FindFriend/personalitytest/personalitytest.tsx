@@ -139,8 +139,9 @@ const InfoDialog = (props: { open: boolean; handleClose: Function }) => {
 
 export default () => {
   const classes = useStyles();
+  const [questionType, setQuestionType] = useState("adult");
   const [questions, setQuestions] = useState(
-    require("./questions.json").questions
+    require("./questions.json")[questionType].questions
   );
   const [answers, setAnswers] = useState([]);
   const [currQuestionNum, setCurrQuestionNum] = useState(0);
@@ -157,7 +158,9 @@ export default () => {
   };
 
   const prevQuestion = () => {
-    setCurrQuestionNum(currQuestionNum - 1);
+    if (currQuestionNum > 0) {
+      setCurrQuestionNum(currQuestionNum - 1);
+    }
   };
 
   const pickSelection = (selection: number) => {
@@ -308,6 +311,7 @@ export default () => {
             color="primary"
             className={classes.navButton}
             onClick={prevQuestion}
+            disabled={currQuestionNum === 0}
           >
             Previous Question
           </Button>
