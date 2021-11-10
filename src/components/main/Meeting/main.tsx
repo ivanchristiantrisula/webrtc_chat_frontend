@@ -278,12 +278,16 @@ export default (props: {
         .getDisplayMedia({ audio: false, video: true })
         .then((stream: MediaStream) => {
           screenShareRef.current = stream;
+
           Object.keys(peersRef.current).forEach((element: any) => {
-            element.replaceTrack(
-              element.streams[0].getVideoTracks()[0],
-              stream.getVideoTracks()[0],
-              myStreamRef.current.srcObject
-            );
+            console.log(element);
+            if (peersRef.current[element] !== null) {
+              peersRef.current[element].replaceTrack(
+                peersRef.current[element].streams[0].getVideoTracks()[0],
+                stream.getVideoTracks()[0],
+                myStreamRef.current.srcObject
+              );
+            }
           });
 
           stream.getVideoTracks()[0].onended = () => endScreenShare();
@@ -297,11 +301,13 @@ export default (props: {
   const endScreenShare = () => {
     screenShareRef.current.getVideoTracks()[0].stop();
     Object.keys(peersRef.current).forEach((element: any) => {
-      element.replaceTrack(
-        element.streams[0].getVideoTracks()[0],
-        myStreamRef.current.srcObject.getVideoTracks()[0],
-        myStreamRef.current.srcObject
-      );
+      if (peersRef.current[element] !== null) {
+        peersRef.current[element].replaceTrack(
+          peersRef.current[element].streams[0].getVideoTracks()[0],
+          myStreamRef.current.srcObject.getVideoTracks()[0],
+          myStreamRef.current.srcObject
+        );
+      }
     });
     setIsScreensharing(false);
   };
@@ -315,21 +321,25 @@ export default (props: {
 
   const startWhiteboard = (stream: MediaStream) => {
     Object.keys(peersRef.current).forEach((element: any) => {
-      element.replaceTrack(
-        element.streams[0].getVideoTracks()[0],
-        stream.getVideoTracks()[0],
-        myStreamRef.current.srcObject
-      );
+      if (peersRef.current[element] !== null) {
+        peersRef.current[element].replaceTrack(
+          peersRef.current[element].streams[0].getVideoTracks()[0],
+          stream.getVideoTracks()[0],
+          myStreamRef.current.srcObject
+        );
+      }
     });
   };
 
   const endWhiteboard = () => {
     Object.keys(peersRef.current).forEach((element: any) => {
-      element.replaceTrack(
-        element.streams[0].getVideoTracks()[0],
-        myStreamRef.current.srcObject.getVideoTracks()[0],
-        myStreamRef.current.srcObject
-      );
+      if (peersRef.current[element] !== null) {
+        peersRef.current[element].replaceTrack(
+          peersRef.current[element].streams[0].getVideoTracks()[0],
+          myStreamRef.current.srcObject.getVideoTracks()[0],
+          myStreamRef.current.srcObject
+        );
+      }
     });
   };
 
