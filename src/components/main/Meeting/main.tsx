@@ -143,7 +143,9 @@ export default (props: {
       let idx = userSockets.findIndex((x) => x == socketID);
       setUserSockets([...userSockets.splice(idx, 1)]);
 
-      isUserAlone() && leaveMeeting();
+      if (isUserAlone()) {
+        leaveMeeting();
+      }
     });
 
     props.socket.on("screenshareMode", ({ sid, status }) => {
