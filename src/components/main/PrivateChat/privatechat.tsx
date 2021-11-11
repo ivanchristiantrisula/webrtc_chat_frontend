@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Peer from "simple-peer";
 import io from "socket.io-client";
 import BottomBar from "./bottomBar";
@@ -12,6 +12,7 @@ import ReplyCard from "./replyCard";
 import { Box, createStyles, Grid, makeStyles } from "@material-ui/core";
 import Report from "../Report";
 import { useSnackbar } from "notistack";
+import { useDropzone } from "react-dropzone";
 
 const useStyle = makeStyles(() =>
   createStyles({
@@ -49,7 +50,7 @@ const useStyle = makeStyles(() =>
   })
 );
 
-interface a {
+interface propsInterface {
   userSocketID: string;
   recipientSocketID: string;
   peer: any;
@@ -61,8 +62,13 @@ interface a {
   myInfo: any;
 }
 
-export default (props: a) => {
+export default (props: propsInterface) => {
   const classes = useStyle();
+
+  const onDrop = useCallback((acceptedFiles) => {
+    // Do something with the files
+    handleFileUpload(acceptedFiles[0]);
+  }, []);
 
   const [chat, setChat] = useState<any[]>([]);
   const [videoCall, setVideoCall] = useState(false);
@@ -70,6 +76,10 @@ export default (props: a) => {
   const [replyChat, setReplyChat] = useState({});
   const [reportChat, setReportChat] = useState<any>(null);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    noClick: true,
+  });
 
   //let [forwardChat, setForwardChat] = useState({});
   const worker = new Worker("../worker.js");
@@ -241,7 +251,7 @@ export default (props: a) => {
     return;
   };
   return (
-    <div className={classes.root}>
+    <div className={classes.root} {...getRootProps()}>
       <Box
         display="flex"
         className={`${classes.root} ${videoCall ? classes.noDisplay : null}`}
@@ -285,6 +295,8 @@ export default (props: a) => {
             }}
             isUploadingFile={isUploadingFile}
           />
+
+          <input type="file" hidden {...getInputProps()} />
         </Box>
       </Box>
       {videoCall ? (
