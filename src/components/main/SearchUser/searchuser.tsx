@@ -133,6 +133,8 @@ export default () => {
         enqueueSnackbar(`${target.name} is now in your friendlist`, {
           variant: "info",
         });
+
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error.response);
