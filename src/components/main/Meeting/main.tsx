@@ -183,7 +183,7 @@ export default (props: {
   const createPeer = (socketID: string, isInitiator: boolean) => {
     let peer = new Peer({
       initiator: isInitiator,
-      trickle: false,
+      trickle: true,
       config: {
         iceServers: [
           { urls: ["stun:stun.ivanchristian.me"] },
