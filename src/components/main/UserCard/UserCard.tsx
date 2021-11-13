@@ -38,10 +38,6 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function (props: any) {
   const classes = useStyles();
 
-  useEffect(() => {
-    console.log(props);
-  }, []);
-
   return (
     <Card className={classes.root}>
       <CardHeader

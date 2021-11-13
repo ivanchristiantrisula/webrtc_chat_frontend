@@ -83,6 +83,7 @@ export default (props: {
   let myStreamRef = useRef<any>();
   let screenShareRef = useRef<MediaStream>();
   let whiteboardRef = useRef();
+  let userSocketsRef = useRef([]);
   const [openUserPicker, setOpenUserPicker] = useState(false);
   const [invitedUsers, setInvitedUsers] = useState({});
   const [userSockets, setUserSockets] = useState([]);
@@ -101,6 +102,7 @@ export default (props: {
     });
 
     props.socket.on("meetingMembers", (data: []) => {
+      //remove user socket
       data.splice(
         data.findIndex((x) => x == props.userSocketID),
         1
@@ -111,7 +113,8 @@ export default (props: {
         peersRef.current[socket] = createPeer(socket, true);
       });
 
-      setUserSockets(data);
+      setUserSockets([...data]);
+      userSocketsRef.current = data;
 
       //check if user just created the room
       data.length === 0 && setOpenUserPicker(true);
@@ -132,20 +135,14 @@ export default (props: {
         ) {
           peersRef.current[data.from] = createPeer(data.from, false);
           setUserSockets((old) => [...old, data.from]);
+          userSocketsRef.current.push(data.from);
         }
         peersRef.current[data.from].signal(data.signal);
       }
     });
 
     props.socket.on("removeMeetingPeer", ({ socketID }) => {
-      delete peersRef.current[socketID];
-
-      let idx = userSockets.findIndex((x) => x == socketID);
-      setUserSockets([...userSockets.splice(idx, 1)]);
-
-      // if (isUserAlone()) {
-      //   leaveMeeting();
-      // }
+      removeMeetingMemberSocket(socketID);
     });
 
     props.socket.on("screenshareMode", ({ sid, status }) => {
@@ -170,6 +167,15 @@ export default (props: {
     });
   }, [isScreensharing]);
 
+  const removeMeetingMemberSocket = (sid: string) => {
+    userSocketsRef.current = userSocketsRef.current.splice(
+      userSocketsRef.current.findIndex((x) => x == sid),
+      1
+    );
+
+    setUserSockets(userSocketsRef.current);
+  };
+
   const requestMeetingMembers = () => {
     props.socket.emit("requestMeetingMembers", props.meetingID);
   };
@@ -188,7 +194,7 @@ export default (props: {
           },
         ],
       },
-      stream: myStreamRef.current.srcObject ?? null,
+      stream: myStreamRef.current.srcObject,
     });
 
     peer.on("signal", (data: any) => handleReceivingSignal(data, socketID));
@@ -258,6 +264,11 @@ export default (props: {
         peersRef.current[element].destroy();
       }
     });
+    myStreamRef.current.srcObject
+      .getTracks()
+      .forEach((track: MediaStreamTrack) => {
+        track.stop();
+      });
     props.endMeeting();
   };
 
