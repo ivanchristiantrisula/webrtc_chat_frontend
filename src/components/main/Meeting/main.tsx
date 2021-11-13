@@ -201,8 +201,13 @@ export default (props: {
 
     peer.on("connect", (data: any) => {
       //do somtheing when connected
+      let name =
+        props.friends[socketID].name !== undefined
+          ? props.friends[socketID].name
+          : "unknown";
+
       enqueueSnackbar(
-        `Peer-to-peer connection with ${props.friends[socketID].name} has been established!`,
+        `Peer-to-peer connection with ${name} has been established!`,
         {
           variant: "info",
         }
@@ -211,8 +216,12 @@ export default (props: {
 
     peer.on("error", () => {
       //try reconnect
+      let name =
+        props.friends[socketID].name !== undefined
+          ? props.friends[socketID].name
+          : "unknown";
       enqueueSnackbar(
-        `Peer-to-peer connection with ${props.friends[socketID].name} has encountered an error. Attempting to reconnect...`,
+        `Peer-to-peer connection with ${name} has encountered an error. Attempting to reconnect...`,
         {
           variant: "info",
         }
