@@ -107,11 +107,12 @@ const App = () => {
   };
 
   useEffect(() => {
-    setStringifiedChats(JSON.stringify(chats));
-    console.log(JSON.stringify(chats));
+    console.log(chats);
   }, [chats]);
 
-  const convertSocketIdToUserId = () => {};
+  const saveChatToDB = () => {
+    const openingRequest = indexedDB.open("chats", 1);
+  };
 
   const initSocketListener = () => {
     socket.current = io.connect(process.env.REACT_APP_BACKEND_URI, {
@@ -235,10 +236,10 @@ const App = () => {
           let parsedData = data;
           if (parsedData.kind) {
             let x = chats;
-            if (x[socket_id] === undefined) {
-              x[socket_id] = new Array(parsedData);
+            if (x[parsedData.senderInfo._id] === undefined) {
+              x[parsedData.senderInfo._id] = new Array(parsedData);
             } else {
-              x[socket_id].push(parsedData);
+              x[parsedData.senderInfo._id].push(parsedData);
             }
             setChats({ ...x });
           }
@@ -292,7 +293,8 @@ const App = () => {
 
   const addChatFromSender = (data: any, sid?: any) => {
     //console.log(data);
-    if (!sid) sid = openChatSocket;
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (!sid) sid = allUsers[openChatSocket]._id;
 
     let x = chats;
     if (x[sid] === undefined) {
@@ -402,7 +404,7 @@ const App = () => {
             }`}
           >
             <ChatList
-              users={onlineFriends}
+              users={allUsers}
               userID={userSocketID}
               setPrivateChatTarget={(e: any) => startPeerConnection(e)}
               chats={chats}
@@ -476,7 +478,7 @@ const App = () => {
                 recipientSocketID={openChatSocket}
                 peer={peers.current[openChatSocket]}
                 socket={socket.current}
-                chat={chats[openChatSocket]}
+                chat={chats[allUsers[openChatSocket]._id]}
                 addChatFromSender={(data: any) => {
                   addChatFromSender(data);
                 }}

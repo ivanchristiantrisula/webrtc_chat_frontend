@@ -1,15 +1,12 @@
 import { useRef, useState, useEffect } from "react";
-import Peer, { SimplePeerData } from "simple-peer";
+import Peer from "simple-peer";
 import UserPicker from "../UserPicker";
 import _ from "underscore";
 import { Box, createStyles, makeStyles, Modal, Theme } from "@material-ui/core";
-import React from "react";
 import BottomBar from "./bottombar";
 import { Socket } from "socket.io-client";
 import Whiteboard from "./whiteboard";
 import { useSnackbar } from "notistack";
-import SimplePeer from "simple-peer";
-// @ts-ignore
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -181,6 +178,7 @@ export default (props: {
   };
 
   const createPeer = (socketID: string, isInitiator: boolean) => {
+    console.log(myStreamRef.current.srcObject);
     let peer = new Peer({
       initiator: isInitiator,
       trickle: true,
@@ -248,8 +246,7 @@ export default (props: {
   };
 
   const isMeetingAdmin = () => {
-    if (userSockets[0].socket === props.userSocketID) return true;
-    return false;
+    //userSockets.length == 0 ? true : false;
   };
 
   const inviteUser = (users: {}) => {
@@ -276,7 +273,9 @@ export default (props: {
     myStreamRef.current.srcObject
       .getTracks()
       .forEach((track: MediaStreamTrack) => {
-        track.stop();
+        if (track.readyState == "live") {
+          track.stop();
+        }
       });
     props.endMeeting();
   };

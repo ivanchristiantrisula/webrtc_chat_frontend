@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function (props: any) {
   useEffect(() => {
-    console.log(props.chats);
+    //console.log(props.users);
   }, [props.chats]);
   //function openChatChannel(uid: string) {}
   const classes = useStyles();
@@ -30,11 +30,19 @@ export default function (props: any) {
         <Typography variant="h4">Chats</Typography>
       </Box>
       {Object.keys(props.chats).map((keyName, i) => {
-        if (props.users[keyName] !== undefined)
+        let matchedSocketID = "";
+        let user = Object.keys(props.users).find((sid: any) => {
+          if (props.users[sid]._id == keyName) {
+            matchedSocketID = sid;
+            return true;
+          }
+          return false;
+        });
+        if (user !== undefined)
           return (
-            <div onClick={() => props.setPrivateChatTarget(keyName)}>
+            <div onClick={() => props.setPrivateChatTarget(matchedSocketID)}>
               <ChatCard
-                user={props.users[keyName]}
+                user={user}
                 lastMsg={props.chats[keyName].slice(-1)[0]}
               />
             </div>
