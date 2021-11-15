@@ -93,6 +93,7 @@ const App = () => {
 
   useEffect(() => {
     initSocketListener();
+    loadChatFromDB();
     fetchUserFriends();
   }, []);
 
@@ -100,18 +101,29 @@ const App = () => {
     fetchUserFriends();
   }, [allUsers]);
 
+  useEffect(() => {
+    if (!_.isEmpty(chats)) {
+      saveChatToDB();
+    }
+  }, [chats]);
+
   const checkCurrentOpenChatSocketUserWentOffline = (users: any) => {
     if (users[openChatSocket] === undefined) {
       setOpenChatSocket("");
     }
   };
 
-  useEffect(() => {
-    console.log(chats);
-  }, [chats]);
-
   const saveChatToDB = () => {
-    const openingRequest = indexedDB.open("chats", 1);
+    localStorage.setItem("chats", JSON.stringify(chats));
+  };
+
+  const loadChatFromDB = () => {
+    try {
+      let chats = JSON.parse(localStorage.getItem("chats")) || {};
+      setChats(chats);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const initSocketListener = () => {

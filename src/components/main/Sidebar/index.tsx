@@ -89,7 +89,8 @@ function App(props: { user: any; openMenu: Function }) {
   };
 
   const handleLogOut = () => {
-    localStorage.clear();
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
 
     let cookies = document.cookie.split(";");
 
