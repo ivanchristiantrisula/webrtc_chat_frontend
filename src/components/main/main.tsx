@@ -117,13 +117,17 @@ const App = () => {
   const saveChatToDB = () => {
     try {
       let userID = JSON.parse(localStorage.getItem("user"))._id;
-      let usersChats =
-        JSON.parse(
+      let usersChats = {};
+      if (localStorage.getItem("chats")) {
+        usersChats = JSON.parse(
           AES.decrypt(
             localStorage.getItem("chats"),
             process.env.REACT_APP_KEY
           ).toString(enc.Utf8)
-        ) || {};
+        );
+      } else {
+        usersChats = {};
+      }
       usersChats[userID] = chats;
       let encryptedChats = AES.encrypt(
         JSON.stringify(usersChats),
@@ -138,13 +142,18 @@ const App = () => {
   const loadChatFromDB = () => {
     try {
       let userID = JSON.parse(localStorage.getItem("user"))._id;
-      let chats =
-        JSON.parse(
-          AES.decrypt(
-            localStorage.getItem("chats"),
-            process.env.REACT_APP_KEY
-          ).toString(enc.Utf8)
-        )[userID] || {};
+      let chats;
+      if (localStorage.getItem("chats")) {
+        chats =
+          JSON.parse(
+            AES.decrypt(
+              localStorage.getItem("chats"),
+              process.env.REACT_APP_KEY
+            ).toString(enc.Utf8)
+          )[userID] || {};
+      } else {
+        chats = {};
+      }
       setChats(chats);
     } catch (error) {
       console.error("Failed loading chat from DB. Error : " + error);
