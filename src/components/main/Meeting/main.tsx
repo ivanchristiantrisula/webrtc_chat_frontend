@@ -148,9 +148,9 @@ export default (props: {
 
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
-      .then((stream: MediaStream) => {
-        setMyStream(stream);
-        myStreamRef.current.srcObject = stream;
+      .then((x: MediaStream) => {
+        setMyStream(x);
+        myStreamRef.current.srcObject = x;
       })
       .finally(() => {
         requestMeetingMembers();
@@ -199,17 +199,16 @@ export default (props: {
 
     peer.on("connect", (data: any) => {
       //do somtheing when connected
-      let name =
-        props.friends[socketID].name !== undefined
-          ? props.friends[socketID].name
-          : "unknown";
-
-      enqueueSnackbar(
-        `Peer-to-peer connection with ${name} has been established!`,
-        {
-          variant: "info",
-        }
-      );
+      // let name =
+      //   props.friends[socketID].name !== undefined
+      //     ? props.friends[socketID].name
+      //     : "unknown";
+      // enqueueSnackbar(
+      //   `Peer-to-peer connection with ${name} has been established!`,
+      //   {
+      //     variant: "info",
+      //   }
+      // );
     });
 
     peer.on("error", () => {

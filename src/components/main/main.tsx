@@ -418,6 +418,7 @@ const App = () => {
   const endMeeting = () => {
     setMeetingMode(false);
     setMeetingID("");
+    window.location.reload();
   };
 
   return (
