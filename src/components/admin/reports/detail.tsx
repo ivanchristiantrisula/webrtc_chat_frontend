@@ -107,7 +107,7 @@ const ReportProof = (props: { report: any }) => {
           <Box>
             {props.report.proof.map((element: any, idx: number) => {
               return (
-                <ChatBubble data={element} socketID={props.report.reported} />
+                <ChatBubble data={element} userID={props.report.reported} />
               );
             })}
           </Box>

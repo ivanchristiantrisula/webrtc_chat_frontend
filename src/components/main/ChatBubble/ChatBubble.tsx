@@ -50,7 +50,7 @@ const FileBubble = (props: { chat: any; sender: string }) => {
 
 export default function (props: {
   data: any;
-  socketID: string;
+  userID: string;
   handleReply?: Function;
   handleForward?: Function;
   handleReport?: Function;
@@ -84,7 +84,7 @@ export default function (props: {
         return (
           <FileBubble
             chat={props.data}
-            sender={props.data.from == props.socketID ? "me" : "them"}
+            sender={props.data.senderInfo._id == props.userID ? "me" : "them"}
           />
         );
       }
@@ -114,9 +114,9 @@ export default function (props: {
     <>
       <ul>
         <li
-          className={`${props.data.from == props.socketID ? "me" : "them"}  ${
-            props.data.isReported ? classes.reportBubble : ""
-          }`}
+          className={`${
+            props.data.senderInfo._id == props.userID ? "me" : "them"
+          }  ${props.data.isReported ? classes.reportBubble : ""}`}
           onContextMenu={handleContextMenu}
         >
           {renderReplyBubble()}

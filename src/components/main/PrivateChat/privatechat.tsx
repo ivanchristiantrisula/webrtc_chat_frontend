@@ -69,7 +69,6 @@ export default (props: propsInterface) => {
     // Do something with the files
     handleFileUpload(acceptedFiles[0]);
   }, []);
-
   const [chat, setChat] = useState<any[]>([]);
   const [videoCall, setVideoCall] = useState(false);
   const [openUserPickerModal, setOpenUserPickerModal] = useState(false);
@@ -80,6 +79,9 @@ export default (props: propsInterface) => {
     onDrop,
     noClick: true,
   });
+  const [userID, setUserID] = useState(
+    JSON.parse(localStorage.getItem("user"))._id
+  );
 
   //let [forwardChat, setForwardChat] = useState({});
   const worker = new Worker("../worker.js");
@@ -273,7 +275,7 @@ export default (props: propsInterface) => {
                   return (
                     <ChatBubble
                       data={obj}
-                      socketID={props.userSocketID}
+                      userID={userID}
                       handleReply={handleReply}
                       handleForward={handleForward}
                       handleReport={(chat: any) => handleReport(chat, idx)}

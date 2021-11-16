@@ -31,22 +31,23 @@ export default function (props: any) {
       </Box>
       {Object.keys(props.chats).map((keyName, i) => {
         let matchedSocketID = "";
-        let user = Object.keys(props.users).find((sid: any) => {
+        let userID = Object.keys(props.users).find((sid: any) => {
           if (props.users[sid]._id == keyName) {
             matchedSocketID = sid;
             return true;
           }
           return false;
         });
-        if (user !== undefined)
+        if (userID !== undefined) {
           return (
             <div onClick={() => props.setPrivateChatTarget(matchedSocketID)}>
               <ChatCard
-                user={user}
+                user={props.users[userID]}
                 lastMsg={props.chats[keyName].slice(-1)[0]}
               />
             </div>
           );
+        }
       })}
     </>
   );

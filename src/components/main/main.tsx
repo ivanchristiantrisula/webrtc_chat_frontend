@@ -16,6 +16,7 @@ import FriendFinder from "./FindFriend";
 import FindFriend from "./FindFriend";
 import Profile from "./Profile/";
 import streamSaver from "streamsaver";
+import { AES, enc } from "crypto-js";
 
 const io = require("socket.io-client");
 require("dotenv").config();
@@ -114,15 +115,39 @@ const App = () => {
   };
 
   const saveChatToDB = () => {
-    localStorage.setItem("chats", JSON.stringify(chats));
+    try {
+      let userID = JSON.parse(localStorage.getItem("user"))._id;
+      let usersChats =
+        JSON.parse(
+          AES.decrypt(
+            localStorage.getItem("chats"),
+            process.env.REACT_APP_KEY
+          ).toString(enc.Utf8)
+        ) || {};
+      usersChats[userID] = chats;
+      let encryptedChats = AES.encrypt(
+        JSON.stringify(usersChats),
+        process.env.REACT_APP_KEY
+      ).toString();
+      localStorage.setItem("chats", encryptedChats);
+    } catch (error) {
+      console.error("Failed saving chat. Error : " + error);
+    }
   };
 
   const loadChatFromDB = () => {
     try {
-      let chats = JSON.parse(localStorage.getItem("chats")) || {};
+      let userID = JSON.parse(localStorage.getItem("user"))._id;
+      let chats =
+        JSON.parse(
+          AES.decrypt(
+            localStorage.getItem("chats"),
+            process.env.REACT_APP_KEY
+          ).toString(enc.Utf8)
+        )[userID] || {};
       setChats(chats);
     } catch (error) {
-      console.error(error);
+      console.error("Failed loading chat from DB. Error : " + error);
     }
   };
 
