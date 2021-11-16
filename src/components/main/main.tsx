@@ -155,6 +155,7 @@ const App = () => {
         chats = {};
       }
       setChats(chats);
+      console.info("Chat history successfully loaded!");
     } catch (error) {
       console.error("Failed loading chat from DB. Error : " + error);
     }

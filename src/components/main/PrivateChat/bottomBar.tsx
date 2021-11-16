@@ -35,10 +35,6 @@ export default function (props: {
   let fileInputRef = useRef<HTMLInputElement>();
   let textInput = useRef<TextFieldProps>();
 
-  useLayoutEffect(() => {
-    console.log(textInput); // { current: <h1_object> }
-  });
-
   const sendText = () => {
     if (text != "") {
       props.handleSendText(text);
