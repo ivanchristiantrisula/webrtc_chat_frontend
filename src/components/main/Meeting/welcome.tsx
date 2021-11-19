@@ -1,7 +1,13 @@
-import { Box, Container, Grid, Typography } from "@material-ui/core";
+import { Box, Container, Grid, TextField, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import { CodeRounded } from "@material-ui/icons";
+import { useState } from "react";
 
-export default (props: { onCreateMeeting: Function }) => {
+export default (props: {
+  onCreateMeeting: Function;
+  joinMeetingCode: Function;
+}) => {
+  const [code, setCode] = useState("");
   return (
     <Box
       display="flex"
@@ -25,6 +31,21 @@ export default (props: { onCreateMeeting: Function }) => {
         onClick={() => props.onCreateMeeting()}
       >
         Start Meeting
+      </Button>
+      <Typography variant="body1" style={{ marginBottom: "3rem" }}>
+        Or, join a meeting by code
+      </Typography>
+      <TextField
+        label="Meeting Code"
+        variant="outlined"
+        onChange={(e) => setCode(e.target.value)}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => props.joinMeetingCode(code)}
+      >
+        Join
       </Button>
     </Box>
   );
