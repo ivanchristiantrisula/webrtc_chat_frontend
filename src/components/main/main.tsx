@@ -17,6 +17,7 @@ import FindFriend from "./FindFriend";
 import Profile from "./Profile/";
 import streamSaver from "streamsaver";
 import { AES, enc } from "crypto-js";
+import { useHistory } from "react-router";
 
 const io = require("socket.io-client");
 require("dotenv").config();
@@ -70,6 +71,7 @@ const initState = {
 };
 
 const App = () => {
+  const history = useHistory();
   let [allUsers, setAllUsers] = useState({});
   let socket: any = useRef();
   const [userSocketID, setUserSocketID] = useState("");
@@ -93,6 +95,7 @@ const App = () => {
   const classes = useStyles();
 
   useEffect(() => {
+    checkWebRTCSupport();
     initSocketListener();
     loadChatFromDB();
     fetchUserFriends();
@@ -107,6 +110,15 @@ const App = () => {
       saveChatToDB();
     }
   }, [chats]);
+
+  const checkWebRTCSupport = () => {
+    if (!Peer.WEBRTC_SUPPORT) {
+      alert(
+        "Browser has no WebRTC support. Please update your browser or use compatible browser. See : https://en.wikipedia.org/wiki/WebRTC"
+      );
+      history.push("/");
+    }
+  };
 
   const checkCurrentOpenChatSocketUserWentOffline = (users: any) => {
     if (users[openChatSocket] === undefined) {
