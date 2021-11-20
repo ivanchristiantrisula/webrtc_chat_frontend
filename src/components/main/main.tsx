@@ -180,15 +180,14 @@ const App = () => {
     });
     socket?.current?.on("allUsers", (users: any) => {
       console.info("Fetched all users");
-      let a = users;
       checkCurrentOpenChatSocketUserWentOffline(users);
-      setAllUsers(a);
+      setAllUsers(users);
     });
 
     socket?.current?.on("disconnect", () => {
       setSocketConnection(false);
       console.info("Disconnected from signalling server");
-      enqueueSnackbar(`Disconnected to signalling server!`, {
+      enqueueSnackbar(`Disconnected from signalling server!`, {
         variant: "error",
       });
     });
@@ -418,6 +417,8 @@ const App = () => {
   const endMeeting = () => {
     setMeetingMode(false);
     setMeetingID("");
+
+    //TEMP FIX
     window.location.reload();
   };
 

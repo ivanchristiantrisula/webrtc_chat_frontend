@@ -43,7 +43,6 @@ export default function Report(props: {
   };
 
   const handleSubmit = () => {
-    console.log(props);
     const payload = {
       reporter: JSON.parse(localStorage.getItem("user"))._id,
       reportee: props.targetUID,
@@ -53,7 +52,6 @@ export default function Report(props: {
       description: description,
       token: localStorage.getItem("token"),
     };
-    console.log(payload);
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/report/create`, payload)
       .then((res) => {
