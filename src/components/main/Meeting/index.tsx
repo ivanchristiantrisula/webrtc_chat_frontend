@@ -24,6 +24,10 @@ export default (props: {
   const requestMeetingID = () => {
     props.socket.emit("requestNewRoom");
   };
+
+  const joinMeetingByCode = (code: string) => {
+    props.socket.emit("joinByMeetingID", { meetingID: code });
+  };
   return (
     <>
       {props.meetingID && props.meetingMode ? (
@@ -35,7 +39,10 @@ export default (props: {
           endMeeting={() => props.endMeeting()}
         />
       ) : (
-        <Welcome onCreateMeeting={requestMeetingID} />
+        <Welcome
+          onCreateMeeting={requestMeetingID}
+          joinMeetingCode={joinMeetingByCode}
+        />
       )}
     </>
   );

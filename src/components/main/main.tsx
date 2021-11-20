@@ -196,10 +196,22 @@ const App = () => {
 
     socket.current.on("meetingInvitation", handleReceivingMeetingInvitation);
 
+    socket.current.on("joinMeetingByIDDenied", () => {
+      enqueueSnackbar(`Meeting code not found`, {
+        variant: "error",
+      });
+    });
+
+    socket.current.on("joinMeetingByIDApproved", (data: any) => {
+      setMeetingID(data.code);
+      setOpenMenu("meeting");
+      setMeetingMode(true);
+    });
+
     //close socket connection when tab is closed by user
     window.onbeforeunload = function () {
-      socket.onclose = function () {}; // disable onclose handler first
-      socket.close();
+      socket.current.onclose = function () {}; // disable onclose handler first
+      socket.current.close();
     };
   };
 
