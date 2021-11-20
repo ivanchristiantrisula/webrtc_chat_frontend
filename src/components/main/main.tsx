@@ -211,8 +211,8 @@ const App = () => {
 
     //close socket connection when tab is closed by user
     window.onbeforeunload = function () {
-      socket.onclose = function () {}; // disable onclose handler first
-      socket.close();
+      socket.current.onclose = function () {}; // disable onclose handler first
+      socket.current.close();
     };
   };
 
