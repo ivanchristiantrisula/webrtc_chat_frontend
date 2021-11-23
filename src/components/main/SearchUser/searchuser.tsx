@@ -66,7 +66,7 @@ export default () => {
       )
       .then((res) => {
         console.log(res);
-        setPendings(res.data.pendings);
+        setPendings(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -204,9 +204,10 @@ export default () => {
           ? pendings.map((obj) => {
               return (
                 <UserCardInvite
-                  user={obj}
+                  user={obj.user2}
                   accept={handleAcceptFriendReq}
                   reject={handleRejectFriendReq}
+                  inviteID={obj.id}
                 />
               );
             })

@@ -40,6 +40,7 @@ export default function (props: {
   user: any;
   accept: Function;
   reject: Function;
+  inviteID: number;
 }) {
   const classes = useStyles();
   let [openProfileCard, setOpenProfileCard] = useState(false);
@@ -84,7 +85,7 @@ export default function (props: {
                     <Grid item>
                       <Box
                         onClick={() => {
-                          props.accept(props.user);
+                          props.accept(props.inviteID);
                         }}
                         color="green"
                       >
@@ -94,7 +95,7 @@ export default function (props: {
                     <Grid item>
                       <Box
                         onClick={() => {
-                          props.reject(props.user);
+                          props.reject(props.inviteID);
                         }}
                         color="red"
                       >
