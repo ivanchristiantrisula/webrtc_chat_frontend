@@ -85,7 +85,7 @@ export default function (props: {
                     <Grid item>
                       <Box
                         onClick={() => {
-                          props.accept(props.inviteID);
+                          props.accept(props.user.id);
                         }}
                         color="green"
                       >
@@ -95,7 +95,7 @@ export default function (props: {
                     <Grid item>
                       <Box
                         onClick={() => {
-                          props.reject(props.inviteID);
+                          props.reject(props.user.id);
                         }}
                         color="red"
                       >

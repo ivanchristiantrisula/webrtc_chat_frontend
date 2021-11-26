@@ -41,6 +41,13 @@ export default function AdminReports(props: { openReportDetail: Function }) {
       )
       .then((res) => {
         if (res.status === 200) {
+          if (res.data.proof) {
+            try {
+              res.data.proof = JSON.parse(res.data.proof);
+            } catch (error) {
+              console.error("Error parsing proof");
+            }
+          }
           setReports(res.data);
         }
       })
