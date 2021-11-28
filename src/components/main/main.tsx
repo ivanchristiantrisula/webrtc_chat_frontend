@@ -383,11 +383,13 @@ const App = () => {
         }/user/getFriends?token=${localStorage.getItem("token")}`
       )
       .then((res) => {
-        let allFriends: [] = res.data.friends;
+        let allFriends = res.data.map((e: any) => e.user2);
+
+        console.log(allFriends);
 
         let intersectsA = Object.keys(allUsers).filter((a: any) => {
           return allFriends.some((b: any) => {
-            return b._id == allUsers[a]._id;
+            return b.id == allUsers[a].id;
           });
         });
 
