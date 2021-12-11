@@ -92,7 +92,7 @@ export default function AdminReports(props: { openReportDetail: Function }) {
                   <Grid item xs={8}>
                     <Box textAlign="left">
                       <Typography color="textSecondary">
-                        ID : {report._id}
+                        ID : {report.id}
                       </Typography>
                     </Box>
                   </Grid>

@@ -258,7 +258,7 @@ export default () => {
       .join("");
 
     axios
-      .post(process.env.REACT_APP_BACKEND_URI + "/user/updateMBTI", {
+      .put(process.env.REACT_APP_BACKEND_URI + "/user/updateMBTI", {
         rawResult: result,
         type: typeString,
         token: localStorage.getItem("token"),

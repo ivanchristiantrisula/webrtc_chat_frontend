@@ -44,7 +44,7 @@ export default function Report(props: {
 
   const handleSubmit = () => {
     const payload = {
-      reporter: JSON.parse(localStorage.getItem("user"))._id,
+      reporter: JSON.parse(localStorage.getItem("user")).id,
       reportee: props.targetUID,
       type: props.chat ? "chat" : "profile",
       category: category,

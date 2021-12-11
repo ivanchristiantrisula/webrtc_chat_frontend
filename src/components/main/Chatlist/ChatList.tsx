@@ -32,7 +32,7 @@ export default function (props: any) {
       {Object.keys(props.chats).map((keyName, i) => {
         let matchedSocketID = "";
         let userID = Object.keys(props.users).find((sid: any) => {
-          if (props.users[sid]._id == keyName) {
+          if (props.users[sid].id == keyName) {
             matchedSocketID = sid;
             return true;
           }

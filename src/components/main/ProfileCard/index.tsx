@@ -54,7 +54,7 @@ export default function ProfileCard(props: {
           <Button
             size="small"
             color="primary"
-            onClick={() => props.addFriendHandler(props.user._id)}
+            onClick={() => props.addFriendHandler(props.user.id)}
           >
             Add Friend
           </Button>

@@ -123,7 +123,7 @@ const ReportAction = (props: { report: any }) => {
   const handleSubmit = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/report/closeReport`, {
-        reportID: props.report._id,
+        reportID: props.report.id,
         reporterID: props.report.reporter,
         reporteeID: props.report.reportee,
         banReportee: ban,

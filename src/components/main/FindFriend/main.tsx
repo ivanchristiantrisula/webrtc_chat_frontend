@@ -45,7 +45,7 @@ export default () => {
   const addFriend = (id: string) => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/addFriend`, {
-        user: { _id: id },
+        user: { id: id },
         token: localStorage.getItem("token"),
       })
       .then((res) => {

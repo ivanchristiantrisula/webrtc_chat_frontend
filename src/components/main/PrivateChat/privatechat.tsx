@@ -80,7 +80,7 @@ export default (props: propsInterface) => {
     noClick: true,
   });
   const [userID, setUserID] = useState(
-    JSON.parse(localStorage.getItem("user"))._id
+    JSON.parse(localStorage.getItem("user")).id
   );
 
   //let [forwardChat, setForwardChat] = useState({});
@@ -198,7 +198,7 @@ export default (props: propsInterface) => {
 
   const handleReport = (chat: any, idx: number) => {
     let chats = [];
-    let targetUID = props.users[props.recipientSocketID]._id;
+    let targetUID = props.users[props.recipientSocketID].id;
 
     //get previous and afterward the reported message so admin can get better context about the whole situation
     props.chat[idx - 1] !== undefined ? chats.push(props.chat[idx - 1]) : null;
@@ -216,7 +216,7 @@ export default (props: propsInterface) => {
     chats.forEach((element) => {
       //console.log(element);
       if (element.from === props.userSocketID) {
-        element.from = props.myInfo._id;
+        element.from = props.myInfo.id;
       } else {
         element.from = targetUID;
       }

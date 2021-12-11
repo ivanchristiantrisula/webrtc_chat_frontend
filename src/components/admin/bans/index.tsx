@@ -52,7 +52,7 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
   const handleClick = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/unbanUser`, {
-        userID: props.user._id,
+        userID: props.user.id,
         token: localStorage.getItem("token"),
       })
       .then((res) => {
@@ -167,7 +167,7 @@ const BannedUsers = () => {
   }, []);
 
   const removeUser = (user: any) => {
-    setUsers(users.filter((item) => user._id !== item._id));
+    setUsers(users.filter((item) => user.id !== item.id));
   };
 
   const fetchBannedUsers = () => {

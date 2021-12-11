@@ -79,14 +79,20 @@ export default function (props: {
     } else {
       let typeSplit = props.data.type.split("/");
       if (typeSplit[0] == "image") {
-        return <img src={URL.createObjectURL(props.data.file)}></img>;
+        try {
+          return <img src={URL.createObjectURL(props.data.file)}></img>;
+        } catch {
+          return "Media not available";
+        }
       } else {
-        return (
-          <FileBubble
-            chat={props.data}
-            sender={props.data.senderInfo._id == props.userID ? "me" : "them"}
-          />
-        );
+        try {
+          return (
+            <FileBubble
+              chat={props.data}
+              sender={props.data.senderInfo.id == props.userID ? "me" : "them"}
+            />
+          );
+        } catch (error) {}
       }
     }
   };
@@ -115,7 +121,7 @@ export default function (props: {
       <ul>
         <li
           className={`${
-            props.data.senderInfo._id == props.userID ? "me" : "them"
+            props.data.senderInfo.id == props.userID ? "me" : "them"
           }  ${props.data.isReported ? classes.reportBubble : ""}`}
           onContextMenu={handleContextMenu}
         >

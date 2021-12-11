@@ -128,7 +128,7 @@ const App = () => {
 
   const saveChatToDB = () => {
     try {
-      let userID = JSON.parse(localStorage.getItem("user"))._id;
+      let userID = JSON.parse(localStorage.getItem("user")).id;
       let usersChats = {};
       if (localStorage.getItem("chats")) {
         usersChats = JSON.parse(
@@ -153,7 +153,7 @@ const App = () => {
 
   const loadChatFromDB = () => {
     try {
-      let userID = JSON.parse(localStorage.getItem("user"))._id;
+      let userID = JSON.parse(localStorage.getItem("user")).id;
       let chats;
       if (localStorage.getItem("chats")) {
         chats =
@@ -250,8 +250,8 @@ const App = () => {
     });
   };
 
-  const addPeer = (socket_id: string, isInitiator: boolean) => {
-    peers.current[socket_id] = new Peer({
+  const addPeer = (socketid: string, isInitiator: boolean) => {
+    peers.current[socketid] = new Peer({
       initiator: isInitiator,
       trickle: true,
       config: {
@@ -266,16 +266,16 @@ const App = () => {
       },
     });
 
-    peers.current[socket_id].on("signal", (data: any) => {
+    peers.current[socketid].on("signal", (data: any) => {
       //console.log(data);
       socket.current.emit("transferSDP", {
         signal: data,
-        to: socket_id,
+        to: socketid,
         from: userSocketID,
       });
     });
 
-    peers.current[socket_id].on("data", (data: any) => {
+    peers.current[socketid].on("data", (data: any) => {
       let dataType = "";
       if (Buffer.isBuffer(data)) dataType = "buffer";
       if (typeof data === "string") dataType = "string";
@@ -294,22 +294,22 @@ const App = () => {
         if (data.type === "file") {
           if (data.done) {
             let x = chats;
-            if (x[socket_id] === undefined) {
-              x[socket_id] = new Array(data);
+            if (x[socketid] === undefined) {
+              x[socketid] = new Array(data);
             } else {
-              x[socket_id].push(data);
+              x[socketid].push(data);
             }
             setChats({ ...x });
-            download(socket_id, data.name);
+            download(socketid, data.name);
           }
         } else if (data.type === "text") {
           let parsedData = data;
           if (parsedData.kind) {
             let x = chats;
-            if (x[parsedData.senderInfo._id] === undefined) {
-              x[parsedData.senderInfo._id] = new Array(parsedData);
+            if (x[parsedData.senderInfo.id] === undefined) {
+              x[parsedData.senderInfo.id] = new Array(parsedData);
             } else {
-              x[parsedData.senderInfo._id].push(parsedData);
+              x[parsedData.senderInfo.id].push(parsedData);
             }
             setChats({ ...x });
           }
@@ -322,28 +322,28 @@ const App = () => {
         }
       } else {
         //IF DATA ISNT PARSEABLE, THEN IT HAS TO BE ARRAY BUFFER
-        if (fileTransfers.current[socket_id] === undefined)
+        if (fileTransfers.current[socketid] === undefined)
           //CHECK IF SERVICE WORKER IS AVAILABLE FOR THIS PEER
-          fileTransfers.current[socket_id] = new Worker("../worker.js"); //CREATE NEW SERVICE WORKER TO RECEIVE ARRAY BUFFER
+          fileTransfers.current[socketid] = new Worker("../worker.js"); //CREATE NEW SERVICE WORKER TO RECEIVE ARRAY BUFFER
 
-        fileTransfers.current[socket_id].postMessage(
+        fileTransfers.current[socketid].postMessage(
           new Uint8Array(data).buffer //convert buffer to arraybuffer then passes it to worker
         );
       }
     });
 
-    peers.current[socket_id].on("connect", () => {
+    peers.current[socketid].on("connect", () => {
       // wait for 'connect' event before using the data channel
       let temp = { ...chatConnectionStatus };
-      temp[socket_id] = 2;
+      temp[socketid] = 2;
       setChatConnectionStatus(temp);
     });
   };
 
-  const download = (socket_id: string, name: string) => {
+  const download = (socketid: string, name: string) => {
     //setGotFile(false);
-    fileTransfers.current[socket_id].postMessage("download");
-    fileTransfers.current[socket_id].addEventListener(
+    fileTransfers.current[socketid].postMessage("download");
+    fileTransfers.current[socketid].addEventListener(
       "message",
       (event: any) => {
         const stream = event.data.stream();
@@ -351,7 +351,7 @@ const App = () => {
         stream.pipeTo(fileStream);
       }
     );
-    delete fileTransfers.current[socket_id];
+    delete fileTransfers.current[socketid];
   };
 
   const startPeerConnection = (socketRecipient: string) => {
@@ -364,7 +364,7 @@ const App = () => {
   const addChatFromSender = (data: any, sid?: any) => {
     //console.log(data);
     let user = JSON.parse(localStorage.getItem("user"));
-    if (!sid) sid = allUsers[openChatSocket]._id;
+    if (!sid) sid = allUsers[openChatSocket].id;
 
     let x = chats;
     if (x[sid] === undefined) {
@@ -553,7 +553,7 @@ const App = () => {
                 recipientSocketID={openChatSocket}
                 peer={peers.current[openChatSocket]}
                 socket={socket.current}
-                chat={chats[allUsers[openChatSocket]._id]}
+                chat={chats[allUsers[openChatSocket].id]}
                 addChatFromSender={(data: any) => {
                   addChatFromSender(data);
                 }}

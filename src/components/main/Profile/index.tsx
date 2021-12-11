@@ -118,7 +118,7 @@ const ChangePasswordDialog = (props: {
   };
   const handleSave = () => {
     axios
-      .post(`${process.env.REACT_APP_BACKEND_URI}/user/changePassword`, {
+      .put(`${process.env.REACT_APP_BACKEND_URI}/user/changePassword`, {
         old: oldPassword,
         new: newPassword,
         confirm: confirmPassword,
@@ -284,7 +284,7 @@ export default (props: { user: any }) => {
     fd.append(
       "file",
       e.currentTarget.files[0],
-      `${JSON.parse(localStorage.getItem("user"))._id}.png`
+      `${JSON.parse(localStorage.getItem("user")).id}.png`
     );
     axios
       .post(
