@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Switch, Route, BrowserRouter } from "react-router-dom";
@@ -29,6 +29,11 @@ const useStyles = makeStyles({
 
 function App() {
   const classes = useStyles();
+
+  useEffect(() => {
+    document.oncontextmenu = null;
+  }, []);
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>

@@ -1,9 +1,11 @@
 import { Box, createStyles, Theme, Typography } from "@material-ui/core";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ChatCard from "./ChatCard";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
+import { number } from "prop-types";
+import ChatContextMenu from "./ContextMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,6 +25,27 @@ export default function (props: any) {
   }, [props.chats]);
   //function openChatChannel(uid: string) {}
   const classes = useStyles();
+  const [mousePos, setMousePos] = useState({ mouseX: 0, mouseY: 0 });
+  const [openContextMenu, setOpenContextMenu] = useState(false);
+  const [selectedContextMenuChatCardSid, setSelectedContextMenuChatCardSid] =
+    useState("");
+
+  const handleContextMenu = (
+    e: React.MouseEvent<HTMLDivElement>,
+    sid: string
+  ) => {
+    e.preventDefault();
+    setMousePos({
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+    });
+    setSelectedContextMenuChatCardSid(sid);
+    setOpenContextMenu(true);
+  };
+
+  const openChat = (key: string = selectedContextMenuChatCardSid) => {
+    props.setPrivateChatTarget(key);
+  };
 
   return (
     <>
@@ -40,7 +63,10 @@ export default function (props: any) {
         });
         if (userID !== undefined) {
           return (
-            <div onClick={() => props.setPrivateChatTarget(matchedSocketID)}>
+            <div
+              onClick={() => openChat(matchedSocketID)}
+              onContextMenu={(e) => handleContextMenu(e, matchedSocketID)}
+            >
               <ChatCard
                 user={props.users[userID]}
                 lastMsg={props.chats[keyName].slice(-1)[0]}
@@ -49,6 +75,16 @@ export default function (props: any) {
           );
         }
       })}
+      <ChatContextMenu
+        open={openContextMenu}
+        handleClose={() => setOpenContextMenu(false)}
+        pos={mousePos}
+        handleClickOpenChat={() => {
+          openChat();
+          setOpenContextMenu(false);
+        }}
+        handleClickDeleteChat={() => {}}
+      />{" "}
     </>
   );
 }

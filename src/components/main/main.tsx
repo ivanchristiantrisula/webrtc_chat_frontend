@@ -383,7 +383,7 @@ const App = () => {
         }/user/getFriends?token=${localStorage.getItem("token")}`
       )
       .then((res) => {
-        let allFriends = res.data.map((e: any) => e.user2);
+        let allFriends: [] = res.data;
 
         console.log(allFriends);
 
