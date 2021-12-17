@@ -66,6 +66,7 @@ export default function (props: any) {
             <div
               onClick={() => openChat(matchedSocketID)}
               onContextMenu={(e) => handleContextMenu(e, matchedSocketID)}
+              style={{ cursor: "context-menu" }}
             >
               <ChatCard
                 user={props.users[userID]}

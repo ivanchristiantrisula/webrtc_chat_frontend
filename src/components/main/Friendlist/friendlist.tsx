@@ -1,9 +1,10 @@
 import { Box, createStyles, Theme, Typography } from "@material-ui/core";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UserCard from "../UserCard/UserCard";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
+import FriendlistContextMenu from "./ContextMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,6 +21,21 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function (props: any) {
   //function openChatChannel(uid: string) {}
   const classes = useStyles();
+  const [mousePos, setMousePos] = useState({
+    mouseX: 0,
+    mouseY: 0,
+  });
+  const [openContextMenu, setOpenContextMenu] = useState(false);
+
+  const handleRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setMousePos({
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+    });
+    setOpenContextMenu(true);
+  };
+
   return (
     <>
       <Box padding="1rem 1rem 0.5rem 1.5rem" marginBottom="0rem">
@@ -33,11 +49,27 @@ export default function (props: any) {
       {Object.keys(props.users).map((keyName, i) => {
         if (keyName != props.userID)
           return (
-            <div onClick={() => props.setPrivateChatTarget(keyName)}>
+            <div
+              onClick={() => props.setPrivateChatTarget(keyName)}
+              onContextMenu={handleRightClick}
+              style={{ cursor: "context-menu" }}
+            >
               <UserCard user={props.users[keyName]} />
             </div>
           );
       })}
+
+      <FriendlistContextMenu
+        open={openContextMenu}
+        handleClose={() => {
+          setOpenContextMenu(false);
+        }}
+        pos={mousePos}
+        handleClickStartChat={() => {}}
+        handleClickShowProfile={() => {}}
+        handleClickRemoveFriend={() => {}}
+        handleClickBlockUser={() => {}}
+      />
     </>
   );
 }

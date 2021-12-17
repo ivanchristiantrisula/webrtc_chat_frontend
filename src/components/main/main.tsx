@@ -75,6 +75,7 @@ const App = () => {
   let [allUsers, setAllUsers] = useState({});
   let socket: any = useRef();
   const [userSocketID, setUserSocketID] = useState("");
+  const [friends, setFriends] = useState([]);
   let [socketConnection, setSocketConnection] = useState(false);
   let [openChatSocket, setOpenChatSocket] = useState("");
   let peers: any = useRef({});
@@ -96,14 +97,14 @@ const App = () => {
 
   useEffect(() => {
     checkWebRTCSupport();
+    fetchUserFriends();
     initSocketListener();
     loadChatFromDB();
-    fetchUserFriends();
   }, []);
 
   useEffect(() => {
-    fetchUserFriends();
-  }, [allUsers]);
+    findIntersectBetweenOnlineUsersAndFriends();
+  }, [allUsers, friends]);
 
   useEffect(() => {
     if (!_.isEmpty(chats)) {
@@ -384,27 +385,28 @@ const App = () => {
       )
       .then((res) => {
         let allFriends: [] = res.data;
-
-        console.log(allFriends);
-
-        let intersectsA = Object.keys(allUsers).filter((a: any) => {
-          return allFriends.some((b: any) => {
-            return b.id == allUsers[a].id;
-          });
-        });
-
-        let intersectsB = {};
-
-        intersectsA.forEach((sid: any) => {
-          let user = allUsers[sid];
-          intersectsB[sid] = user;
-        });
-
-        setOnlineFriends(intersectsB);
+        setFriends([...allFriends]);
       })
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  const findIntersectBetweenOnlineUsersAndFriends = () => {
+    let intersectsA = Object.keys(allUsers).filter((a: any) => {
+      return friends.some((b: any) => {
+        return b.id == allUsers[a].id;
+      });
+    });
+
+    let intersectsB = {};
+
+    intersectsA.forEach((sid: any) => {
+      let user = allUsers[sid];
+      intersectsB[sid] = user;
+    });
+
+    setOnlineFriends(intersectsB);
   };
 
   const forwardChat = (payload: any, sid: string) => {

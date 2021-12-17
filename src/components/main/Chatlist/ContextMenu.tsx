@@ -1,4 +1,4 @@
-import { Menu, MenuItem } from "@material-ui/core";
+import { Divider, Menu, MenuItem } from "@material-ui/core";
 
 const ChatContextMenu = (props: {
   open: boolean;
@@ -20,15 +20,19 @@ const ChatContextMenu = (props: {
             : undefined
         }
       >
+        <MenuItem disabled>
+          <strong>Chat</strong>
+        </MenuItem>
         <MenuItem
           onClick={() => {
             props.handleClickOpenChat();
           }}
         >
-          Open Chat
+          Open
         </MenuItem>
+        <Divider />
         <MenuItem onClick={() => props.handleClickDeleteChat()}>
-          Delete Chat
+          Delete
         </MenuItem>
       </Menu>
     </>
