@@ -56,7 +56,7 @@ const useStyle = makeStyles((theme: Theme) =>
 );
 
 const Video = (props: { peer: any }) => {
-  const ref = useRef<any>();
+  const ref = useRef<HTMLVideoElement>();
   const classes = useStyle();
 
   useEffect(() => {
@@ -65,7 +65,18 @@ const Video = (props: { peer: any }) => {
     });
   }, []);
 
-  return <video className={classes.video} playsInline autoPlay ref={ref} />;
+  const handleDoubleClick = () => {
+    ref.current.requestFullscreen();
+  };
+
+  return (
+    <video
+      className={classes.video}
+      autoPlay
+      ref={ref}
+      onDoubleClick={handleDoubleClick}
+    />
+  );
 };
 
 export default (props: {
