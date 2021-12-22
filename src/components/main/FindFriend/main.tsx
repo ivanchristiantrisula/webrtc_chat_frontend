@@ -60,22 +60,13 @@ export default () => {
   };
   return (
     <>
-      <Popper
+      <ProfileCard
+        user={userDetail}
+        addFriendHandler={addFriend}
+        isUserFriend={false}
         open={openProfileCard}
-        anchorEl={cardAnchorEl}
-        placement={"right-start"}
-        transition
-      >
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <ProfileCard
-              user={userDetail}
-              addFriendHandler={addFriend}
-              isUserFriend={false}
-            />
-          </Fade>
-        )}
-      </Popper>
+        anchor={cardAnchorEl}
+      />
       <Box>
         <Box padding="1rem 1rem 0rem 1.5rem">
           <Typography variant="h4">Friend Recommendations</Typography>

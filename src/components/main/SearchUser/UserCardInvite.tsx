@@ -110,22 +110,13 @@ export default function (props: {
         </div>
       </ClickAwayListener>
 
-      <Popper
+      <ProfileCard
+        user={props.user}
         open={openProfileCard}
-        anchorEl={cardAnchorEl}
-        placement={"right-start"}
-        transition
-      >
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <ProfileCard
-              user={props.user}
-              // addFriendHandler={addFriend}
-              // isUserFriend={false}
-            />
-          </Fade>
-        )}
-      </Popper>
+        anchor={cardAnchorEl}
+        // addFriendHandler={addFriend}
+        // isUserFriend={false}
+      />
     </>
   );
 }

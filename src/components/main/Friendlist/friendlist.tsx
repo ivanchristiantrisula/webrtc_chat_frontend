@@ -1,10 +1,11 @@
 import { Box, createStyles, Theme, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserCard from "../UserCard/UserCard";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import FriendlistContextMenu from "./ContextMenu";
+import ProfileCard from "../ProfileCard";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,19 +22,31 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function (props: any) {
   //function openChatChannel(uid: string) {}
   const classes = useStyles();
+  const selectedID = useRef<string>();
+  const anchorEl = useRef<HTMLDivElement>();
   const [mousePos, setMousePos] = useState({
     mouseX: 0,
     mouseY: 0,
   });
   const [openContextMenu, setOpenContextMenu] = useState(false);
+  const [openProfileCard, setOpenProfileCard] = useState<string>("");
 
-  const handleRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleRightClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    targetSID: string
+  ) => {
     e.preventDefault();
+    selectedID.current = targetSID;
+    anchorEl.current = e.currentTarget;
     setMousePos({
       mouseX: e.clientX,
       mouseY: e.clientY,
     });
     setOpenContextMenu(true);
+  };
+
+  const showProfileCard = () => {
+    setOpenProfileCard(selectedID.current);
   };
 
   return (
@@ -51,7 +64,7 @@ export default function (props: any) {
           return (
             <div
               onClick={() => props.setPrivateChatTarget(keyName)}
-              onContextMenu={handleRightClick}
+              onContextMenu={(e) => handleRightClick(e, keyName)}
               style={{ cursor: "context-menu" }}
             >
               <UserCard user={props.users[keyName]} />
@@ -65,10 +78,22 @@ export default function (props: any) {
           setOpenContextMenu(false);
         }}
         pos={mousePos}
-        handleClickStartChat={() => {}}
-        handleClickShowProfile={() => {}}
+        handleClickStartChat={() => {
+          props.setPrivateChatTarget(selectedID.current);
+          setOpenContextMenu(false);
+        }}
+        handleClickShowProfile={() => {
+          showProfileCard();
+          setOpenContextMenu(false);
+        }}
         handleClickRemoveFriend={() => {}}
         handleClickBlockUser={() => {}}
+      />
+
+      <ProfileCard
+        user={openProfileCard !== "" ? props.users[openProfileCard] : null}
+        anchor={anchorEl.current}
+        open={openProfileCard !== "" ? true : false}
       />
     </>
   );
