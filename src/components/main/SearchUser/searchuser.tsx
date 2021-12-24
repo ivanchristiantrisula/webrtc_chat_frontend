@@ -21,6 +21,7 @@ import Grid from "@material-ui/core/Grid";
 import UserCardInvite from "./UserCardInvite";
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
 import { useSnackbar } from "notistack";
+import { getToken } from "../../../helper/localstorage";
 require("dotenv").config();
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -62,7 +63,7 @@ export default () => {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/user/getPendingFriends?token=${localStorage.getItem("token")}`
+        }/user/getPendingFriends?token=${getToken()}`
       )
       .then((res) => {
         console.log(res);
@@ -97,7 +98,7 @@ export default () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/addFriend`, {
         user: user,
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         if (res.data.error) alert(res.data.error);
@@ -121,7 +122,7 @@ export default () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/acceptFriendRequest`, {
         target: target,
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         setPendings(
@@ -145,7 +146,7 @@ export default () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/rejectFriendRequest`, {
         target: target,
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         if (res.status === 200) {

@@ -13,6 +13,7 @@ import { Box, createStyles, Grid, makeStyles } from "@material-ui/core";
 import Report from "../Report";
 import { useSnackbar } from "notistack";
 import { useDropzone } from "react-dropzone";
+import { getUserInfo } from "../../../helper/localstorage";
 
 const useStyle = makeStyles(() =>
   createStyles({
@@ -79,9 +80,7 @@ export default (props: propsInterface) => {
     onDrop,
     noClick: true,
   });
-  const [userID, setUserID] = useState(
-    JSON.parse(localStorage.getItem("user")).id
-  );
+  const [userID, setUserID] = useState(getUserInfo().id);
 
   //let [forwardChat, setForwardChat] = useState({});
   const worker = new Worker("../worker.js");

@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getToken, getUserInfo } from "../../../helper/localstorage";
 import ProfileCard from "../ProfileCard";
 
 export default () => {
@@ -46,7 +47,7 @@ export default () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/addFriend`, {
         user: { id: id },
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         if (res.data.error) alert(res.data.error);
@@ -74,7 +75,7 @@ export default () => {
         </Box>
         <Box padding="1rem 1rem 1rem 1.5rem" marginBottom="1rem">
           <Typography variant="body1" color="textSecondary">
-            Your MBTI : {JSON.parse(localStorage.getItem("user")).MBTI}
+            Your MBTI : {getUserInfo().MBTI}
           </Typography>
         </Box>
         {users.map((user, i) => {

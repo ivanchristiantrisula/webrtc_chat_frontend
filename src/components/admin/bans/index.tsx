@@ -21,6 +21,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import clsx from "clsx";
 import { red } from "@material-ui/core/colors";
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
+import { getToken } from "../../../helper/localstorage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -53,7 +54,7 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/unbanUser`, {
         userID: props.user.id,
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         if (res.status === 200) props.handleUserUnbanned();
@@ -175,7 +176,7 @@ const BannedUsers = () => {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/user/getBannedUsers?token=${localStorage.getItem("token")}`
+        }/user/getBannedUsers?token=${getToken()}`
       )
       .then((res) => {
         if (res.status === 200) setUsers(res.data);

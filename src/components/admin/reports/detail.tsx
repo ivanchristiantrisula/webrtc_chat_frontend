@@ -21,6 +21,7 @@ import { MoreVert as MoreVertIcon } from "@material-ui/icons";
 import axios from "axios";
 import { report } from "process";
 import { useState } from "react";
+import { getToken } from "../../../helper/localstorage";
 import ChatBubble from "../../main/ChatBubble/ChatBubble";
 
 const ReportInformation = (props: { report: any }) => {
@@ -127,7 +128,7 @@ const ReportAction = (props: { report: any }) => {
         reporterID: props.report.reporter,
         reporteeID: props.report.reportee,
         banReportee: ban,
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         if (res.status === 200) {

@@ -15,6 +15,7 @@ import {
   NativeSelect,
 } from "@material-ui/core";
 import axios from "axios";
+import { getToken, getUserInfo } from "../../../helper/localstorage";
 
 export default function Report(props: {
   open: boolean;
@@ -44,13 +45,13 @@ export default function Report(props: {
 
   const handleSubmit = () => {
     const payload = {
-      reporter: JSON.parse(localStorage.getItem("user")).id,
+      reporter: getUserInfo().id,
       reportee: props.targetUID,
       type: props.chat ? "chat" : "profile",
       category: category,
       proof: props.chat || null,
       description: description,
-      token: localStorage.getItem("token"),
+      token: getToken(),
     };
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/report/create`, payload)

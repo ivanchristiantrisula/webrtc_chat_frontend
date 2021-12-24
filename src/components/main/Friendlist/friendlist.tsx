@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import FriendlistContextMenu from "./ContextMenu";
 import ProfileCard from "../ProfileCard";
+import { getToken } from "../../../helper/localstorage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,6 +48,12 @@ export default function (props: any) {
 
   const showProfileCard = () => {
     setOpenProfileCard(selectedID.current);
+  };
+
+  const unfriend = () => {
+    axios.post(`${process.env.REACT_APP_BACKEND_URI}/user/unfriend`, {
+      token: getToken(),
+    });
   };
 
   return (

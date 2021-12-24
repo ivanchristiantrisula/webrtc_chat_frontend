@@ -2,6 +2,7 @@ import { Button, FormControl, TextField, Typography } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { getToken } from "../../../helper/localstorage";
 
 export default (props: { handleSubmit: Function }) => {
   let history = useHistory();
@@ -13,7 +14,7 @@ export default (props: { handleSubmit: Function }) => {
       .post(
         `${process.env.REACT_APP_BACKEND_URI}/user/sendEmailVerificationCode`,
         {
-          token: localStorage.getItem("token"),
+          token: getToken(),
         }
       )
       .then((res) => {
@@ -29,7 +30,7 @@ export default (props: { handleSubmit: Function }) => {
   const handleSubmit = () => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/verifyAccount`, {
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         if (res.status === 200) {

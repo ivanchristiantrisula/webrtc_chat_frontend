@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { classicNameResolver } from "typescript";
+import { getToken } from "../../../helper/localstorage";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -37,7 +38,7 @@ export default function AdminReports(props: { openReportDetail: Function }) {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/report/getAllReports?token=${localStorage.getItem("token")}`
+        }/report/getAllReports?token=${getToken()}`
       )
       .then((res) => {
         if (res.status === 200) {

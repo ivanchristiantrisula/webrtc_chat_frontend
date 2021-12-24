@@ -21,6 +21,7 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
 import ProfileMenu from "../Profile/menu";
 import PersonPinCircleIcon from "@material-ui/icons/PersonPinCircle";
+import { getUserInfo } from "../../../helper/localstorage";
 
 const useStyles = makeStyles((theme: Theme) => ({
   open: {
@@ -229,7 +230,7 @@ function App(props: { user: any; openMenu: Function }) {
           <ListItemIcon>
             <Avatar
               src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${
-                JSON.parse(localStorage.getItem("user")).profilepicture
+                getUserInfo().profilepicture
               }.png`}
             />
           </ListItemIcon>

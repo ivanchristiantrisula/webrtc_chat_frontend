@@ -33,6 +33,7 @@ import { useCookies } from "react-cookie";
 import { TextFormat, Visibility, VisibilityOff } from "@material-ui/icons";
 import clsx from "clsx";
 import { InputFiles } from "typescript";
+import { getToken, getUserInfo } from "../../../helper/localstorage";
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,7 +123,7 @@ const ChangePasswordDialog = (props: {
         old: oldPassword,
         new: newPassword,
         confirm: confirmPassword,
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         console.log(res);
@@ -261,7 +262,7 @@ export default (props: { user: any }) => {
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/updateProfile`, {
         name: name,
         bio: bio,
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {
         if (res.status == 200) {
@@ -281,15 +282,11 @@ export default (props: { user: any }) => {
 
   const handleImageSelected = (e: React.FormEvent<HTMLInputElement>) => {
     let fd = new FormData();
-    fd.append(
-      "file",
-      e.currentTarget.files[0],
-      `${JSON.parse(localStorage.getItem("user")).id}.png`
-    );
+    fd.append("file", e.currentTarget.files[0], `${getUserInfo().id}.png`);
     axios
       .post(
         `${process.env.REACT_APP_BACKEND_URI}/user/uploadProfilePicture`,
-        { fd, token: localStorage.getItem("token") },
+        { fd, token: getToken() },
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -322,7 +319,7 @@ export default (props: { user: any }) => {
               <Avatar
                 className={classes.avatar}
                 src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${
-                  JSON.parse(localStorage.getItem("user")).profilepicture
+                  getUserInfo().profilepicture
                 }.png`}
               />
             </Box>

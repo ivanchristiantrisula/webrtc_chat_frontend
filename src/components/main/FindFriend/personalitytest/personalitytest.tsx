@@ -23,6 +23,7 @@ import "./style.css";
 import axios from "axios";
 import { isTypeAssertion } from "typescript";
 import { TransitionProps } from "@material-ui/core/transitions";
+import { getToken } from "../../../../helper/localstorage";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -261,7 +262,7 @@ export default () => {
       .put(process.env.REACT_APP_BACKEND_URI + "/user/updateMBTI", {
         rawResult: result,
         type: typeString,
-        token: localStorage.getItem("token"),
+        token: getToken(),
       })
       .then((res) => {})
       .catch((error) => {

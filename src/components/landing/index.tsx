@@ -14,6 +14,7 @@ import Background from "./background.svg";
 import { url } from "inspector";
 import Cookies from "universal-cookie";
 import Alert from "@material-ui/lab/Alert";
+import { getToken, setToken, setUserInfo } from "../../helper/localstorage";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -81,14 +82,14 @@ function App() {
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/login`, {
         email: email,
         password: password,
-        token: localStorage.getItem("token"),
       })
       .then((res) => {
         if (res.status == 200) {
-          localStorage.setItem("user", JSON.stringify(res.data.user));
+          //localStorage.setItem("user", JSON.stringify(res.data.user));
+          setUserInfo(res.data.user);
           const cookies = new Cookies();
-          cookies.set("token", res.data.token, { path: "/" });
-          localStorage.setItem("token", res.data.token);
+          //cookies.set("token", res.data.token, { path: "/" });
+          setToken(res.data.token);
 
           if (res.data.user.isVerified) {
             history.push("/chat");

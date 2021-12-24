@@ -18,6 +18,12 @@ import Profile from "./Profile/";
 import streamSaver from "streamsaver";
 import { AES, enc } from "crypto-js";
 import { useHistory } from "react-router";
+import {
+  getToken,
+  getUserChatHistory,
+  getUserInfo,
+  setUserChatHistory,
+} from "../../helper/localstorage";
 
 const io = require("socket.io-client");
 require("dotenv").config();
@@ -128,55 +134,58 @@ const App = () => {
   };
 
   const saveChatToDB = () => {
-    try {
-      let userID = JSON.parse(localStorage.getItem("user")).id;
-      let usersChats = {};
-      if (localStorage.getItem("chats")) {
-        usersChats = JSON.parse(
-          AES.decrypt(
-            localStorage.getItem("chats"),
-            process.env.REACT_APP_KEY
-          ).toString(enc.Utf8)
-        );
-      } else {
-        usersChats = {};
-      }
-      usersChats[userID] = chats;
-      let encryptedChats = AES.encrypt(
-        JSON.stringify(usersChats),
-        process.env.REACT_APP_KEY
-      ).toString();
-      localStorage.setItem("chats", encryptedChats);
-    } catch (error) {
-      console.error("Failed saving chat. Error : " + error);
-    }
+    // try {
+    //   let userID = JSON.parse(localStorage.getItem("user")).id;
+    //   let usersChats = {};
+    //   if (localStorage.getItem("chats")) {
+    //     usersChats = JSON.parse(
+    //       AES.decrypt(
+    //         localStorage.getItem("chats"),
+    //         process.env.REACT_APP_KEY
+    //       ).toString(enc.Utf8)
+    //     );
+    //   } else {
+    //     usersChats = {};
+    //   }
+    //   usersChats[userID] = chats;
+    //   let encryptedChats = AES.encrypt(
+    //     JSON.stringify(usersChats),
+    //     process.env.REACT_APP_KEY
+    //   ).toString();
+    //   localStorage.setItem("chats", encryptedChats);
+    // } catch (error) {
+    //   console.error("Failed saving chat. Error : " + error);
+    // }
+
+    setUserChatHistory(chats);
   };
 
   const loadChatFromDB = () => {
-    try {
-      let userID = JSON.parse(localStorage.getItem("user")).id;
-      let chats;
-      if (localStorage.getItem("chats")) {
-        chats =
-          JSON.parse(
-            AES.decrypt(
-              localStorage.getItem("chats"),
-              process.env.REACT_APP_KEY
-            ).toString(enc.Utf8)
-          )[userID] || {};
-      } else {
-        chats = {};
-      }
-      setChats(chats);
-      console.info("Chat history successfully loaded!");
-    } catch (error) {
-      console.error("Failed loading chat from DB. Error : " + error);
-    }
+    // try {
+    //   let userID = JSON.parse(localStorage.getItem("user")).id;
+    //   let chats;
+    //   if (localStorage.getItem("chats")) {
+    //     chats =
+    //       JSON.parse(
+    //         AES.decrypt(
+    //           localStorage.getItem("chats"),
+    //           process.env.REACT_APP_KEY
+    //         ).toString(enc.Utf8)
+    //       )[userID] || {};
+    //   } else {
+    //     chats = {};
+    //   }
+    //   setChats(chats);
+    //   console.info("Chat history successfully loaded!");
+    // } catch (error) {
+    //   console.error("Failed loading chat from DB. Error : " + error);
+    // }
+    setChats(getUserChatHistory());
   };
 
   const initSocketListener = () => {
     socket.current = io.connect(process.env.REACT_APP_BACKEND_URI, {
-      query: `token=${localStorage.getItem("token")}`,
+      query: `token=${getToken()}`,
     });
 
     socket?.current?.on("connect", () => {
@@ -364,7 +373,7 @@ const App = () => {
 
   const addChatFromSender = (data: any, sid?: any) => {
     //console.log(data);
-    let user = JSON.parse(localStorage.getItem("user"));
+    let user = getUserInfo();
     if (!sid) sid = allUsers[openChatSocket].id;
 
     let x = chats;
@@ -381,7 +390,7 @@ const App = () => {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/user/getFriends?token=${localStorage.getItem("token")}`
+        }/user/getFriends?token=${getToken()}`
       )
       .then((res) => {
         let allFriends: [] = res.data;
