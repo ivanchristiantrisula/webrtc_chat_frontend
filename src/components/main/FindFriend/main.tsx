@@ -66,6 +66,7 @@ export default () => {
         isUserFriend={false}
         open={openProfileCard}
         anchor={cardAnchorEl}
+        handleClose={() => setOpenProfileCard(false)}
       />
       <Box>
         <Box padding="1rem 1rem 0rem 1.5rem">

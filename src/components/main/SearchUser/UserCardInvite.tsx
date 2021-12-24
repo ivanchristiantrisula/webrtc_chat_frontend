@@ -114,6 +114,7 @@ export default function (props: {
         user={props.user}
         open={openProfileCard}
         anchor={cardAnchorEl}
+        handleClose={() => setOpenProfileCard(false)}
         // addFriendHandler={addFriend}
         // isUserFriend={false}
       />
