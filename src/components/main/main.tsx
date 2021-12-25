@@ -214,6 +214,16 @@ const App = () => {
       });
     });
 
+    socket.current.on("duplicateLogin", () => {
+      setSocketConnection(false);
+      console.info("Duplicate login. Disconnecting...");
+      enqueueSnackbar(`Someone with your account is already logged in`, {
+        variant: "error",
+      });
+
+      history.push("/");
+    });
+
     socket.current.on("sdpTransfer", handleReceivingSDP);
 
     socket.current.on("meetingInvitation", handleReceivingMeetingInvitation);

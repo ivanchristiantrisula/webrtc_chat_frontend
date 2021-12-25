@@ -97,7 +97,6 @@ export default (props: {
   const [userSockets, setUserSockets] = useState([]);
   const [userStreamStatus, setUserStreamStatus] = useState(false);
   const [myStream, setMyStream] = useState<any>({});
-  const [peers, setPeers] = useState([]);
   const [isScreensharing, setIsScreensharing] = useState(false);
   const [focusedOn, setFocusedOn] = useState("");
   const [whiteboardMode, setWhiteboardMode] = useState(false);
