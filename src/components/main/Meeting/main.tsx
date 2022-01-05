@@ -5,7 +5,7 @@ import _ from "underscore";
 import { Box, createStyles, makeStyles, Modal, Theme } from "@material-ui/core";
 import BottomBar from "./bottombar";
 import { Socket } from "socket.io-client";
-import Whiteboard from "./whiteboard";
+import Whiteboard from "./Whiteboard/whiteboard";
 import { useSnackbar } from "notistack";
 
 const useStyle = makeStyles((theme: Theme) =>
