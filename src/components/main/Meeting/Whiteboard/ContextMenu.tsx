@@ -20,6 +20,8 @@ const WhiteboardContextMenu = (props: {
     color: string;
     width: number;
   };
+  handleClear: Function;
+  handleSave: Function;
 }) => {
   const lineCaps = useRef(["round", "square"]);
   const lineWidthSizes = useRef([6, 8, 10, 12, 14]);
@@ -87,6 +89,11 @@ const WhiteboardContextMenu = (props: {
             </MenuItem>
           );
         })}
+        <Divider />
+        <MenuItem onClick={() => props.handleClear()}>
+          Clear Whiteboard
+        </MenuItem>
+        <MenuItem onClick={() => props.handleSave()}>Save Whiteboard</MenuItem>
       </Menu>
     </>
   );
