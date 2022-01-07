@@ -11,8 +11,10 @@ import WhiteboardContextMenu from "./ContextMenu";
 const initState = {
   color: "#000000",
   lineCap: "round",
-  lineWidth: 10,
+  lineWidth: 8,
 };
+
+const canvasOffset = window.innerHeight + 500;
 
 const Whiteboard = (props: { handleCaptureStream: Function }) => {
   const canvas = useRef<HTMLCanvasElement>();
@@ -34,7 +36,7 @@ const Whiteboard = (props: { handleCaptureStream: Function }) => {
     setBackgroundColor();
   }, []);
 
-  useEffect(() => setOpenContextMenu(false), [color, lineCap, lineWidth]);
+  useEffect(() => closeContextMenu(), [color, lineCap, lineWidth]);
 
   const setBackgroundColor = () => {
     const context = canvas.current.getContext("2d");
@@ -67,11 +69,11 @@ const Whiteboard = (props: { handleCaptureStream: Function }) => {
     ctx.lineWidth = lineWidth;
     ctx.lineCap = lineCap;
 
-    ctx.lineTo(event.clientX - window.innerHeight / 2, event.clientY);
+    ctx.lineTo(event.clientX - canvasOffset / 4, event.clientY);
     ctx.strokeStyle = color;
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(event.clientX - window.innerHeight / 2, event.clientY);
+    ctx.moveTo(event.clientX - canvasOffset / 4, event.clientY);
   };
 
   const showContextMenu = (event?: MouseEvent<HTMLCanvasElement>) => {
@@ -113,7 +115,7 @@ const Whiteboard = (props: { handleCaptureStream: Function }) => {
     <>
       <canvas
         height={window.innerHeight}
-        width={window.innerHeight}
+        width={window.innerHeight + 500}
         ref={canvas}
         onMouseDown={startDrawing}
         onMouseUp={endDrawing}
