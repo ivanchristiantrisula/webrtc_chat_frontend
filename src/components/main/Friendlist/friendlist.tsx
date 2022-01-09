@@ -7,6 +7,7 @@ import axios from "axios";
 import FriendlistContextMenu from "./ContextMenu";
 import ProfileCard from "../ProfileCard";
 import { getToken } from "../../../helper/localstorage";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,7 +21,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function (props: any) {
+export default function (props: {
+  users: any;
+  setPrivateChatTarget: Function;
+  userID: string;
+  handleUnfriend: Function;
+}) {
   //function openChatChannel(uid: string) {}
   const classes = useStyles();
   const selectedID = useRef<string>();
@@ -31,13 +37,14 @@ export default function (props: any) {
   });
   const [openContextMenu, setOpenContextMenu] = useState(false);
   const [openProfileCard, setOpenProfileCard] = useState<string>("");
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleRightClick = (
     e: React.MouseEvent<HTMLDivElement>,
     targetSID: string
   ) => {
     e.preventDefault();
-    selectedID.current = targetSID;
+    selectedID.current = props.users[targetSID].id;
     anchorEl.current = e.currentTarget;
     setMousePos({
       mouseX: e.clientX,
@@ -51,9 +58,21 @@ export default function (props: any) {
   };
 
   const unfriend = () => {
-    axios.post(`${process.env.REACT_APP_BACKEND_URI}/user/unfriend`, {
-      token: getToken(),
-    });
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/unfriend`, {
+        token: getToken(),
+        targetID: selectedID.current,
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          //TODO : remove from friendlist state array
+          props.handleUnfriend();
+          enqueueSnackbar("User removed from friendlist");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -93,7 +112,7 @@ export default function (props: any) {
           showProfileCard();
           setOpenContextMenu(false);
         }}
-        handleClickRemoveFriend={() => {}}
+        handleClickRemoveFriend={unfriend}
         handleClickBlockUser={() => {}}
       />
 

@@ -23,9 +23,7 @@ export default () => {
     axios
       .get(
         process.env.REACT_APP_BACKEND_URI +
-          `/user/getFriendsRecommendation?token=${localStorage.getItem(
-            "token"
-          )}`
+          `/user/getFriendsRecommendation?token=${getToken()}`
       )
       .then((res) => {
         console.log(res.data);

@@ -134,52 +134,10 @@ const App = () => {
   };
 
   const saveChatToDB = () => {
-    // try {
-    //   let userID = JSON.parse(localStorage.getItem("user")).id;
-    //   let usersChats = {};
-    //   if (localStorage.getItem("chats")) {
-    //     usersChats = JSON.parse(
-    //       AES.decrypt(
-    //         localStorage.getItem("chats"),
-    //         process.env.REACT_APP_KEY
-    //       ).toString(enc.Utf8)
-    //     );
-    //   } else {
-    //     usersChats = {};
-    //   }
-    //   usersChats[userID] = chats;
-    //   let encryptedChats = AES.encrypt(
-    //     JSON.stringify(usersChats),
-    //     process.env.REACT_APP_KEY
-    //   ).toString();
-    //   localStorage.setItem("chats", encryptedChats);
-    // } catch (error) {
-    //   console.error("Failed saving chat. Error : " + error);
-    // }
-
     setUserChatHistory(chats);
   };
 
   const loadChatFromDB = () => {
-    // try {
-    //   let userID = JSON.parse(localStorage.getItem("user")).id;
-    //   let chats;
-    //   if (localStorage.getItem("chats")) {
-    //     chats =
-    //       JSON.parse(
-    //         AES.decrypt(
-    //           localStorage.getItem("chats"),
-    //           process.env.REACT_APP_KEY
-    //         ).toString(enc.Utf8)
-    //       )[userID] || {};
-    //   } else {
-    //     chats = {};
-    //   }
-    //   setChats(chats);
-    //   console.info("Chat history successfully loaded!");
-    // } catch (error) {
-    //   console.error("Failed loading chat from DB. Error : " + error);
-    // }
     setChats(getUserChatHistory());
   };
 
@@ -466,6 +424,7 @@ const App = () => {
     setMeetingID("");
 
     //TEMP FIX
+    //TODO : FIX LEAVE MEETING BUG
     window.location.reload();
   };
 
@@ -491,6 +450,7 @@ const App = () => {
               users={onlineFriends}
               userID={userSocketID}
               setPrivateChatTarget={(e: any) => startPeerConnection(e)}
+              handleUnfriend={fetchUserFriends}
             />
           </Grid>
           <Grid
