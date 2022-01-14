@@ -228,11 +228,7 @@ function App(props: { user: any; openMenu: Function }) {
           }}
         >
           <ListItemIcon>
-            <Avatar
-              src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${
-                getUserInfo().profilepicture
-              }.png`}
-            />
+            <Avatar src={getUserInfo().profilepicture} />
           </ListItemIcon>
         </ListItem>
       </List>

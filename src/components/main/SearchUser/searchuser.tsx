@@ -81,9 +81,7 @@ export default () => {
       .get(
         `${
           process.env.REACT_APP_BACKEND_URI
-        }/user/findUser?keyword=${keyword}&token=${localStorage.getItem(
-          "token"
-        )}`
+        }/user/findUser?keyword=${keyword}&token=${getToken()}`
       )
       .then((res) => {
         setUsers(res.data);

@@ -70,7 +70,7 @@ export default function (props: {
                 <Grid item xs={2} className={classes.avatar}>
                   <ButtonBase onClick={toggleProfileCard}>
                     <Avatar
-                      src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
+                      src={props.user.profilepicture}
                       className={classes.purple}
                     />
                   </ButtonBase>

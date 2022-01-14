@@ -84,11 +84,7 @@ export default () => {
                 style={{ margin: "0.5rem" }}
               >
                 <CardHeader
-                  avatar={
-                    <Avatar
-                      src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${user.profilepicture}.png`}
-                    />
-                  }
+                  avatar={<Avatar src={user.profilepicture} />}
                   title={user.name}
                   subheader={user.MBTI}
                 />

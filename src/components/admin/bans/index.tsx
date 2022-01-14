@@ -66,10 +66,7 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
       <Card className={classes.root}>
         <CardHeader
           avatar={
-            <Avatar
-              aria-label=""
-              src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
-            ></Avatar>
+            <Avatar aria-label="" src={props.user.profilepicture}></Avatar>
           }
           action={
             <IconButton aria-label="">

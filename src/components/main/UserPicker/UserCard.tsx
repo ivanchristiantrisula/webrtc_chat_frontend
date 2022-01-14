@@ -47,10 +47,7 @@ export default function (props: any) {
     <Card>
       <CardHeader
         avatar={
-          <Avatar
-            className={classes.avatar}
-            src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
-          />
+          <Avatar className={classes.avatar} src={props.user.profilepicture} />
         }
         title={props.user.name}
         action={<Radio checked={props.selected}></Radio>}

@@ -42,10 +42,7 @@ export default function (props: any) {
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar
-            className={classes.purple}
-            src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
-          />
+          <Avatar className={classes.purple} src={props.user.profilepicture} />
         }
         title={props.user.name}
       />

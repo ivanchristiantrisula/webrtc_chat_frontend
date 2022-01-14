@@ -49,11 +49,7 @@ export default function (props: { user: any; addFriend: Function }) {
   return (
     <Card className={classes.card}>
       <CardHeader
-        avatar={
-          <Avatar
-            src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
-          />
-        }
+        avatar={<Avatar src={props.user.profilepicture} />}
         action={
           <IconButton>
             <Button

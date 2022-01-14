@@ -38,11 +38,7 @@ export default (props: { startVideoCall: Function; user: any }) => {
     >
       <Grid item xs={7}>
         <CardHeader
-          avatar={
-            <Avatar
-              src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
-            />
-          }
+          avatar={<Avatar src={props.user.profilepicture} />}
           title={props.user.name}
         />
       </Grid>

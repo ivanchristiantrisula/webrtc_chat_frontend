@@ -75,6 +75,18 @@ export default function (props: {
       });
   };
 
+  const blockUser = () => {
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/blockUser`, {
+        token: getToken(),
+        target: selectedID.current,
+      })
+      .then((res) => {
+        props.handleUnfriend();
+        enqueueSnackbar("User blocked!");
+      });
+  };
+
   return (
     <>
       <Box padding="1rem 1rem 0.5rem 1.5rem" marginBottom="0rem">

@@ -56,7 +56,7 @@ export default function ProfileCard(props: {
                     <CardMedia
                       className={classes.media}
                       title="Contemplative Reptile"
-                      image={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
+                      image={props.user.profilepicture}
                     />
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="h2">

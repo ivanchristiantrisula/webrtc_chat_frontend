@@ -33,7 +33,7 @@ export default function (props: { user: any; lastMsg: any }) {
         avatar={
           <Avatar
             aria-label=""
-            src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${props.user.profilepicture}.png`}
+            src={props.user.profilepicture}
             className={classes.avatar}
           />
         }

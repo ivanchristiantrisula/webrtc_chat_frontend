@@ -280,27 +280,47 @@ export default (props: { user: any }) => {
     fileInputRef.current.click();
   };
 
-  const handleImageSelected = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleImageSelected = async (e: any) => {
     let fd = new FormData();
-    fd.append("file", e.currentTarget.files[0], `${getUserInfo().id}.png`);
-    axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URI}/user/uploadProfilePicture`,
-        { fd, token: getToken() },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-      .then((res) => {
-        if (res.status == 200) {
-          window.location.href = "/";
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    fd.append("file", e.target.files[0], `${getUserInfo().id}.png`);
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_BACKEND_URI}/user/uploadProfilePicture`,
+    //     {
+    //       fd,
+    //       token: getToken(),
+    //     },
+    //     {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     }
+    //   )
+    //   .then((res) => {
+    //     if (res.status == 200) {
+    //       //window.location.href = "/";
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    try {
+      const response = await axios({
+        method: "post",
+        url: `${
+          process.env.REACT_APP_BACKEND_URI
+        }/user/uploadProfilePicture?token=${getToken()}`,
+        data: fd,
+        headers: { "Content-Type": "multipart/form-data" },
       });
+
+      if (response.status == 200) {
+        window.location.href = "/";
+      }
+    } catch (error) {
+      alert("error upload image");
+      console.log(error);
+    }
   };
 
   return (
@@ -318,9 +338,7 @@ export default (props: { user: any }) => {
             <Box onClick={changePP}>
               <Avatar
                 className={classes.avatar}
-                src={`${process.env.REACT_APP_BACKEND_URI}/profilepictures/${
-                  getUserInfo().profilepicture
-                }.png`}
+                src={getUserInfo().profilepicture}
               />
             </Box>
           </Grid>

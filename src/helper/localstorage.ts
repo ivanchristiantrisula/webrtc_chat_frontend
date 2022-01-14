@@ -2,7 +2,7 @@ import { AES, enc } from "crypto-js";
 
 const encKey = process.env.REACT_APP_KEY;
 
-function setUserInfo (raw : {}) {
+function setUserInfo(raw: {}) {
   let stringified = JSON.stringify(raw);
 
   const encrypted = AES.encrypt(stringified, encKey).toString();
@@ -10,25 +10,25 @@ function setUserInfo (raw : {}) {
   localStorage.setItem("user", encrypted);
 }
 
-function getUserInfo () {
+function getUserInfo() {
   const encUser = localStorage.getItem("user");
 
-  if(!encUser) throw Error("No user info. User not logged in yet!");
+  if (!encUser) throw Error("No user info. User not logged in yet!");
 
   try {
-    const decryptedUser = JSON.parse(AES.decrypt(encUser, encKey).toString(enc.Utf8));
+    const decryptedUser = JSON.parse(
+      AES.decrypt(encUser, encKey).toString(enc.Utf8)
+    );
     return decryptedUser;
   } catch (error) {
-    throw Error("Failed decrypting user info")
+    throw Error("Failed decrypting user info");
   }
-  
-
 }
 
-function setUserChatHistory (chats : any) {
+function setUserChatHistory(chats: any) {
   try {
     let userID = getUserInfo().id;
-    console.log(userID)
+    console.log(userID);
     let usersChats = {};
     if (localStorage.getItem("chats")) {
       usersChats = JSON.parse(
@@ -51,7 +51,7 @@ function setUserChatHistory (chats : any) {
   }
 }
 
-function getUserChatHistory () {
+function getUserChatHistory() {
   try {
     let userID = getUserInfo().id;
     let chats;
@@ -68,22 +68,28 @@ function getUserChatHistory () {
     }
 
     console.info("Chat history successfully loaded!");
-    return chats
-    
+    return chats;
   } catch (error) {
     console.error("Failed loading chat from DB. Error : " + error);
   }
 }
 
-function setToken (rawString : string) {
-  localStorage.setItem("token", AES.encrypt(rawString, encKey).toString())
+function setToken(rawString: string) {
+  localStorage.setItem("token", AES.encrypt(rawString, encKey).toString());
 }
 
-function getToken () {
+function getToken() {
   const encToken = localStorage.getItem("token");
-  const decToken = AES.decrypt(encToken,encKey).toString(enc.Utf8);
+  const decToken = AES.decrypt(encToken, encKey).toString(enc.Utf8);
 
-  return decToken
+  return decToken;
 }
 
-export {setUserInfo, getUserInfo, setUserChatHistory, getUserChatHistory, setToken, getToken};
+export {
+  setUserInfo,
+  getUserInfo,
+  setUserChatHistory,
+  getUserChatHistory,
+  setToken,
+  getToken,
+};
