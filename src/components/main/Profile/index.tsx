@@ -319,7 +319,7 @@ export default (props: { user: any }) => {
       }
     } catch (error) {
       alert("error upload image");
-      console.log(error);
+      console.log();
     }
   };
 

@@ -67,7 +67,7 @@ export default function ProfileCard(props: {
                         variant="overline"
                         component="h6"
                       >
-                        {props.user.MBTI}
+                        {props.user.friendFinderProfile.MBTI}
                       </Typography>
                       <Typography
                         variant="body2"

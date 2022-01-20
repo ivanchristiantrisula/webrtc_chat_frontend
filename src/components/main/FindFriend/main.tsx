@@ -73,7 +73,7 @@ export default () => {
         </Box>
         <Box padding="1rem 1rem 1rem 1.5rem" marginBottom="1rem">
           <Typography variant="body1" color="textSecondary">
-            Your MBTI : {getUserInfo().MBTI}
+            Your MBTI : {getUserInfo().friendFinderProfile.MBTI}
           </Typography>
         </Box>
         {users.map((user, i) => {
@@ -86,7 +86,7 @@ export default () => {
                 <CardHeader
                   avatar={<Avatar src={user.profilepicture} />}
                   title={user.name}
-                  subheader={user.MBTI}
+                  subheader={user.friendFinderProfile.MBTI}
                 />
               </Card>
             );

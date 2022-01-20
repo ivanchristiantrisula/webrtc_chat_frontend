@@ -12,7 +12,7 @@ export default () => {
   }, []);
 
   const getUserMBTI = () => {
-    return getUserInfo().MBTI || "";
+    return getUserInfo().friendFinderProfile.MBTI || "";
   };
   return <> {MBTI == "" ? <PersonalityTest /> : <Main />} </>;
 };

@@ -44,7 +44,7 @@ export default (props: { MBTI: string; score: [] }) => {
       <Container>
         <Box>
           <span>YOUR PERSONALITY TYPE IS : {props.MBTI}</span>
-          <span>typeName[props.MBTI]</span>
+          <span>{typeName[props.MBTI]}</span>
         </Box>
       </Container>
     </>

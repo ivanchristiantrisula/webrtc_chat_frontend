@@ -85,10 +85,12 @@ function App() {
       })
       .then((res) => {
         if (res.status == 200) {
+          let user = res.data.user;
+          user.friendFinderProfile.MBTI = user.friendFinderProfile.MBTI;
+          console.log(user);
           //localStorage.setItem("user", JSON.stringify(res.data.user));
-          setUserInfo(res.data.user);
+          setUserInfo(user);
           const cookies = new Cookies();
-          //cookies.set("token", res.data.token, { path: "/" });
           setToken(res.data.token);
 
           if (res.data.user.isVerified) {

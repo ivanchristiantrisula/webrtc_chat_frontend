@@ -263,8 +263,11 @@ export default () => {
         rawResult: result,
         type: typeString,
         token: getToken(),
+        answers: answers,
       })
-      .then((res) => {})
+      .then((res) => {
+        if (res.status === 200) window.location.reload();
+      })
       .catch((error) => {
         console.log(error);
       });
