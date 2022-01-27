@@ -36,9 +36,9 @@ export default () => {
 
   const handleClickUserCard =
     (user: any) => (e: React.MouseEvent<HTMLDivElement>) => {
+      setCardAnchorEl(e.currentTarget);
       setUserDetail(user);
       setOpenProfileCard(true);
-      setCardAnchorEl(e.currentTarget);
     };
 
   const addFriend = (id: string) => {
@@ -69,7 +69,7 @@ export default () => {
       />
       <Box>
         <Box padding="1rem 1rem 0rem 1.5rem">
-          <Typography variant="h4">Friend Recommendations</Typography>
+          <Typography variant="h4">Friend Finder</Typography>
         </Box>
         <Box padding="1rem 1rem 1rem 1.5rem" marginBottom="1rem">
           <Typography variant="body1" color="textSecondary">
