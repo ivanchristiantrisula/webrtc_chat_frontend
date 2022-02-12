@@ -235,6 +235,7 @@ const App = () => {
       config: {
         iceServers: [
           { urls: ["stun:stun.ivanchristian.me"] },
+          { urls: ["stun:stun1.l.google.com:19302"] },
           {
             username: "ivan",
             credential: "5521",
