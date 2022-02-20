@@ -4,7 +4,6 @@ import io from "socket.io-client";
 import BottomBar from "./bottomBar";
 import ChatBubble from "../ChatBubble/ChatBubble";
 import TopBar from "./topbar";
-import VideoCall from "../VideoCall/videocall";
 import { Socket } from "dgram";
 import UserPicker from "../UserPicker";
 import _ from "underscore";
@@ -118,10 +117,13 @@ export default (props: propsInterface) => {
   };
 
   const startVideoCall = (isInitiator: boolean) => {
-    setVideoCall(true);
+    // setVideoCall(true);
 
-    if (isInitiator)
-      props.socket.emit("startVideoCall", { to: props.recipientSocketID });
+    // if (isInitiator)
+    //   props.socket.emit("startVideoCall", { to: props.recipientSocketID });
+    props.socket.emit("requestNewRoom", {
+      invitedUser: props.recipientSocketID,
+    });
   };
 
   const handleFileUpload = async (file: File) => {
@@ -300,14 +302,6 @@ export default (props: propsInterface) => {
           <input type="file" hidden {...getInputProps()} />
         </Box>
       </Box>
-      {videoCall ? (
-        <VideoCall
-          peer={props.peer}
-          socket={props.socket}
-          closeVideoCall={() => setVideoCall(false)}
-          sid={props.recipientSocketID}
-        />
-      ) : null}
       <UserPicker
         isOpen={openUserPickerModal}
         users={props.users}

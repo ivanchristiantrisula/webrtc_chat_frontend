@@ -3,7 +3,7 @@ import Main from "./main";
 import Welcome from "./welcome";
 
 export default (props: {
-  meetingID: string;
+  meetingData: { id: string; isPrivate: boolean };
   friends: any;
   socket: any;
   userSocketID: string;
@@ -11,18 +11,19 @@ export default (props: {
   handleNewMeeting: Function;
   endMeeting: Function;
 }) => {
-  const [meetingID, setMeetingID] = useState<string>();
+  const [meetingData, setMeetingData] =
+    useState<{ id: string; isPrivate: boolean }>();
 
   useEffect(() => {
-    props.socket.on("meetingID", (id: string) => {
-      setMeetingID(id);
-
-      props.handleNewMeeting(id);
+    props.socket.on("meetingID", (data: { id: string; private: boolean }) => {
+      // setMeetingData({ id: data.id, isPrivate: data.private });
+      // //props.handleNewMeeting(id);
+      // alert(data.private);
     });
   }, []);
 
   const requestMeetingID = () => {
-    props.socket.emit("requestNewRoom");
+    props.socket.emit("requestNewRoom", {});
   };
 
   const joinMeetingByCode = (code: string) => {
@@ -30,13 +31,14 @@ export default (props: {
   };
   return (
     <>
-      {props.meetingID && props.meetingMode ? (
+      {props.meetingData ? (
         <Main
           friends={props.friends}
           socket={props.socket}
           userSocketID={props.userSocketID}
-          meetingID={meetingID || props.meetingID}
+          meetingID={props.meetingData.id}
           endMeeting={() => props.endMeeting()}
+          isPrivate={props.meetingData.isPrivate}
         />
       ) : (
         <Welcome

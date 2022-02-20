@@ -18,6 +18,9 @@ import { useState } from "react";
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
+    hidden: {
+      visibility: "hidden",
+    },
     gridParent: {
       minHeight: "100%",
       alignItems: "center",
@@ -52,6 +55,7 @@ const useStyle = makeStyles((theme: Theme) =>
 
 export default (props: {
   meetingID: string;
+  isPrivate: boolean;
   handleLeaveMeeting: Function;
   handleInviteUser: Function;
   handleMuteVideo: Function;
@@ -67,7 +71,11 @@ export default (props: {
       <Grid className={classes.gridParent} container justify="center">
         <Grid item xs={4} className={classes.gridItems}>
           <Box display="flex" className={classes.leftSection}>
-            <Box className={classes.iconContainer}>
+            <Box
+              className={`${classes.iconContainer} ${
+                props.isPrivate && classes.hidden
+              }`}
+            >
               <AirplayIcon
                 fontSize="large"
                 onClick={() => props.handleScreenShare()}
@@ -75,7 +83,9 @@ export default (props: {
               Screen Share
             </Box>
             <Box
-              className={classes.iconContainer}
+              className={`${classes.iconContainer} ${
+                props.isPrivate && classes.hidden
+              }`}
               onClick={() => props.handleWhiteboard()}
             >
               <VideoLabelIcon fontSize="large" />
@@ -135,7 +145,9 @@ export default (props: {
         <Grid item xs={2} className={classes.gridItems}>
           <Box display="flex" className={classes.midSection}>
             <Box
-              className={classes.iconContainer}
+              className={`${classes.iconContainer} ${
+                props.isPrivate && classes.hidden
+              }`}
               onClick={() => props.handleInviteUser()}
             >
               <PersonAddIcon fontSize="large" />
@@ -144,7 +156,12 @@ export default (props: {
           </Box>
         </Grid>
         <Grid item xs={2} className={classes.gridItems}>
-          <Box display="flex" className={classes.rightSection}>
+          <Box
+            display="flex"
+            className={`${classes.rightSection} ${
+              props.isPrivate && classes.hidden
+            }`}
+          >
             {props.meetingID}
           </Box>
         </Grid>

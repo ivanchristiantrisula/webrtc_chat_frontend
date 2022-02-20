@@ -16,7 +16,6 @@ import FriendFinder from "./FindFriend";
 import FindFriend from "./FindFriend";
 import Profile from "./Profile/";
 import streamSaver from "streamsaver";
-import { AES, enc } from "crypto-js";
 import { useHistory } from "react-router";
 import {
   getToken,
@@ -80,6 +79,8 @@ const App = () => {
   const history = useHistory();
   let [allUsers, setAllUsers] = useState({});
   let socket: any = useRef();
+  let [meetingData, setMeetingData] =
+    useState<{ id: string; isPrivate: boolean }>();
   const [userSocketID, setUserSocketID] = useState("");
   const [friends, setFriends] = useState([]);
   let [socketConnection, setSocketConnection] = useState(false);
@@ -89,8 +90,9 @@ const App = () => {
   let [chatConnectionStatus, setChatConnectionStatus] = useState([]);
   let [openMenu, setOpenMenu] = useState("friendlist");
   let [onlineFriends, setOnlineFriends] = useState({});
-  let [meetingID, setMeetingID] = useState("");
   let [meetingMode, setMeetingMode] = useState(false);
+  //let [meetingID, setMeetingID] = useState("");
+  let [onPrivateCall, setOnPrivateCall] = useState(false);
   let fileTransfers = useRef({});
   let [stringifiedChats, setStringifiedChats] = useState("");
 
@@ -193,9 +195,23 @@ const App = () => {
     });
 
     socket.current.on("joinMeetingByIDApproved", (data: any) => {
-      setMeetingID(data.code);
+      //setMeetingID(data.code);
+      setMeetingData({
+        id: data.code,
+        isPrivate: false,
+      });
       setOpenMenu("meeting");
       setMeetingMode(true);
+    });
+
+    socket.current.on("meetingID", (data: any) => {
+      //setMeetingID(data.id);
+      setMeetingData({
+        id: data.id,
+        isPrivate: data.private,
+      });
+      setMeetingMode(true);
+      setOpenMenu("meeting");
     });
 
     //close socket connection when tab is closed by user
@@ -217,15 +233,30 @@ const App = () => {
 
   const handleReceivingMeetingInvitation = (data: any) => {
     console.log(data);
-    setMeetingID(data.meetingID);
-    setAlertDialogProps({
-      open: true,
-      title: "You are invited to join a meeting",
-      body: `${data.senderInfo.name} invited you to join their meeting.`,
-      positiveTitle: "Join meeting",
-      negativeTitle: "Decline Meeting",
-      fromSocket: data.from,
+    setMeetingData({
+      id: data.meetingID,
+      isPrivate: data.purpose == "private" ? true : false,
     });
+
+    if (data.purpose == "meeting") {
+      setAlertDialogProps({
+        open: true,
+        title: "You are invited to join a meeting",
+        body: `${data.senderInfo.name} invited you to join their meeting.`,
+        positiveTitle: "Join meeting",
+        negativeTitle: "Decline Meeting",
+        fromSocket: data.from,
+      });
+    } else {
+      setAlertDialogProps({
+        open: true,
+        title: `Incoming Call`,
+        body: `${data.senderInfo.name} is calling you`,
+        positiveTitle: "Accept",
+        negativeTitle: "Reject",
+        fromSocket: data.from,
+      });
+    }
   };
 
   const addPeer = (socketid: string, isInitiator: boolean) => {
@@ -405,7 +436,7 @@ const App = () => {
     socket.current.emit("respondMeetingInvitation", {
       response: true,
       to: targetSID,
-      meetingID: meetingID,
+      meetingID: meetingData.id,
     });
     setOpenMenu("meeting");
     setMeetingMode(true);
@@ -415,14 +446,14 @@ const App = () => {
     socket.current.emit("respondMeetingInvitation", {
       response: false,
       to: targetSID,
-      meetingID: meetingID,
+      meetingID: meetingData.id,
     });
-    setMeetingID("");
+    //setMeetingID("");
   };
 
   const endMeeting = () => {
     setMeetingMode(false);
-    setMeetingID("");
+    //setMeetingID("");
 
     //TEMP FIX
     //TODO : FIX LEAVE MEETING BUG
@@ -486,12 +517,9 @@ const App = () => {
                 friends={onlineFriends}
                 socket={socket.current}
                 userSocketID={userSocketID}
-                meetingID={meetingID}
+                meetingData={meetingData}
                 meetingMode={meetingMode}
-                handleNewMeeting={(id: string) => {
-                  setMeetingID(id);
-                  setMeetingMode(true);
-                }}
+                handleNewMeeting={(id: string) => {}}
                 endMeeting={endMeeting}
               />
             </Grid>

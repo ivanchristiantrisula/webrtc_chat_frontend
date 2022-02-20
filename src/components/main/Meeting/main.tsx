@@ -85,6 +85,7 @@ export default (props: {
   userSocketID: string;
   meetingID: string;
   endMeeting: Function;
+  isPrivate: boolean;
 }) => {
   const classes = useStyle();
   let peersRef = useRef({});
@@ -124,14 +125,23 @@ export default (props: {
       userSocketsRef.current = data;
 
       //check if user just created the room
-      data.length === 0 && setOpenUserPicker(true);
+
+      if (data.length === 0 && !props.isPrivate) {
+        data.length === 0 && setOpenUserPicker(true);
+      }
     });
 
     props.socket.on("newMeetingMember", ({ sid, userData }) => {
       peersRef.current[sid] = null;
-      enqueueSnackbar(`${userData.name} has joined this meeting`, {
-        variant: "info",
-      });
+      if (props.isPrivate) {
+        enqueueSnackbar(`${userData.name} accepted your call`, {
+          variant: "info",
+        });
+      } else {
+        enqueueSnackbar(`${userData.name} has joined this meeting`, {
+          variant: "info",
+        });
+      }
     });
 
     props.socket.on("meetingSDPTransfer", (data: any) => {
@@ -420,6 +430,7 @@ export default (props: {
         <Box className={classes.bottomBar} position="fixed" bottom="0" left="0">
           <BottomBar
             meetingID={props.meetingID}
+            isPrivate={props.isPrivate}
             handleLeaveMeeting={leaveMeeting}
             handleInviteUser={() => setOpenUserPicker(true)}
             handleMuteVideo={toggleVideo}
