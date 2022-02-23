@@ -142,7 +142,7 @@ export default () => {
   const classes = useStyles();
   const [questionType, setQuestionType] = useState("adult");
   const [questions, setQuestions] = useState(
-    require("./questions.json")[questionType].questions
+    require("./new_questions.json")[questionType].questions
   );
   const [answers, setAnswers] = useState([]);
   const [currQuestionNum, setCurrQuestionNum] = useState(0);
@@ -151,7 +151,7 @@ export default () => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const nextQuestion = () => {
-    if (answers[9] !== undefined) {
+    if (questions[currQuestionNum + 1] === undefined) {
       calculateResult();
     } else {
       setCurrQuestionNum(currQuestionNum + 1);
@@ -187,30 +187,53 @@ export default () => {
     };
 
     answers.forEach((answer, i) => {
-      let type = (i + 1) % 4;
-      switch (type) {
-        case 1: // E/I
+      let col = (i + 1) % 7;
+      switch (col) {
+        case 1: // E/I COL 1
           if (answer === 0) {
             scores.E++;
           } else {
             scores.I++;
           }
           break;
-        case 2: // S/N
+        case 2: // S/N COL 2
           if (answer === 0) {
             scores.S++;
           } else {
             scores.N++;
           }
           break;
-        case 3: // T/F
+        case 3: // S/N COL 3
+          if (answer === 0) {
+            scores.S++;
+          } else {
+            scores.N++;
+          }
+          break;
+
+        case 4: // T/F COL 4
           if (answer === 0) {
             scores.T++;
           } else {
             scores.F++;
           }
           break;
-        case 0: // J/P
+        case 5: // T/F COL 5
+          if (answer === 0) {
+            scores.T++;
+          } else {
+            scores.F++;
+          }
+          break;
+        case 6: // J/P COL 6
+          if (answer === 0) {
+            scores.J++;
+          } else {
+            scores.P++;
+          }
+          break;
+
+        case 0: // J/P COL 7
           if (answer === 0) {
             scores.J++;
           } else {

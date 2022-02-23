@@ -195,10 +195,7 @@ function App(props: { user: any; openMenu: Function }) {
               : ""
           } ${classes.iconContainer}`}
           onClick={() => {
-            if (
-              props.user.friendFinderProfile.MBTI === "" ||
-              props.user.friendFinderProfile.MBTI === undefined
-            ) {
+            if (props.user.friendFinderProfile.MBTI === null) {
               setOpenMenu("personalitytest");
               props.openMenu("personalitytest");
             } else {
