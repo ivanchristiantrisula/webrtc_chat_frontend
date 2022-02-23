@@ -7,17 +7,20 @@ import {
   Avatar,
   IconButton,
   Typography,
+  Link,
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getToken, getUserInfo } from "../../../helper/localstorage";
 import ProfileCard from "../ProfileCard";
+import MBTIResultDialog from "./personalitytest/result";
 
 export default () => {
   let [users, setUsers] = useState([]);
-  let [userDetail, setUserDetail] = useState({});
+  let [userDetail, setUserDetail] = useState<any>();
   let [openProfileCard, setOpenProfileCard] = useState(false);
   let [cardAnchorEl, setCardAnchorEl] = useState<HTMLDivElement>();
+  let [openResultDialog, setOpenResultDialog] = useState(false);
 
   useEffect(() => {
     axios
@@ -73,7 +76,10 @@ export default () => {
         </Box>
         <Box padding="1rem 1rem 1rem 1.5rem" marginBottom="1rem">
           <Typography variant="body1" color="textSecondary">
-            Your MBTI : {getUserInfo().friendFinderProfile.MBTI}
+            Your MBTI :{" "}
+            <Link onClick={() => setOpenResultDialog(true)}>
+              {getUserInfo().friendFinderProfile.MBTI}
+            </Link>
           </Typography>
         </Box>
         {users.map((user, i) => {
@@ -93,6 +99,14 @@ export default () => {
           }
         })}
       </Box>
+
+      <MBTIResultDialog
+        MBTI={getUserInfo().friendFinderProfile.MBTI}
+        open={openResultDialog}
+        handleClose={() => {
+          setOpenResultDialog(false);
+        }}
+      />
     </>
   );
 };

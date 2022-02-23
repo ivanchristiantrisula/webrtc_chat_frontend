@@ -24,6 +24,7 @@ import axios from "axios";
 import { isTypeAssertion } from "typescript";
 import { TransitionProps } from "@material-ui/core/transitions";
 import { getToken } from "../../../../helper/localstorage";
+import MBTIResultDialog from "./result";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -149,6 +150,7 @@ export default () => {
   const [result, setResult] = useState("");
   const [infoDialogShown, setInfoDialogShown] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openResultDialog, setOpenResultDialog] = useState(false);
 
   const nextQuestion = () => {
     if (questions[currQuestionNum + 1] === undefined) {
@@ -289,7 +291,10 @@ export default () => {
         answers: answers,
       })
       .then((res) => {
-        if (res.status === 200) window.location.reload();
+        if (res.status === 200) {
+          setResult(typeString);
+          setOpenResultDialog(true);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -358,6 +363,15 @@ export default () => {
       {!infoDialogShown && currQuestionNum === 0 ? (
         <InfoDialog open={true} handleClose={() => setInfoDialogShown(true)} />
       ) : null}
+
+      <MBTIResultDialog
+        MBTI={result}
+        open={openResultDialog}
+        handleClose={() => {
+          setOpenResultDialog(false);
+          window.location.href = "/";
+        }}
+      />
     </Container>
   );
 };
