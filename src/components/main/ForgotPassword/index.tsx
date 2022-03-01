@@ -11,10 +11,19 @@ import { Alert, Color } from "@material-ui/lab";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import Background from "../../landing/background.svg";
 
 const useStyles = makeStyles((theme: Theme) => ({
   box: {
     transform: "translateY(-50%)",
+    backgroundColor: "white",
+  },
+  root: {
+    width: "100vw",
+    height: "100vh",
+    backgroundImage: `url(${Background})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
   },
 }));
 
@@ -22,15 +31,26 @@ const Email = (props: { handleSubmit: Function }) => {
   const [email, setEmail] = useState("");
   return (
     <>
-      <Typography variant="h5" style={{ marginBottom: "1rem" }}>
-        Enter your registered email
+      <Typography
+        variant="h5"
+        style={{
+          marginBottom: "1rem",
+          textAlign: "center",
+          fontWeight: "bold",
+        }}
+      >
+        Forgot your password?
+      </Typography>
+      <Typography variant="body1" color="textPrimary">
+        Enter your registered email and we'll send you a code to reset your
+        account password
       </Typography>
       <FormControl fullWidth>
         <TextField
           label="Email"
           variant="outlined"
           onChange={(e) => setEmail(e.target.value)}
-          style={{ marginBottom: "2rem" }}
+          style={{ marginBottom: "2rem", marginTop: "1rem" }}
         />
         <Button
           variant="contained"
@@ -193,7 +213,7 @@ export default () => {
   };
 
   return (
-    <Box width="100vw" height="100vh">
+    <Box width="100vw" height="100vh" className={classes.root}>
       <Box
         position="relative"
         top="50%"

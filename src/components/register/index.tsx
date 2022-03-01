@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: "3rem",
   },
   loginArea: {
-    height: "5rem",
+    marginBottom: "0.8rem",
+    marginTop: "1rem",
   },
   loginBox: {
     transform: "translateY(-50%)",
@@ -185,12 +186,6 @@ function App() {
             </Box>
           </Grid>
           <Grid item xs={12}>
-            <Box className={classes.toLogin} display="flex" alignItems="center">
-              <span>Already have an account? </span>{" "}
-              <Link href="/">Log In</Link>
-            </Box>
-          </Grid>
-          <Grid item xs={12}>
             <Box
               className={classes.loginArea}
               display="flex"
@@ -208,6 +203,19 @@ function App() {
                 </Button>
               </FormControl>
             </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <Button
+                onClick={() => (window.location.href = "/")}
+                variant="outlined"
+                color="primary"
+                fullWidth
+                disabled={registerLoading}
+              >
+                Login
+              </Button>
+            </FormControl>
           </Grid>
         </Grid>
       </Box>

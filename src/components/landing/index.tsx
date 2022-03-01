@@ -8,7 +8,14 @@ import FormLabel from "@material-ui/core/FormLabel";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import styles from "./landing.module.css";
-import { Box, Grid, Link, makeStyles, Theme } from "@material-ui/core";
+import {
+  Box,
+  Grid,
+  Link,
+  makeStyles,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import Background from "./background.svg";
 import { url } from "inspector";
@@ -176,25 +183,62 @@ function App() {
             </Box>
           </Grid>
           <Grid item xs={12}>
-            <Box className={classes.toRegister}>
+            {/* <Box className={classes.toRegister}>
               Don't have an account yet? <Link href="/register">Sign Up</Link>{" "}
               now!
-            </Box>
+            </Box> */}
           </Grid>
-          <Grid item xs={12}>
-            <Box className={classes.loginArea}>
-              <FormControl fullWidth>
-                <Button
-                  onClick={handleLogin}
-                  variant="contained"
-                  color="primary"
-                  disabled={loginStatus === 1}
-                  fullWidth
-                >
-                  {loginStatus === 0 ? "Login" : "Logging In..."}
-                </Button>
-              </FormControl>
-            </Box>
+          <Grid item xs={12} style={{ marginTop: "1rem" }}>
+            <FormControl fullWidth>
+              <Button
+                onClick={handleLogin}
+                variant="contained"
+                color="primary"
+                disabled={loginStatus === 1}
+                fullWidth
+              >
+                {loginStatus === 0 ? "Login" : "Logging In..."}
+              </Button>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} style={{ marginTop: "1rem" }}>
+            <FormControl fullWidth>
+              <Button
+                onClick={() => {
+                  window.location.href = "/register";
+                }}
+                variant="outlined"
+                color="primary"
+                disabled={loginStatus === 1}
+                fullWidth
+              >
+                Register
+              </Button>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} style={{ marginTop: "1rem" }}>
+            <Typography
+              variant="body1"
+              color="textPrimary"
+              style={{ textAlign: "center" }}
+            >
+              or
+            </Typography>
+          </Grid>
+          <Grid item xs={12} style={{ marginTop: "1rem" }}>
+            <FormControl fullWidth>
+              <Button
+                onClick={() => {
+                  window.location.href = "/forgot-password";
+                }}
+                variant="text"
+                color="secondary"
+                disabled={loginStatus === 1}
+                fullWidth
+              >
+                Forgot Password
+              </Button>
+            </FormControl>
           </Grid>
         </Grid>
       </Box>
