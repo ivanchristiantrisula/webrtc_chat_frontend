@@ -60,6 +60,15 @@ const Email = (props: { handleSubmit: Function }) => {
         >
           Submit
         </Button>
+        <Button
+          variant="text"
+          color="primary"
+          onClick={() => (window.location.href = "/")}
+          fullWidth
+          style={{ marginTop: "0.5rem" }}
+        >
+          Back to login
+        </Button>
       </FormControl>
     </>
   );
