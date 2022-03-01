@@ -59,10 +59,15 @@ const Video = (props: { peer: any }) => {
   const ref = useRef<HTMLVideoElement>();
   const classes = useStyle();
 
+  const [isConnectionAlive, setIsConnectionAlive] = useState(false);
+
   useEffect(() => {
     props.peer.on("stream", (stream: any) => {
+      setIsConnectionAlive(true);
       ref.current.srcObject = stream;
     });
+
+    props.peer.on("close", (stream: any) => setIsConnectionAlive(false));
   }, []);
 
   const handleDoubleClick = () => {
@@ -70,12 +75,18 @@ const Video = (props: { peer: any }) => {
   };
 
   return (
-    <video
-      className={classes.video}
-      autoPlay
-      ref={ref}
-      onDoubleClick={handleDoubleClick}
-    />
+    <>
+      {isConnectionAlive ? (
+        <video
+          className={classes.video}
+          autoPlay
+          ref={ref}
+          onDoubleClick={handleDoubleClick}
+        />
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
@@ -189,8 +200,8 @@ export default (props: {
       userSocketsRef.current.findIndex((x) => x == sid),
       1
     );
-
-    setUserSockets(userSocketsRef.current);
+    // console.log(userSocketsRef.current);
+    // setUserSockets([...userSocketsRef.current]);
   };
 
   const requestMeetingMembers = () => {
