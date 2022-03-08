@@ -424,7 +424,7 @@ export default (props: { user: any }) => {
       />
 
       {/* hidden input file */}
-      <Box display="hidden">
+      <Box display="none">
         <input
           type="file"
           name=""
