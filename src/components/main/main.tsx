@@ -36,32 +36,66 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "none",
   },
 
+  root: {
+    minHeight: "100vh",
+    minWidth: "100vh",
+    backgroundColor: theme.palette.primary.main,
+  },
+
   sidebar: {
     backgroundColor: theme.palette.primary.main,
   },
 
-  friendlist: {
+  midContainer: {
     backgroundColor: "white",
-    width: "20rem",
+    width: "25rem",
+    borderRadius: "1rem 0rem 0rem 1rem",
+    borderColor: "transparent",
+    marginTop: "0.4rem",
+    marginBottom: "0.4rem",
   },
 
   chatContainer: {
     backgroundColor: "white",
+    borderRadius: "0rem 1rem 1rem 0rem",
+    marginRight: "0.5rem",
+    marginTop: "0.4rem",
+    marginBottom: "0.4rem",
     borderLeft: "solid #d7d9d7 1px",
   },
 
-  meeting: { backgroundColor: "white" },
+  meeting: {
+    backgroundColor: "white",
+    borderRadius: "1rem 1rem 1rem 1rem",
+    marginRight: "0.5rem",
+    marginTop: "0.4rem",
+    marginBottom: "0.4rem",
+  },
 
   findfriend: {
     backgroundColor: "white",
     width: "20rem",
+    borderRadius: "0rem 1rem 1rem 1rem",
+    marginRight: "0.5rem",
+    marginTop: "0.4rem",
+    marginBottom: "0.4rem",
   },
 
   personalitytest: {
     backgroundColor: "white",
+    borderRadius: "1rem 1rem 1rem 1rem",
+    marginRight: "0.5rem",
+    marginTop: "0.4rem",
+    marginBottom: "0.4rem",
   },
 
-  profile: { backgroundColor: "white" },
+  profile: {
+    backgroundColor: "white",
+    borderRadius: "1rem 1rem 1rem 1rem",
+    marginRight: "0.5rem",
+    marginTop: "0.4rem",
+    marginBottom: "0.4rem",
+  },
 }));
 
 const initState = {
@@ -462,7 +496,7 @@ const App = () => {
 
   return (
     <>
-      <Box height="100vh">
+      <Box className={classes.root}>
         <Grid container justify="center" style={{ height: "100vh" }}>
           <Grid style={{ width: "5rem" }} item className={classes.sidebar}>
             <Sidebar
@@ -474,7 +508,7 @@ const App = () => {
           </Grid>
           <Grid
             item
-            className={`${classes.friendlist} ${
+            className={`${classes.midContainer} ${
               openMenu != "friendlist" ? classes.hidden : ""
             }`}
           >
@@ -487,7 +521,7 @@ const App = () => {
           </Grid>
           <Grid
             item
-            className={`${classes.friendlist} ${
+            className={`${classes.midContainer} ${
               openMenu != "chatlist" ? classes.hidden : ""
             }`}
           >
@@ -499,7 +533,7 @@ const App = () => {
             />
           </Grid>
           {openMenu == "searchUser" ? (
-            <Grid item style={{ width: "20rem" }}>
+            <Grid item className={classes.midContainer}>
               <SearchUser />
             </Grid>
           ) : (
@@ -532,7 +566,7 @@ const App = () => {
               xs={openMenu == "personalitytest"}
               className={
                 openMenu == "findfriend"
-                  ? classes.findfriend
+                  ? classes.midContainer
                   : classes.personalitytest
               }
             >

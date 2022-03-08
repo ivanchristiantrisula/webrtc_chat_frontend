@@ -90,7 +90,9 @@ export default function (props: {
   return (
     <>
       <Box padding="1rem 1rem 0.5rem 1.5rem" marginBottom="0rem">
-        <Typography variant="h4">Friends</Typography>
+        <Typography variant="h4" style={{ fontWeight: "bolder" }}>
+          Friends
+        </Typography>
       </Box>
       <Box margin="1rem 1rem 1rem 1.5rem">
         <Typography variant="subtitle2" color="textSecondary">

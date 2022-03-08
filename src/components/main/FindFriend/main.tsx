@@ -8,6 +8,10 @@ import {
   IconButton,
   Typography,
   Link,
+  Grid,
+  FormGroup,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -21,6 +25,7 @@ export default () => {
   let [openProfileCard, setOpenProfileCard] = useState(false);
   let [cardAnchorEl, setCardAnchorEl] = useState<HTMLDivElement>();
   let [openResultDialog, setOpenResultDialog] = useState(false);
+  let [reccomenderMethod, setReccomenderMethod] = useState("advance");
 
   useEffect(() => {
     axios
@@ -36,6 +41,8 @@ export default () => {
         console.log(error);
       });
   }, []);
+
+  useEffect(() => {}, [reccomenderMethod]);
 
   const handleClickUserCard =
     (user: any) => (e: React.MouseEvent<HTMLDivElement>) => {
@@ -60,6 +67,14 @@ export default () => {
         console.log(error);
       });
   };
+
+  const switchReccomenderMode = () => {
+    if (reccomenderMethod == "advance") {
+      setReccomenderMethod("simple");
+    } else if (reccomenderMethod == "simple") {
+      setReccomenderMethod("advance");
+    }
+  };
   return (
     <>
       <ProfileCard
@@ -72,15 +87,39 @@ export default () => {
       />
       <Box>
         <Box padding="1rem 1rem 0rem 1.5rem">
-          <Typography variant="h4">Friend Finder</Typography>
+          <Typography variant="h4" style={{ fontWeight: "bolder" }}>
+            Friend Finder
+          </Typography>
         </Box>
         <Box padding="1rem 1rem 1rem 1.5rem" marginBottom="1rem">
-          <Typography variant="body1" color="textSecondary">
-            Your MBTI :{" "}
-            <Link onClick={() => setOpenResultDialog(true)}>
-              {getUserInfo().friendFinderProfile.MBTI}
-            </Link>
-          </Typography>
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography variant="body1" color="textPrimary">
+                MBTI :{" "}
+                <Link onClick={() => setOpenResultDialog(true)}>
+                  {getUserInfo().friendFinderProfile.MBTI}
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={reccomenderMethod == "advance" ? true : false}
+                      onChange={switchReccomenderMode}
+                      name="reccomenderSwitch"
+                      color="primary"
+                    />
+                  }
+                  label={
+                    reccomenderMethod[0].toUpperCase() +
+                    reccomenderMethod.slice(1)
+                  }
+                />
+              </FormGroup>
+            </Grid>
+          </Grid>
         </Box>
         {users.map((user, i) => {
           if (user) {

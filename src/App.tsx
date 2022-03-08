@@ -6,19 +6,26 @@ import LandingPage from "./components/landing/";
 import RegisterPage from "./components/register/";
 import MainPage from "./components/main/main";
 import {
-  createMuiTheme,
+  createTheme,
   makeStyles,
   Snackbar,
   ThemeProvider,
 } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import AdminPage from "./components/admin";
-import ForgotPasswordPage from "./components/main/ForgotPassword";
-import VerifyEmailPage from "./components/main/VerifyEmail";
+import ForgotPasswordPage from "./components/main/ForgotPassword/";
+import VerifyEmailPage from "./components/main/VerifyEmail/";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
-    type: "light",
+    secondary: {
+      main: "#112D4E",
+      light: "#112D4E",
+    },
+    primary: {
+      main: "#3F72AF",
+      light: "#3F72AF",
+    },
   },
 });
 const useStyles = makeStyles({

@@ -50,7 +50,9 @@ export default function (props: any) {
   return (
     <>
       <Box padding="1rem 1rem 1rem 1.5rem" marginBottom="1rem">
-        <Typography variant="h4">Chats</Typography>
+        <Typography variant="h4" style={{ fontWeight: "bolder" }}>
+          Chats
+        </Typography>
       </Box>
       {Object.keys(props.chats).map((keyName, i) => {
         let matchedSocketID = "";

@@ -10,6 +10,9 @@ import {
   FormControl,
   Typography,
   Box,
+  FormLabel,
+  FormHelperText,
+  Button,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
@@ -26,11 +29,7 @@ require("dotenv").config();
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      backgroundColor: "white",
-      broderRight: "solid black 1px",
-      height: "100vh",
-    },
+    root: {},
     paper: {
       position: "absolute",
       width: 400,
@@ -179,18 +178,22 @@ export default () => {
           </Grid>
         </Grid>
       </div> */}
-      <Card
-        className={classes.findUserBox}
-        onClick={() => {
-          setOpenSearchUserModal(true);
-        }}
-      >
-        <CardHeader
-          avatar={<SearchIcon />}
-          title="Find User"
-          style={{ backgroundColor: "transparent" }}
-        />
-      </Card>
+
+      <Box padding="1rem 1rem 0rem 1.5rem" marginBottom="1.5rem">
+        <Typography variant="h4" style={{ fontWeight: "bolder" }}>
+          Search
+        </Typography>
+      </Box>
+      <FormControl style={{ width: "90%", padding: "1rem 0rem 0rem 1rem" }}>
+        <Button
+          variant="contained"
+          startIcon={<SearchIcon />}
+          color="primary"
+          onClick={() => setOpenSearchUserModal(true)}
+        >
+          Search User
+        </Button>
+      </FormControl>
 
       <div>
         <Box margin="1rem 1rem 1rem 1rem">
