@@ -206,7 +206,7 @@ export default () => {
           ? pendings.map((obj) => {
               return (
                 <UserCardInvite
-                  user={obj.user2}
+                  user={obj.user1}
                   accept={handleAcceptFriendReq}
                   reject={handleRejectFriendReq}
                   inviteID={obj.id}
