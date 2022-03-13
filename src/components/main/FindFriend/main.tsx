@@ -31,18 +31,15 @@ export default () => {
     axios
       .get(
         process.env.REACT_APP_BACKEND_URI +
-          `/user/getFriendsRecommendation?token=${getToken()}`
+          `/user/getFriendsRecommendation?token=${getToken()}&mode=${reccomenderMethod}`
       )
       .then((res) => {
-        console.log(res.data);
         setUsers(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  useEffect(() => {}, [reccomenderMethod]);
+  }, [reccomenderMethod]);
 
   const handleClickUserCard =
     (user: any) => (e: React.MouseEvent<HTMLDivElement>) => {
