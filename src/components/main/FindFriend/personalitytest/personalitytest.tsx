@@ -143,7 +143,7 @@ export default () => {
   const classes = useStyles();
   const [questionType, setQuestionType] = useState("adult");
   const [questions, setQuestions] = useState(
-    require("./new_questions.json")[questionType].questions
+    require("./questions.json")[questionType].questions
   );
   const [answers, setAnswers] = useState([]);
   const [currQuestionNum, setCurrQuestionNum] = useState(0);
