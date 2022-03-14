@@ -5,6 +5,7 @@ import {
   Grid,
   makeStyles,
   Theme,
+  Typography,
 } from "@material-ui/core";
 import AirplayIcon from "@material-ui/icons/Airplay";
 import VideoLabelIcon from "@material-ui/icons/VideoLabel";
@@ -62,10 +63,13 @@ export default (props: {
   handleMuteAudio: Function;
   handleScreenShare: Function;
   handleWhiteboard: Function;
+  whiteboardMode: boolean;
+  sceensharingMode: boolean;
 }) => {
   const classes = useStyle();
   const [video, setVideo] = useState(true);
   const [audio, setAudio] = useState(true);
+
   return (
     <>
       <Grid className={classes.gridParent} container justify="center">
@@ -79,6 +83,7 @@ export default (props: {
               <AirplayIcon
                 fontSize="large"
                 onClick={() => props.handleScreenShare()}
+                color={props.whiteboardMode ? "disabled" : "inherit"}
               />
               Screen Share
             </Box>
@@ -88,7 +93,10 @@ export default (props: {
               }`}
               onClick={() => props.handleWhiteboard()}
             >
-              <VideoLabelIcon fontSize="large" />
+              <VideoLabelIcon
+                fontSize="large"
+                color={props.sceensharingMode ? "disabled" : "inherit"}
+              />
               Whiteboard
             </Box>
           </Box>
@@ -105,12 +113,16 @@ export default (props: {
               {audio ? (
                 <>
                   <MicIcon fontSize="large" />
-                  Disable Audio
+                  <Typography variant="body1" color="textPrimary">
+                    Disable Mic
+                  </Typography>
                 </>
               ) : (
                 <>
-                  <MicOffIcon fontSize="large" />
-                  Enable Audio
+                  <MicOffIcon fontSize="large" color="error" />
+                  <Typography variant="body1" color="error">
+                    Enable Mic
+                  </Typography>
                 </>
               )}
             </Box>
@@ -131,12 +143,14 @@ export default (props: {
               {video ? (
                 <>
                   <VideocamIcon fontSize="large" />
-                  Disable Video
+                  <Typography variant="body1">Disable Video</Typography>
                 </>
               ) : (
                 <>
-                  <VideocamOffIcon fontSize="large" />
-                  Enable Video
+                  <VideocamOffIcon fontSize="large" color="error" />
+                  <Typography variant="body1" color="error">
+                    Enable Video
+                  </Typography>
                 </>
               )}
             </Box>

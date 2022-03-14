@@ -18,6 +18,9 @@ import {
   Avatar,
   IconButton,
 } from "@material-ui/core";
+import axios from "axios";
+import { getToken } from "../../../helper/localstorage";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles({
   root: {
@@ -33,16 +36,37 @@ export default function ProfileCard(props: {
   user: any;
   isUserFriend?: boolean;
   addFriendHandler?: Function;
+  blockUserHandler?: Function;
   anchor: HTMLDivElement;
   open: boolean;
   handleClose: Function;
 }) {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClickAway = () => {
     if (props.open) {
       props.handleClose();
     }
+  };
+
+  const blockUser = () => {
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/blockUser`, {
+        token: getToken(),
+        target: props.user.id,
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          enqueueSnackbar(`${props.user.name} has been blocked!`, {
+            variant: "info",
+          });
+          props.blockUserHandler(props.user.id);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -116,7 +140,11 @@ export default function ProfileCard(props: {
                 </CardActionArea>
                 <CardActions>
                   <Box display={props.isUserFriend ? "none" : "block"}>
-                    <Button size="small" color="secondary">
+                    <Button
+                      size="small"
+                      color="secondary"
+                      onClick={() => blockUser()}
+                    >
                       Block
                     </Button>
                     <Button

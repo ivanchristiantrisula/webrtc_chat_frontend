@@ -607,7 +607,7 @@ const App = () => {
                 addChatFromSender={(data: any) => {
                   addChatFromSender(data);
                 }}
-                users={onlineFriends}
+                users={allUsers}
                 sendForward={forwardChat}
                 myInfo={allUsers[userSocketID]}
               />

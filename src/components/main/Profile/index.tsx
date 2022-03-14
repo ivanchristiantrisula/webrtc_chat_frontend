@@ -261,7 +261,7 @@ const BlocksDialog = (props: { open: boolean; handleClose: Function }) => {
       })
       .then((res) => {
         if (res.status == 200) {
-          setUsers([...users.filter((user) => user.id == target)]);
+          setUsers([...users.filter((user) => user.id != target.id)]);
           enqueueSnackbar(`${target.name} has been unblocked!`, {
             variant: "info",
           });

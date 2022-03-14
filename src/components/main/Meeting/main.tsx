@@ -327,7 +327,7 @@ export default (props: {
         .getDisplayMedia({ audio: false, video: true })
         .then((stream: MediaStream) => {
           screenShareRef.current = stream;
-
+          setIsScreensharing(true);
           Object.keys(peersRef.current).forEach((element: any) => {
             console.log(element);
             if (peersRef.current[element] !== null) {
@@ -340,14 +340,15 @@ export default (props: {
           });
 
           stream.getVideoTracks()[0].onended = () => endScreenShare();
-        });
-      setIsScreensharing(true);
+        })
+        .catch(() => {});
     } else {
       endScreenShare();
     }
   };
 
   const endScreenShare = () => {
+    if (!isScreensharing) return;
     screenShareRef.current.getVideoTracks()[0].stop();
     Object.keys(peersRef.current).forEach((element: any) => {
       if (peersRef.current[element] !== null) {
@@ -448,6 +449,8 @@ export default (props: {
             handleMuteAudio={toggleAudio}
             handleScreenShare={toggleScreenShare}
             handleWhiteboard={toggleWhiteboard}
+            whiteboardMode={whiteboardMode}
+            sceensharingMode={isScreensharing}
           />
         </Box>
       </Box>

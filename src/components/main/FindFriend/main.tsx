@@ -14,6 +14,7 @@ import {
   Switch,
 } from "@material-ui/core";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { getToken, getUserInfo } from "../../../helper/localstorage";
 import ProfileCard from "../ProfileCard";
@@ -26,6 +27,8 @@ export default () => {
   let [cardAnchorEl, setCardAnchorEl] = useState<HTMLDivElement>();
   let [openResultDialog, setOpenResultDialog] = useState(false);
   let [reccomenderMethod, setReccomenderMethod] = useState("advance");
+
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     axios
@@ -57,7 +60,10 @@ export default () => {
       .then((res) => {
         if (res.data.error) alert(res.data.error);
         if (res.status == 200) {
-          alert("sukses add friend");
+          setUsers([...users.filter((user) => user.id != id)]);
+          enqueueSnackbar(`Friend invitation sent!`, {
+            variant: "info",
+          });
         }
       })
       .catch((error) => {
@@ -81,6 +87,9 @@ export default () => {
         open={openProfileCard}
         anchor={cardAnchorEl}
         handleClose={() => setOpenProfileCard(false)}
+        blockUserHandler={(target: string) => {
+          setUsers([...users.filter((user) => user.id != target)]);
+        }}
       />
       <Box>
         <Box padding="1rem 1rem 0rem 1.5rem">
