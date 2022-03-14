@@ -239,9 +239,10 @@ export default (props: { refreshFriendlist: Function }) => {
                 return (
                   <UserCard
                     user={obj}
-                    addFriend={(user: any) => {
+                    action={(user: any) => {
                       addFriend(user);
                     }}
+                    actionName="Add"
                   />
                 );
             })}

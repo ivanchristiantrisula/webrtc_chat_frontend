@@ -34,6 +34,9 @@ import { TextFormat, Visibility, VisibilityOff } from "@material-ui/icons";
 import clsx from "clsx";
 import { InputFiles } from "typescript";
 import { getToken, getUserInfo } from "../../../helper/localstorage";
+import UserCard from "../SearchUser/UserCard";
+import Searchuser from "../SearchUser/searchuser";
+import { useSnackbar } from "notistack";
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -224,6 +227,80 @@ const ChangePasswordDialog = (props: {
   );
 };
 
+const BlocksDialog = (props: { open: boolean; handleClose: Function }) => {
+  const [users, setUsers] = useState([]);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    fetchBlockList();
+  }, []);
+
+  const fetchBlockList = () => {
+    axios
+      .get(
+        `${
+          process.env.REACT_APP_BACKEND_URI
+        }/user/getBlocks?token=${getToken()}`
+      )
+      .then((res) => {
+        if (res.status == 200) {
+          setUsers(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const unblock = (target: any) => {
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_URI}/user/unblock`, {
+        token: getToken(),
+        target: target.id,
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          setUsers([...users.filter((user) => user.id == target)]);
+          enqueueSnackbar(`${target.name} has been unblocked!`, {
+            variant: "info",
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  return (
+    <div>
+      <Dialog
+        open={props.open}
+        onClose={() => props.handleClose()}
+        scroll="paper"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+        fullWidth
+      >
+        <DialogTitle id="scroll-dialog-title" style={{ fontWeight: "bolder" }}>
+          Block List
+        </DialogTitle>
+        <DialogContent dividers={false}>
+          <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
+            {users.map((user: any) => (
+              <UserCard user={user} action={unblock} actionName={"Unblock"} />
+            ))}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => props.handleClose()} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
 const resetCookies = () => {
   let cookies = document.cookie.split(";");
 
@@ -243,6 +320,7 @@ export default (props: { user: any }) => {
   const [name, setName] = useState(props.user.name);
   const [bio, setBio] = useState(props.user.bio);
   const [openChangePassDialog, setOpenChangePassDialog] = useState(false);
+  const [openBlocksDialog, setOpenBlocksDialog] = useState(false);
 
   let nameInputRef = useRef<TextFieldProps>();
   let bioInputRef = useRef<TextFieldProps>();
@@ -323,6 +401,10 @@ export default (props: { user: any }) => {
     }
   };
 
+  const toggleBlocksDialog = () => {
+    setOpenBlocksDialog(!openBlocksDialog);
+  };
+
   return (
     <>
       <Container className={classes.root}>
@@ -385,16 +467,25 @@ export default (props: { user: any }) => {
                 inputRef={bioInputRef}
               />
             </Box>
-            <Box style={{ float: "right" }} width="100%"></Box>
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => {
-                setOpenChangePassDialog(true);
-              }}
-            >
-              Change Password
-            </Button>
+            <Box style={{ float: "right" }} width="100%">
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => {
+                  setOpenChangePassDialog(true);
+                }}
+                style={{ marginRight: "1rem" }}
+              >
+                Change Password
+              </Button>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => toggleBlocksDialog()}
+              >
+                Block List
+              </Button>
+            </Box>
           </Grid>
           <Grid item xs={12} style={{ height: "10%", float: "right" }}>
             <Box
@@ -422,6 +513,8 @@ export default (props: { user: any }) => {
           setOpenChangePassDialog(false);
         }}
       />
+
+      <BlocksDialog open={openBlocksDialog} handleClose={toggleBlocksDialog} />
 
       {/* hidden input file */}
       <Box display="none">

@@ -127,7 +127,7 @@ export default function (props: {
           setOpenContextMenu(false);
         }}
         handleClickRemoveFriend={unfriend}
-        handleClickBlockUser={() => {}}
+        handleClickBlockUser={blockUser}
       />
 
       <ProfileCard

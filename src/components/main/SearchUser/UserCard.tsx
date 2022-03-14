@@ -43,7 +43,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function (props: { user: any; addFriend: Function }) {
+export default function (props: {
+  user: any;
+  action: Function;
+  actionName: string;
+}) {
   const classes = useStyles();
 
   return (
@@ -56,10 +60,10 @@ export default function (props: { user: any; addFriend: Function }) {
               variant="outlined"
               color="primary"
               onClick={() => {
-                props.addFriend(props.user);
+                props.action(props.user);
               }}
             >
-              Add
+              {props.actionName}
             </Button>
           </IconButton>
         }
