@@ -22,6 +22,7 @@ import { makeStyles } from "@material-ui/styles";
 import ProfileMenu from "../Profile/menu";
 import PersonPinCircleIcon from "@material-ui/icons/PersonPinCircle";
 import { getUserInfo } from "../../../helper/localstorage";
+import RateReviewIcon from "@material-ui/icons/RateReview";
 
 const useStyles = makeStyles((theme: Theme) => ({
   open: {
@@ -211,6 +212,27 @@ function App(props: { user: any; openMenu: Function }) {
                 openMenu === "personalitytest" || openMenu === "findfriend"
                   ? classes.openIcon
                   : classes.icon
+              }
+              fontSize="large"
+            />
+          </ListItemIcon>
+        </ListItem>
+        <ListItem
+          button
+          className={`${openMenu === "review" ? classes.open : ""} ${
+            classes.iconContainer
+          }`}
+          onClick={() => {
+            window
+              .open("https://forms.gle/55KMv3Taa91vTF3S7", "_blank")
+              .focus();
+          }}
+        >
+          <ListItemIcon>
+            <RateReviewIcon
+              style={{ display: "block", margin: "auto", color: "#ECB753" }}
+              className={
+                openMenu === "review" ? classes.openIcon : classes.icon
               }
               fontSize="large"
             />
