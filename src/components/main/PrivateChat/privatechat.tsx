@@ -20,6 +20,7 @@ const useStyle = makeStyles(() =>
       minHeight: "100%",
       height: "100%",
       width: "100%",
+      maxHeight: "100vh",
     },
     topBar: {
       width: "100%",
@@ -29,7 +30,7 @@ const useStyle = makeStyles(() =>
       marginTop: "1rem",
       marginLeft: "1rem",
       marginRight: "1rem",
-      overflowY: "hidden",
+      overflowY: "auto",
       overflowX: "hidden",
     },
     chatContainer1: {

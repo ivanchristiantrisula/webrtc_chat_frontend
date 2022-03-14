@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default () => {
+export default (props: { refreshFriendlist: Function }) => {
   const classes = useStyles();
   let [users, setUsers] = useState([]);
   let [openSearchUserModal, setOpenSearchUserModal] = useState(false);
@@ -132,7 +132,7 @@ export default () => {
           variant: "info",
         });
 
-        window.location.reload();
+        props.refreshFriendlist();
       })
       .catch((error) => {
         console.log(error.response);

@@ -38,7 +38,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   root: {
     minHeight: "100vh",
-    minWidth: "100vh",
+    minWidth: "100wh",
+    maxHeight: "100vh",
+    maxWidth: "100wh",
+
     backgroundColor: theme.palette.primary.main,
   },
 
@@ -53,6 +56,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: "transparent",
     marginTop: "0.4rem",
     marginBottom: "0.4rem",
+    overflowY: "auto",
   },
 
   chatContainer: {
@@ -70,6 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: "0.5rem",
     marginTop: "0.4rem",
     marginBottom: "0.4rem",
+    overflowY: "auto",
   },
 
   findfriend: {
@@ -79,6 +84,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: "0.5rem",
     marginTop: "0.4rem",
     marginBottom: "0.4rem",
+    overflowY: "scroll",
   },
 
   personalitytest: {
@@ -534,7 +540,7 @@ const App = () => {
           </Grid>
           {openMenu == "searchUser" ? (
             <Grid item className={classes.midContainer}>
-              <SearchUser />
+              <SearchUser refreshFriendlist={fetchUserFriends} />
             </Grid>
           ) : (
             ""
