@@ -109,7 +109,7 @@ function App() {
       })
       .catch((error) => {
         // console.log(error.response.data.errors);
-        // setErrors(error.response.data.errors);
+        setErrors(["Invalid Credential"]);
         console.log(error);
       })
       .finally(() => {
