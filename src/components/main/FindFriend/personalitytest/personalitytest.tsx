@@ -305,7 +305,7 @@ export default () => {
     <Container className={classes.root}>
       <Box className={classes.progressContainer}>
         <LinearProgressWithLabel
-          value={(answers.length / (questions.length - 1)) * 100}
+          value={(answers.length / questions.length) * 100}
         />
       </Box>
       <Box className={classes.questionContainer}>
