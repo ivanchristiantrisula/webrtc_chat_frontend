@@ -256,7 +256,9 @@ const App = () => {
 
     socket.current.on("addToFriendlist", (newFriend: any) => {
       setFriends([...friends, newFriend]);
-      enqueueSnackbar(`${newFriend.name} accepted your friend request!`);
+      enqueueSnackbar(`${newFriend.name} accepted your friend request!`, {
+        variant: "info",
+      });
     });
 
     //close socket connection when tab is closed by user
