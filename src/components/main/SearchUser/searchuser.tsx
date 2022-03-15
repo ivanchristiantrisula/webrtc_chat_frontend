@@ -25,6 +25,7 @@ import UserCardInvite from "./UserCardInvite";
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
 import { useSnackbar } from "notistack";
 import { getToken } from "../../../helper/localstorage";
+import { Socket } from "socket.io-client";
 require("dotenv").config();
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default (props: { refreshFriendlist: Function }) => {
+export default (props: { refreshFriendlist: Function; socket: Socket }) => {
   const classes = useStyles();
   let [users, setUsers] = useState([]);
   let [openSearchUserModal, setOpenSearchUserModal] = useState(false);
@@ -133,6 +134,7 @@ export default (props: { refreshFriendlist: Function }) => {
         });
 
         props.refreshFriendlist();
+        props.socket.emit("notifyOtherToRefetch", { uid: target });
       })
       .catch((error) => {
         console.log(error.response);

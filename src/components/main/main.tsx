@@ -254,6 +254,10 @@ const App = () => {
       setOpenMenu("meeting");
     });
 
+    socket.current.on("addToFriendlist", (newFriend: {}) => {
+      setFriends([...friends, newFriend]);
+    });
+
     //close socket connection when tab is closed by user
     window.onbeforeunload = function () {
       socket.current.onclose = function () {}; // disable onclose handler first
@@ -540,7 +544,10 @@ const App = () => {
           </Grid>
           {openMenu == "searchUser" ? (
             <Grid item className={classes.midContainer}>
-              <SearchUser refreshFriendlist={fetchUserFriends} />
+              <SearchUser
+                refreshFriendlist={fetchUserFriends}
+                socket={socket.current}
+              />
             </Grid>
           ) : (
             ""
