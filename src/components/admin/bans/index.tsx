@@ -47,8 +47,26 @@ const useStyles = makeStyles((theme: Theme) =>
 const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState<boolean>(false);
+  const [detail, setDetail] = useState<any>();
+
+  useEffect(() => {
+    fetchReportDetail();
+  }, []);
 
   const handleExpandClick = () => setExpanded(!expanded);
+
+  const fetchReportDetail = () => {
+    axios
+      .get(
+        `${process.env.REACT_APP_BACKEND_URI}/report/getReportDetail?id=${props.user.banReportID}`
+      )
+      .then((res) => {
+        if (res.status === 200) setDetail(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const handleClick = () => {
     axios
@@ -76,82 +94,82 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
           title={props.user.name}
           subheader=""
         />
-        <CardContent>
-          {"Banned on : "}
-          <Typography variant="body2" color="textSecondary" component="p">
-            {new Date(props.user.bannedDate).toLocaleDateString()}{" "}
-            {new Date(props.user.bannedDate).toLocaleTimeString()}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
+        {detail == undefined ? (
+          "Fetching"
+        ) : (
+          <>
+            <CardContent>
+              <Box>
+                <Box width="100%" height="">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Box textAlign="left">Banned Date</Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box textAlign="right" fontWeight="fontWeightBold">
+                        {new Date(props.user.banDate).toLocaleString()}
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Box>
+              <Box>
+                <Box width="100%" height="">
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Box textAlign="left">Violation Type</Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box textAlign="right" fontWeight="fontWeightBold">
+                        {detail.category}
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Box>
+              <Box width="100%" height="">
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Box textAlign="left">Notes</Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Box textAlign="right" fontWeight="fontWeightBold">
+                      {detail.description}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
 
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Box>
-              <Box width="100%" height="">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <Box textAlign="left">Banned Date</Box>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Box textAlign="right" fontWeight="fontWeightBold">
-                      {new Date(props.user.bannedDate).toLocaleDateString()}{" "}
-                      {new Date(props.user.bannedDate).toLocaleTimeString()}
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-            <Box>
-              <Box width="100%" height="">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <Box textAlign="left">Violation Type</Box>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Box textAlign="right" fontWeight="fontWeightBold">
-                      {props.user.report[0].category}
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
-            <Box width="100%" height="">
-              <Grid container>
-                <Grid item xs={6}>
-                  <Box textAlign="left">Notes</Box>
-                </Grid>
-                <Grid item xs={6}>
-                  <Box textAlign="right" fontWeight="fontWeightBold">
-                    {}
-                  </Box>
-                </Grid>
-              </Grid>
-            </Box>
-            <Box>
-              <FormControl fullWidth>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleClick}
-                >
-                  Unban User
-                </Button>
-              </FormControl>
-            </Box>
-          </CardContent>
-        </Collapse>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Box>
+                  <FormControl fullWidth>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleClick}
+                    >
+                      Unban User
+                    </Button>
+                  </FormControl>
+                </Box>
+              </CardContent>
+            </Collapse>
+          </>
+        )}
       </Card>
     </>
   );

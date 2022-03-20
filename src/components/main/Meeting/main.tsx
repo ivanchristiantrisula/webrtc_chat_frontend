@@ -105,14 +105,13 @@ export default (props: {
   let whiteboardRef = useRef();
   let userSocketsRef = useRef([]);
   const [openUserPicker, setOpenUserPicker] = useState(false);
-  const [invitedUsers, setInvitedUsers] = useState({});
   const [userSockets, setUserSockets] = useState([]);
-  const [userStreamStatus, setUserStreamStatus] = useState(false);
   const [myStream, setMyStream] = useState<any>({});
   const [isScreensharing, setIsScreensharing] = useState(false);
   const [focusedOn, setFocusedOn] = useState("");
   const [whiteboardMode, setWhiteboardMode] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const [participantsInfo, setParticipantsInfo] = useState([]);
   //const [streams, setStreams] = useState([]);
 
   useEffect(() => {
@@ -120,25 +119,26 @@ export default (props: {
       //do something when user has responed meeting invitation
     });
 
-    props.socket.on("meetingMembers", (data: []) => {
+    props.socket.on("meetingMembers", (data: any) => {
       //remove user socket
-      data.splice(
-        data.findIndex((x) => x == props.userSocketID),
+      data.sockets.splice(
+        data.sockets.findIndex((x: any) => x == props.userSocketID),
         1
       );
 
       //connect to everyone
-      data.forEach((socket: any) => {
+      data.sockets.forEach((socket: any) => {
         peersRef.current[socket] = createPeer(socket, true);
       });
 
-      setUserSockets([...data]);
-      userSocketsRef.current = data;
+      setUserSockets([...data.sockets]);
+      userSocketsRef.current = data.sockets;
+      setParticipantsInfo(data.userDatas);
 
       //check if user just created the room
 
-      if (data.length === 0 && !props.isPrivate) {
-        data.length === 0 && setOpenUserPicker(true);
+      if (data.sockets.length === 0 && !props.isPrivate) {
+        data.sockets.length === 0 && setOpenUserPicker(true);
       }
     });
 
@@ -153,6 +153,7 @@ export default (props: {
           variant: "info",
         });
       }
+      setParticipantsInfo([...participantsInfo, userData]);
     });
 
     props.socket.on("meetingSDPTransfer", (data: any) => {
@@ -169,8 +170,12 @@ export default (props: {
       }
     });
 
-    props.socket.on("removeMeetingPeer", ({ socketID }) => {
+    props.socket.on("removeMeetingPeer", ({ socketID, userData }) => {
       removeMeetingMemberSocket(socketID);
+
+      setParticipantsInfo([
+        ...participantsInfo.filter((user) => user.id != userData.id),
+      ]);
     });
 
     props.socket.on("screenshareMode", ({ sid, status }) => {
@@ -451,6 +456,7 @@ export default (props: {
             handleWhiteboard={toggleWhiteboard}
             whiteboardMode={whiteboardMode}
             sceensharingMode={isScreensharing}
+            users={participantsInfo}
           />
         </Box>
       </Box>

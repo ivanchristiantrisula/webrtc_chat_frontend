@@ -217,7 +217,7 @@ function App(props: { user: any; openMenu: Function }) {
             />
           </ListItemIcon>
         </ListItem>
-        <ListItem
+        {/* <ListItem
           button
           className={`${openMenu === "review" ? classes.open : ""} ${
             classes.iconContainer
@@ -237,7 +237,7 @@ function App(props: { user: any; openMenu: Function }) {
               fontSize="large"
             />
           </ListItemIcon>
-        </ListItem>
+        </ListItem> */}
         <ListItem
           button
           className={`${openMenu === "profile" ? classes.open : ""} ${

@@ -20,7 +20,7 @@ import {
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
 import axios from "axios";
 import { report } from "process";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getToken } from "../../../helper/localstorage";
 import ChatBubble from "../../main/ChatBubble/ChatBubble";
 
@@ -38,7 +38,7 @@ const ReportInformation = (props: { report: any }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Box textAlign="left" fontWeight="fontWeightBold">
-                    {props.report.reporter}
+                    {props.report.reporter.id}
                   </Box>
                 </Grid>
               </Grid>
@@ -50,7 +50,7 @@ const ReportInformation = (props: { report: any }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Box textAlign="left" fontWeight="fontWeightBold">
-                    {props.report.reportee}
+                    {props.report.reportee.id}
                   </Box>
                 </Grid>
               </Grid>
@@ -106,9 +106,9 @@ const ReportProof = (props: { report: any }) => {
         <CardHeader title="Proof" subheader="" />
         <CardContent>
           <Box>
-            {props.report.proof.map((element: any, idx: number) => {
+            {JSON.parse(props.report.proof).map((element: any, idx: number) => {
               return (
-                <ChatBubble data={element} userID={props.report.reported} />
+                <ChatBubble data={element} userID={element.senderInfo.id} />
               );
             })}
           </Box>
@@ -125,8 +125,8 @@ const ReportAction = (props: { report: any }) => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/report/closeReport`, {
         reportID: props.report.id,
-        reporterID: props.report.reporter,
-        reporteeID: props.report.reportee,
+        reporterID: props.report.reporter.id,
+        reporteeID: props.report.reportee.id,
         banReportee: ban,
         token: getToken(),
       })
@@ -159,7 +159,7 @@ const ReportAction = (props: { report: any }) => {
               <MenuItem value={1}>Ban User</MenuItem>
               <MenuItem value={0}>Do Nothing</MenuItem>
             </Select>
-            <FormHelperText>Some important helper text</FormHelperText>
+            <FormHelperText></FormHelperText>
           </FormControl>
           <FormControl fullWidth>
             <Button
@@ -178,6 +178,9 @@ const ReportAction = (props: { report: any }) => {
 };
 
 const DetailReport = (props: { report: any }) => {
+  useEffect(() => {
+    console.log(props.report);
+  });
   return (
     <Container>
       <Grid container spacing={5}>

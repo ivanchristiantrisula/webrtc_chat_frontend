@@ -1,11 +1,16 @@
 import {
   Box,
+  Button,
   ButtonBase,
   createStyles,
   Grid,
   makeStyles,
+  Popover,
   Theme,
   Typography,
+  CardHeader,
+  Avatar,
+  IconButton,
 } from "@material-ui/core";
 import AirplayIcon from "@material-ui/icons/Airplay";
 import VideoLabelIcon from "@material-ui/icons/VideoLabel";
@@ -15,7 +20,8 @@ import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import CallEndIcon from "@material-ui/icons/CallEnd";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import { useState } from "react";
+import PeopleIcon from "@material-ui/icons/People";
+import { useRef, useState } from "react";
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,6 +60,44 @@ const useStyle = makeStyles((theme: Theme) =>
   })
 );
 
+const ParticipantsPopover = (props: {
+  open: boolean;
+  handleClose: Function;
+  anchor: HTMLDivElement;
+  users: [any];
+}) => {
+  return (
+    <div>
+      <Popover
+        id={props.open ? "simple-popover" : undefined}
+        open={props.open}
+        anchorEl={props.anchor}
+        onClose={() => props.handleClose()}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <li>
+          {props.users.map((user) => (
+            <ul>
+              <CardHeader
+                avatar={<Avatar aria-label="" src={user.profilepicture} />}
+                title={user.name}
+                subheader=""
+              />
+            </ul>
+          ))}
+        </li>
+      </Popover>
+    </div>
+  );
+};
+
 export default (props: {
   meetingID: string;
   isPrivate: boolean;
@@ -65,10 +109,16 @@ export default (props: {
   handleWhiteboard: Function;
   whiteboardMode: boolean;
   sceensharingMode: boolean;
+  users: any;
 }) => {
   const classes = useStyle();
   const [video, setVideo] = useState(true);
   const [audio, setAudio] = useState(true);
+  const participantsAnchor = useRef<HTMLDivElement>();
+  const [showParticipants, setShowParticipants] = useState(false);
+
+  const toggleParticipantsPopover = () =>
+    setShowParticipants(!showParticipants);
 
   return (
     <>
@@ -158,6 +208,16 @@ export default (props: {
         </Grid>
         <Grid item xs={2} className={classes.gridItems}>
           <Box display="flex" className={classes.midSection}>
+            <div
+              className={`${classes.iconContainer} ${
+                props.isPrivate && classes.hidden
+              }`}
+              onClick={() => toggleParticipantsPopover()}
+              ref={participantsAnchor}
+            >
+              <PeopleIcon fontSize="large" />
+              Participants
+            </div>
             <Box
               className={`${classes.iconContainer} ${
                 props.isPrivate && classes.hidden
@@ -180,6 +240,13 @@ export default (props: {
           </Box>
         </Grid>
       </Grid>
+
+      <ParticipantsPopover
+        open={showParticipants}
+        handleClose={toggleParticipantsPopover}
+        anchor={participantsAnchor.current}
+        users={props.users}
+      />
     </>
   );
 };
