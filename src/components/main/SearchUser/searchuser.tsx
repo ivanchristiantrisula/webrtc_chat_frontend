@@ -109,6 +109,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
           enqueueSnackbar(`Friend request sent to ${user.name}`, {
             variant: "info",
           });
+          props.socket.emit("notifyFriendInvitationToTarget", { uid: user.id });
         }
       })
       .catch((error) => {

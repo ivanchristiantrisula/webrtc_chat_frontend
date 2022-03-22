@@ -80,7 +80,8 @@ export default function (props: {
       let typeSplit = props.data.type.split("/");
       if (typeSplit[0] == "image") {
         try {
-          return <img src={URL.createObjectURL(props.data.file)}></img>;
+          let src = URL.createObjectURL(props.data.file);
+          return <img src={src} onClick={() => window.open(src)} />;
         } catch {
           return "Media not available";
         }

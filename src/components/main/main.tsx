@@ -158,6 +158,7 @@ const App = () => {
     if (!_.isEmpty(chats)) {
       saveChatToDB();
     }
+    console.log(chats);
   }, [chats]);
 
   const checkWebRTCSupport = () => {
@@ -261,6 +262,12 @@ const App = () => {
       });
     });
 
+    socket.current.on("checkFriendInvitations", (data: { name: string }) => {
+      enqueueSnackbar(`${data.name} sent you a friend request!`, {
+        variant: "info",
+      });
+    });
+
     //close socket connection when tab is closed by user
     window.onbeforeunload = function () {
       socket.current.onclose = function () {}; // disable onclose handler first
@@ -351,10 +358,10 @@ const App = () => {
         if (data.type === "file") {
           if (data.done) {
             let x = chats;
-            if (x[socketid] === undefined) {
-              x[socketid] = new Array(data);
+            if (x[data.senderInfo.id] === undefined) {
+              x[data.senderInfo.id] = new Array(data);
             } else {
-              x[socketid].push(data);
+              x[data.senderInfo.id].push(data);
             }
             setChats({ ...x });
             download(socketid, data.name);
