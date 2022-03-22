@@ -8,6 +8,7 @@ import FriendlistContextMenu from "./ContextMenu";
 import ProfileCard from "../ProfileCard";
 import { getToken } from "../../../helper/localstorage";
 import { useSnackbar } from "notistack";
+import { Socket } from "socket.io-client";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,6 +27,7 @@ export default function (props: {
   setPrivateChatTarget: Function;
   userID: string;
   handleUnfriend: Function;
+  socket: Socket;
 }) {
   //function openChatChannel(uid: string) {}
   const classes = useStyles();
@@ -67,7 +69,12 @@ export default function (props: {
         if (res.status === 200) {
           //TODO : remove from friendlist state array
           props.handleUnfriend();
-          enqueueSnackbar("User removed from friendlist");
+          enqueueSnackbar("User removed from friendlist", {
+            variant: "info",
+          });
+          props.socket.emit("notifyOtherToRemoveFriendlist", {
+            uid: selectedID.current,
+          });
         }
       })
       .catch((err) => {
@@ -83,7 +90,12 @@ export default function (props: {
       })
       .then((res) => {
         props.handleUnfriend();
-        enqueueSnackbar("User blocked!");
+        enqueueSnackbar("User blocked!", {
+          variant: "info",
+        });
+        props.socket.emit("notifyOtherToRemoveFriendlist", {
+          uid: selectedID.current,
+        });
       });
   };
 

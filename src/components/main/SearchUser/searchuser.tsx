@@ -135,7 +135,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
         });
 
         props.refreshFriendlist();
-        props.socket.emit("notifyOtherToRefetch", { uid: target });
+        props.socket.emit("notifyOtherToAddFriendlist", { uid: target });
       })
       .catch((error) => {
         console.log(error.response);

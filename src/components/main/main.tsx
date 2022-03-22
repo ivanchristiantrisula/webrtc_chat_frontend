@@ -268,6 +268,15 @@ const App = () => {
       });
     });
 
+    socket.current.on("removeFromFriendlist", (userData: any) => {
+      // enqueueSnackbar(`${userData.name} removed you from their friendlist!`, {
+      //   variant: "info",
+      // });
+      let x = { ...onlineFriends };
+      x = Object.keys(x).filter((key) => x[key].id !== userData.id);
+      setOnlineFriends(x);
+    });
+
     //close socket connection when tab is closed by user
     window.onbeforeunload = function () {
       socket.current.onclose = function () {}; // disable onclose handler first
@@ -537,6 +546,7 @@ const App = () => {
               userID={userSocketID}
               setPrivateChatTarget={(e: any) => startPeerConnection(e)}
               handleUnfriend={fetchUserFriends}
+              socket={socket.current}
             />
           </Grid>
           <Grid
