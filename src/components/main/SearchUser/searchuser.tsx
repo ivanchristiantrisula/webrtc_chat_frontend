@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
       border: "solid #d7d9d7 1px",
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
+      overflowY: "scroll",
     },
     findUserBox: {
       backgroudColor: theme.palette.background.paper,
@@ -225,7 +226,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
           setOpenSearchUserModal(false);
         }}
       >
-        <div className={classes.paper}>
+        <Box className={classes.paper}>
           <h2 id="simple-modal-title">Find user</h2>
           <FormControl fullWidth>
             <TextField
@@ -236,7 +237,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
             />
           </FormControl>
 
-          <div>
+          <Box>
             {users.map((obj, idx) => {
               if (!_.isEmpty(obj))
                 return (
@@ -249,8 +250,8 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
                   />
                 );
             })}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Modal>
     </div>
   );

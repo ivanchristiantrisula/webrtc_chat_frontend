@@ -11,6 +11,8 @@ import {
   ClickAwayListener,
   Card,
   CardContent,
+  IconButton,
+  CardHeader,
 } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
@@ -63,8 +65,11 @@ export default function (props: {
   return (
     <>
       <ClickAwayListener onClickAway={closePopper}>
-        <div style={{ height: "auto" }} ref={rootAnchorRef}>
-          <Card className={classes.root}>
+        <div
+          style={{ height: "auto", padding: "0.5rem 1rem 0.5rem 1rem" }}
+          ref={rootAnchorRef}
+        >
+          {/* <Card className={classes.root}>
             <CardContent>
               <Grid container spacing={1} alignItems="center">
                 <Grid item xs={2} className={classes.avatar}>
@@ -80,32 +85,43 @@ export default function (props: {
                     {props.user.name}
                   </ButtonBase>
                 </Grid>
+              </Grid>
+            </CardContent>
+          </Card> */}
+          <Card>
+            <CardHeader
+              avatar={<Avatar aria-label="" src={props.user.profilepicture} />}
+              action={
                 <Grid>
                   <Grid container direction="row" alignItems="center">
                     <Grid item>
-                      <Box
+                      <IconButton
+                        color="primary"
+                        component="span"
                         onClick={() => {
                           props.accept(props.user.id);
                         }}
-                        color="green"
                       >
-                        <CheckIcon fontSize="large" />
-                      </Box>
+                        <CheckIcon fontSize="large" htmlColor="green" />
+                      </IconButton>
                     </Grid>
                     <Grid item>
-                      <Box
+                      <IconButton
+                        color="primary"
+                        component="span"
                         onClick={() => {
                           props.reject(props.user.id);
                         }}
-                        color="red"
                       >
-                        <ClearIcon fontSize="large" />
-                      </Box>
+                        <ClearIcon fontSize="large" color="error" />
+                      </IconButton>
                     </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </CardContent>
+              }
+              title={props.user.name}
+              subheader=""
+            />
           </Card>
         </div>
       </ClickAwayListener>

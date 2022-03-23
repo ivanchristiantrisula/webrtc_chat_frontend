@@ -524,6 +524,7 @@ export default (props: { user: any }) => {
           id="changeAvatarInput"
           ref={fileInputRef}
           onChange={handleImageSelected}
+          accept="image/png, image/gif, image/jpeg"
         />
       </Box>
     </>

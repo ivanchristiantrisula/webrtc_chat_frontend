@@ -89,11 +89,13 @@ export default function ProfileCard(props: {
                   }
                 />
                 <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    title="Contemplative Reptile"
-                    image={props.user.profilepicture}
-                  />
+                  <Box onClick={() => window.open(props.user.profilepicture)}>
+                    <CardMedia
+                      className={classes.media}
+                      image={props.user.profilepicture}
+                    />
+                  </Box>
+
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {props.user.name}
