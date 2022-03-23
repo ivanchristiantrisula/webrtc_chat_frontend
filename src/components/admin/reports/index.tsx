@@ -53,7 +53,7 @@ export default function AdminReports(props: { openReportDetail: Function }) {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 

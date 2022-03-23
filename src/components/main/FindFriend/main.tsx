@@ -40,7 +40,7 @@ export default () => {
         setUsers(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }, [reccomenderMethod]);
 
@@ -67,7 +67,7 @@ export default () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 

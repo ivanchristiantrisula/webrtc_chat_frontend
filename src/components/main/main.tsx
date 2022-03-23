@@ -158,7 +158,6 @@ const App = () => {
     if (!_.isEmpty(chats)) {
       saveChatToDB();
     }
-    console.log(chats);
   }, [chats]);
 
   const checkWebRTCSupport = () => {
@@ -295,7 +294,6 @@ const App = () => {
   };
 
   const handleReceivingMeetingInvitation = (data: any) => {
-    console.log(data);
     setMeetingData({
       id: data.meetingID,
       isPrivate: data.purpose == "private" ? true : false,

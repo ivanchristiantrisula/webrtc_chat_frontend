@@ -129,14 +129,13 @@ const ChangePasswordDialog = (props: {
         token: getToken(),
       })
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           resetCookies();
           window.location.href = "/";
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
   return (
@@ -249,7 +248,7 @@ const BlocksDialog = (props: { open: boolean; handleClose: Function }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -268,7 +267,7 @@ const BlocksDialog = (props: { open: boolean; handleClose: Function }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
   return (
@@ -350,7 +349,7 @@ export default (props: { user: any }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -397,7 +396,6 @@ export default (props: { user: any }) => {
       }
     } catch (error) {
       alert("error upload image");
-      console.log();
     }
   };
 

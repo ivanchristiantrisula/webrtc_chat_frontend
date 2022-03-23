@@ -28,7 +28,6 @@ function getUserInfo() {
 function setUserChatHistory(chats: any) {
   try {
     let userID = getUserInfo().id;
-    console.log(userID);
     let usersChats = {};
     if (localStorage.getItem("chats")) {
       usersChats = JSON.parse(

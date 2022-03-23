@@ -62,7 +62,6 @@ const Whiteboard = (props: { handleCaptureStream: Function }) => {
 
   const onDrawing = (event: MouseEvent) => {
     if (!drawing) return;
-    console.log(event.clientX);
 
     const ctx = canvas.current.getContext("2d");
 

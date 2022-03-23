@@ -214,7 +214,6 @@ export default (props: {
   };
 
   const createPeer = (socketID: string, isInitiator: boolean) => {
-    console.log(myStreamRef.current.srcObject);
     let peer = new Peer({
       initiator: isInitiator,
       trickle: true,
@@ -334,7 +333,6 @@ export default (props: {
           screenShareRef.current = stream;
           setIsScreensharing(true);
           Object.keys(peersRef.current).forEach((element: any) => {
-            console.log(element);
             if (peersRef.current[element] !== null) {
               peersRef.current[element].replaceTrack(
                 peersRef.current[element].streams[0].getVideoTracks()[0],

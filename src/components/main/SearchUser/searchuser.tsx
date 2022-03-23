@@ -68,10 +68,9 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
         }/user/getPendingFriends?token=${getToken()}`
       )
       .then((res) => {
-        console.log(res);
         setPendings(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }, []);
 
   useEffect(() => {
@@ -98,7 +97,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
         setUsers(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -149,7 +148,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
         props.socket.emit("notifyOtherToAddFriendlist", { uid: target });
       })
       .catch((error) => {
-        console.log(error.response);
+        console.error(error.response);
       });
   };
 

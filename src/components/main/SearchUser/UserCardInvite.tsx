@@ -121,6 +121,7 @@ export default function (props: {
               }
               title={props.user.name}
               subheader=""
+              onClick={() => toggleProfileCard()}
             />
           </Card>
         </div>

@@ -97,7 +97,6 @@ export default (props: propsInterface) => {
   }, []);
 
   const sendChatText = (text: string) => {
-    console.log(props);
     let payload = {
       senderInfo: props.myInfo,
       from: props.userSocketID,

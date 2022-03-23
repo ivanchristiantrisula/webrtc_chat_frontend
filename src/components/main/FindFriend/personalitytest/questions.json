@@ -78,6 +78,283 @@
           "a. Keep abreast of other’s happenings",
           "b. Get behind on the news"
         ]
+      },
+      {
+        "title": "16. In doing ordinary things are you more likely to:",
+        "selections": ["a. Do it the usual way", "b. Do it your own way"]
+      },
+      {
+        "title": "17. Writers should:",
+        "selections": [
+          "a. 'Say what they mean and mean what they say'",
+          "b. Express things more by use of analogy"
+        ]
+      },
+      {
+        "title": "18. Which appeals to you more:",
+        "selections": [
+          "a. Consistency of thought",
+          "b. Harmonious human relationships"
+        ]
+      },
+      {
+        "title": "19. Are you more comfortable in making:",
+        "selections": ["a. Logical judgments", "b. Value judgments"]
+      },
+      {
+        "title": "20. Do you want things:",
+        "selections": ["a. Settled and decided", "b. Unsettled and undecided"]
+      },
+      {
+        "title": "21. Would you say you are more:",
+        "selections": ["a. Serious and determined", "b. Easy-going"]
+      },
+      {
+        "title": "22. In phoning do you:",
+        "selections": [
+          "a. Rarely question that it will all be said",
+          "b. Rehearse what you’ll say"
+        ]
+      },
+      {
+        "title": "23. Facts:",
+        "selections": ["a. 'Speak for themselves'", "b. Illustrate principles"]
+      },
+      {
+        "title": "24. Are visionaries:",
+        "selections": ["a. somewhat annoying", "b. rather fascinating"]
+      },
+      {
+        "title": "25. Are you more often:",
+        "selections": ["a. a cool-headed person", "b. a warm-hearted person"]
+      },
+      {
+        "title": "26. Is it worse to be:",
+        "selections": ["a. unjust", "b. merciless"]
+      },
+      {
+        "title": "27. Should one usually let events occur:",
+        "selections": [
+          "a. by careful selection and choice",
+          "b. randomly and by chance"
+        ]
+      },
+      {
+        "title": "28. Do you feel better about:",
+        "selections": ["a. having purchased", "b. having the option to buy"]
+      },
+      {
+        "title": "29. In company do you:",
+        "selections": ["a. initiate conversation", "b. wait to be approached"]
+      },
+      {
+        "title": "30. Common sense is:",
+        "selections": ["a. rarely questionable", "b. frequently questionable"]
+      },
+      {
+        "title": "31. Children often do not:",
+        "selections": [
+          "a. make themselves useful enough",
+          "b. exercise their fantasy enough"
+        ]
+      },
+      {
+        "title": "32. In making decisions do you feel more comfortable with:",
+        "selections": ["a. standards", "b. feelings"]
+      },
+      {
+        "title": "33. Are you more:",
+        "selections": ["a. firm than gentle", "b. gentle than firm"]
+      },
+      {
+        "title": "34. Which is more admirable:",
+        "selections": [
+          "a. the ability to organize and be methodical",
+          "b. the ability to adapt and make do"
+        ]
+      },
+      {
+        "title": "35. Do you put more value on:",
+        "selections": ["a. infinite", "b. open-minded"]
+      },
+      {
+        "title": "36. Does new and non-routine interaction with others:",
+        "selections": ["a. stimulate and energize you", "b. tax your reserves"]
+      },
+      {
+        "title": "37. Are you more frequently:",
+        "selections": [
+          "a. a practical sort of person",
+          "b. a fanciful sort of person"
+        ]
+      },
+      {
+        "title": "38. Are you more likely to:",
+        "selections": ["a. see how others are useful", "b. see how others see"]
+      },
+      {
+        "title": "39. Which is more satisfying:",
+        "selections": [
+          "a. to discuss an issue thoroughly",
+          "b. to arrive at agreement on an issue"
+        ]
+      },
+      {
+        "title": "40. Which rules you more:",
+        "selections": ["a. your head", "b. your heart"]
+      },
+      {
+        "title": "41. Are you more comfortable with work that is:",
+        "selections": ["a. contracted", "b. done on a casual basis"]
+      },
+      {
+        "title": "42. Do you tend to look for:",
+        "selections": ["a. the orderly", "b. whatever turns up"]
+      },
+      {
+        "title": "43. Do you prefer:",
+        "selections": [
+          "a. many friends with brief contact",
+          "b. a few friends with more lengthy contact"
+        ]
+      },
+      {
+        "title": "44. Do you go more by:",
+        "selections": ["a. facts", "b. principles"]
+      },
+      {
+        "title": "45. Are you more interested in:",
+        "selections": [
+          "a. production and distribution",
+          "b. design and research"
+        ]
+      },
+      {
+        "title": "46. Which is more of a compliment:",
+        "selections": [
+          "a. “There is a very logical person.”",
+          "b. “There is a very sentimental person.”"
+        ]
+      },
+      {
+        "title": "47. Do you value in yourself more that you are:",
+        "selections": ["a. unwavering", "b. devoted"]
+      },
+      {
+        "title": "48. Do you more often prefer the",
+        "selections": [
+          "a. final and unalterable statement",
+          "b. tentative and preliminary statement"
+        ]
+      },
+      {
+        "title": "49. Are you more comfortable:",
+        "selections": ["a. after a decision", "b. before a decision"]
+      },
+      {
+        "title": "50. Do you:",
+        "selections": [
+          "a. speak easily and at length with strangers",
+          "b. find little to say to strangers"
+        ]
+      },
+      {
+        "title": "51. Are you more likely to trust your:",
+        "selections": ["a. experience", "b. hunch"]
+      },
+      {
+        "title": "52. Do you feel:",
+        "selections": [
+          "a. more practical than ingenious",
+          "b. more ingenious than practical"
+        ]
+      },
+      {
+        "title": "53. Which person is more to be complimented – one of:",
+        "selections": ["a. clear reason", "b. strong feeling"]
+      },
+      {
+        "title": "54. Are you inclined more to be:",
+        "selections": ["a. fair-minded", "b. sympathetic"]
+      },
+      {
+        "title": "55. Is it preferable mostly to:",
+        "selections": [
+          "a. make sure things are arranged",
+          "b. just let things happen"
+        ]
+      },
+      {
+        "title": "56. In relationships should most things be:",
+        "selections": ["a. re-negotiable", "b. random and circumstantial"]
+      },
+      {
+        "title": "57. When the phone rings do you:",
+        "selections": [
+          "a. hasten to get to it first",
+          "b. hope someone else will answer"
+        ]
+      },
+      {
+        "title": "58. Do you prize more in yourself:",
+        "selections": ["a. a strong sense of reality", "b. a vivid imagination"]
+      },
+      {
+        "title": "59. Are you drawn more to:",
+        "selections": ["a. fundamentals", "b. overtones"]
+      },
+      {
+        "title": "60. Which seems the greater error:",
+        "selections": ["a. to be too passionate", "b. to be too objective"]
+      },
+      {
+        "title": "61. Do you see yourself as basically:",
+        "selections": ["a. hard-headed", "b. soft-hearted"]
+      },
+      {
+        "title": "62. Which situation appeals to you more:",
+        "selections": [
+          "a. the structured and scheduled",
+          "b. the unstructured and unscheduled"
+        ]
+      },
+      {
+        "title": "63. Are you a person that is more:",
+        "selections": [
+          "a. routinized than whimsical",
+          "b. whimsical than routinized"
+        ]
+      },
+      {
+        "title": "64. Are you more inclined to be:",
+        "selections": ["a. easy to approach", "b. somewhat reserved"]
+      },
+      {
+        "title": "65. In writings do you prefer:",
+        "selections": ["a. the more literal", "b. the more figurative"]
+      },
+      {
+        "title": "66. Is it harder for you to:",
+        "selections": ["a. identify with others", "b. utilize others"]
+      },
+      {
+        "title": "67. Which do you wish more for yourself:",
+        "selections": ["a. clarity of reason", "b. strength of compassion"]
+      },
+      {
+        "title": "68. Which is the greater fault:",
+        "selections": ["a. being indiscriminate", "b. being critical"]
+      },
+      {
+        "title": "69. Do you prefer the:",
+        "selections": ["a. planned event", "b. unplanned event"]
+      },
+      {
+        "title": "70. Do you tend to be more:",
+        "selections": [
+          "a. deliberate than spontaneous",
+          "b. spontaneous than deliberate"
+        ]
       }
     ]
   }

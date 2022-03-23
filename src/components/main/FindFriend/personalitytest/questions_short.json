@@ -1,0 +1,84 @@
+{
+  "adult": {
+    "questions": [
+      {
+        "title": "1. At a party do you:",
+        "selections": [
+          "a. Interact with many, including strangers",
+          "b. Interact with a few, known to you"
+        ]
+      },
+      {
+        "title": "2. Are you more:",
+        "selections": [
+          "a. Realistic than speculative",
+          "b. Speculative than realistic"
+        ]
+      },
+      {
+        "title": "3. Is it worse to:",
+        "selections": [
+          "a. Out of touch with reality",
+          "b. Doing repetitive and boring stuff for long time"
+        ]
+      },
+      {
+        "title": "4. Are you more impressed by:",
+        "selections": ["a. Principles", "b. Emotions"]
+      },
+      {
+        "title": "5. Are more drawn toward the:",
+        "selections": ["a. Convincing", "b. Touching"]
+      },
+      {
+        "title": "6. Do you prefer to work:",
+        "selections": ["a. To deadlines", "b. Just “whenever”"]
+      },
+      {
+        "title": "7. Do you tend to choose:",
+        "selections": ["a. Rather carefully", "b. Somewhat impulsively"]
+      },
+      {
+        "title": "8. At parties do you:",
+        "selections": [
+          "a. Stay late, with increasing energy",
+          "b. Leave early with decreased energy"
+        ]
+      },
+      {
+        "title": "9. Are you more attracted to:",
+        "selections": ["a. Sensible people", "b. Imaginative people"]
+      },
+      {
+        "title": "10. Are you more interested in:",
+        "selections": ["a. What is actual", "b. What is possible"]
+      },
+      {
+        "title": "11. In judging others are you more swayed by:",
+        "selections": [
+          "a. Laws than circumstances",
+          "b. Circumstances than laws"
+        ]
+      },
+      {
+        "title": "12. In approaching others is your inclination to be somewhat:",
+        "selections": ["a. Objective", "b. Personal"]
+      },
+      {
+        "title": "13. Are you more:",
+        "selections": ["a. Punctual", "b. Leisurely"]
+      },
+      {
+        "title": "14. Does it bother you more having things:",
+        "selections": ["a. Incomplete", "b. Completed"]
+      },
+      {
+        "title": "15. In your social groups do you:",
+        "selections": [
+          "a. Keep abreast of other’s happenings",
+          "b. Get behind on the news"
+        ]
+      }
+    ]
+  }
+}
