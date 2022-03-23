@@ -58,6 +58,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
   let [openSearchUserModal, setOpenSearchUserModal] = useState(false);
   let [pendings, setPendings] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   useEffect(() => {
     axios
@@ -72,6 +73,15 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(
+      () => handleKeywordChange(searchKeyword),
+      500
+    );
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchKeyword]);
 
   const handleKeywordChange = (keyword: string) => {
     if (keyword.length < 1) {
@@ -231,7 +241,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
           <FormControl fullWidth>
             <TextField
               label="Search by username or email"
-              onChange={(e) => handleKeywordChange(e.target.value)}
+              onChange={(e) => setSearchKeyword(e.target.value)}
               variant="outlined"
               fullWidth
             />
