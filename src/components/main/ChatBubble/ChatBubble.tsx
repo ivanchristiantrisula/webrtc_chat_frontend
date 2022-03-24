@@ -81,7 +81,13 @@ export default function (props: {
       if (typeSplit[0] == "image") {
         try {
           let src = URL.createObjectURL(props.data.file);
-          return <img src={src} onClick={() => window.open(src)} />;
+          return (
+            <img
+              src={src}
+              onClick={() => window.open(src)}
+              key={Math.random()}
+            />
+          );
         } catch {
           return "Media not available";
         }
@@ -91,6 +97,7 @@ export default function (props: {
             <FileBubble
               chat={props.data}
               sender={props.data.senderInfo.id == props.userID ? "me" : "them"}
+              key={Math.random()}
             />
           );
         } catch (error) {}
@@ -125,6 +132,7 @@ export default function (props: {
             props.data.senderInfo.id == props.userID ? "me" : "them"
           }  ${props.data.isReported ? classes.reportBubble : ""}`}
           onContextMenu={handleContextMenu}
+          key={Math.random()}
         >
           {renderReplyBubble()}
           {renderBubbleData()}

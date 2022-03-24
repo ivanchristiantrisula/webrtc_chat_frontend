@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: "transparent",
     marginTop: "0.4rem",
     marginBottom: "0.4rem",
-    overflowY: "auto",
+    overflowY: "scroll",
   },
 
   chatContainer: {

@@ -68,7 +68,7 @@ export default function (props: {
           </IconButton>
         }
         title={props.user.name}
-        subheader=""
+        subheader={props.user.email + ""}
       />
     </Card>
   );
