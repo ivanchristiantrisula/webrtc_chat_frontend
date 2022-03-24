@@ -33,10 +33,17 @@ import { useCookies } from "react-cookie";
 import { TextFormat, Visibility, VisibilityOff } from "@material-ui/icons";
 import clsx from "clsx";
 import { InputFiles } from "typescript";
-import { getToken, getUserInfo } from "../../../helper/localstorage";
+import {
+  getToken,
+  getUserInfo,
+  setToken,
+  setUserInfo,
+} from "../../../helper/localstorage";
 import UserCard from "../SearchUser/UserCard";
 import Searchuser from "../SearchUser/searchuser";
 import { useSnackbar } from "notistack";
+import { Socket } from "socket.io-client";
+import { Alert } from "@material-ui/lab";
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -91,6 +98,8 @@ const ChangePasswordDialog = (props: {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmError, setConfirmError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     validation();
@@ -130,12 +139,15 @@ const ChangePasswordDialog = (props: {
       })
       .then((res) => {
         if (res.status == 200) {
-          resetCookies();
-          window.location.href = "/";
+          enqueueSnackbar("Password successfully changed!", {
+            variant: "info",
+          });
+          props.onClose();
         }
       })
       .catch((error) => {
         console.error(error);
+        setErrorMessage(String(error));
       });
   };
   return (
@@ -144,6 +156,10 @@ const ChangePasswordDialog = (props: {
       <DialogContent>
         <Box>
           <FormControl className={clsx(classes.margin, classes.textField)}>
+            {errorMessage != "" ? (
+              <Alert severity="error">{errorMessage}</Alert>
+            ) : null}
+
             <TextField
               label="Old Password"
               type={showPassword ? "text" : "password"}
@@ -311,7 +327,7 @@ const resetCookies = () => {
   }
 };
 
-export default (props: { user: any }) => {
+export default (props: { user: any; socket: Socket }) => {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   let history = useHistory();
   const classes = useStyle();
@@ -343,9 +359,10 @@ export default (props: { user: any }) => {
       })
       .then((res) => {
         if (res.status == 200) {
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-          resetCookies();
-          window.location.href = "/";
+          props.socket.disconnect();
+          setToken(res.data.token);
+          setUserInfo(res.data.user);
+          window.location.reload();
         }
       })
       .catch((error) => {
@@ -360,27 +377,6 @@ export default (props: { user: any }) => {
   const handleImageSelected = async (e: any) => {
     let fd = new FormData();
     fd.append("file", e.target.files[0], `${getUserInfo().id}.png`);
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_BACKEND_URI}/user/uploadProfilePicture`,
-    //     {
-    //       fd,
-    //       token: getToken(),
-    //     },
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     if (res.status == 200) {
-    //       //window.location.href = "/";
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
     try {
       const response = await axios({
         method: "post",
@@ -392,7 +388,10 @@ export default (props: { user: any }) => {
       });
 
       if (response.status == 200) {
-        window.location.href = "/";
+        props.socket.disconnect();
+        setToken(response.data.token);
+        setUserInfo(response.data.user);
+        window.location.reload();
       }
     } catch (error) {
       alert("error upload image");

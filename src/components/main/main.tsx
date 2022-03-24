@@ -611,7 +611,7 @@ const App = () => {
 
           {openMenu == "profile" ? (
             <Grid item xs className={classes.profile}>
-              <Profile user={allUsers[userSocketID]} />
+              <Profile user={allUsers[userSocketID]} socket={socket.current} />
             </Grid>
           ) : null}
 
