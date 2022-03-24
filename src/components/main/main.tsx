@@ -155,9 +155,10 @@ const App = () => {
   }, [allUsers, friends]);
 
   useEffect(() => {
-    if (!_.isEmpty(chats)) {
+    if (!_.isEmpty({ ...chats })) {
       saveChatToDB();
     }
+    console.log(chats);
   }, [chats]);
 
   const checkWebRTCSupport = () => {
@@ -176,7 +177,7 @@ const App = () => {
   };
 
   const saveChatToDB = () => {
-    setUserChatHistory(chats);
+    setUserChatHistory({ ...chats });
   };
 
   const loadChatFromDB = () => {
@@ -380,7 +381,10 @@ const App = () => {
             if (x[parsedData.senderInfo.id] === undefined) {
               x[parsedData.senderInfo.id] = new Array(parsedData);
             } else {
-              x[parsedData.senderInfo.id].push(parsedData);
+              x[parsedData.senderInfo.id] = [
+                ...x[parsedData.senderInfo.id],
+                parsedData,
+              ];
             }
             setChats({ ...x });
           }
@@ -437,13 +441,13 @@ const App = () => {
     let user = getUserInfo();
     if (!sid) sid = allUsers[openChatSocket].id;
 
-    let x = chats;
+    let x = { ...chats };
     if (x[sid] === undefined) {
       x[sid] = new Array(data);
     } else {
       x[sid].push(data);
     }
-    setChats({ ...x });
+    setChats(x);
   };
 
   const fetchUserFriends = () => {
@@ -557,7 +561,7 @@ const App = () => {
               users={allUsers}
               userID={userSocketID}
               setPrivateChatTarget={(e: any) => startPeerConnection(e)}
-              chats={chats}
+              chats={{ ...chats }}
             />
           </Grid>
           {openMenu == "searchUser" ? (
