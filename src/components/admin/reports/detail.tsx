@@ -27,35 +27,35 @@ import ChatBubble from "../../main/ChatBubble/ChatBubble";
 const ReportInformation = (props: { report: any }) => {
   return (
     <>
-      <Card>
+      <Card style={{ paddingLeft: "1rem" }}>
         <CardHeader title="Report Information" subheader="Chat Report" />
         <CardContent>
           <Box>
-            <Box width="100%" height="">
+            <Box width="100%" height="" marginBottom="1rem">
               <Grid container>
                 <Grid item xs={6}>
                   <Box textAlign="left">Reporter</Box>
                 </Grid>
                 <Grid item xs={6}>
                   <Box textAlign="left" fontWeight="fontWeightBold">
-                    {props.report.reporter.id}
+                    {props.report.reporter.name}
                   </Box>
                 </Grid>
               </Grid>
             </Box>
-            <Box width="100%" height="">
+            <Box width="100%" height="" marginBottom="1rem">
               <Grid container>
                 <Grid item xs={6}>
                   <Box textAlign="left">Reportee</Box>
                 </Grid>
                 <Grid item xs={6}>
                   <Box textAlign="left" fontWeight="fontWeightBold">
-                    {props.report.reportee.id}
+                    {props.report.reportee.name}
                   </Box>
                 </Grid>
               </Grid>
             </Box>
-            <Box width="100%" height="">
+            <Box width="100%" height="" marginBottom="1rem">
               <Grid container>
                 <Grid item xs={6}>
                   <Box textAlign="left">Report Type</Box>
@@ -68,7 +68,7 @@ const ReportInformation = (props: { report: any }) => {
                 </Grid>
               </Grid>
             </Box>
-            <Box width="100%" height="">
+            <Box width="100%" height="" marginBottom="1rem">
               <Grid container>
                 <Grid item xs={6}>
                   <Box textAlign="left">Category</Box>
@@ -80,7 +80,7 @@ const ReportInformation = (props: { report: any }) => {
                 </Grid>
               </Grid>
             </Box>
-            <Box width="100%" height="">
+            <Box width="100%" height="" marginBottom="1rem">
               <Grid container>
                 <Grid item xs={6}>
                   <Box textAlign="left">Description</Box>
@@ -102,7 +102,7 @@ const ReportInformation = (props: { report: any }) => {
 const ReportProof = (props: { report: any }) => {
   return (
     <>
-      <Card>
+      <Card style={{ padding: "0.5rem 0.5rem 1rem 0.5rem" }}>
         <CardHeader title="Proof" subheader="" />
         <CardContent>
           <Box>
@@ -144,33 +144,32 @@ const ReportAction = (props: { report: any }) => {
     setBan(event.target.value == 1 ? true : false);
   };
   return (
-    <Card>
+    <Card style={{ minWidth: "100%" }}>
       <CardHeader title="Action" subheader="" />
       <CardContent>
-        <FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-helper-label">Action</InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              onChange={handleChange}
-              fullWidth
-            >
-              <MenuItem value={1}>Ban User</MenuItem>
-              <MenuItem value={0}>Do Nothing</MenuItem>
-            </Select>
-            <FormHelperText></FormHelperText>
-          </FormControl>
-          <FormControl fullWidth>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-          </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-helper-label">Action</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            onChange={handleChange}
+            fullWidth
+          >
+            <MenuItem value={1}>Ban User</MenuItem>
+            <MenuItem value={0}>Do Nothing</MenuItem>
+          </Select>
+          <FormHelperText></FormHelperText>
+        </FormControl>
+        <FormControl fullWidth style={{ marginTop: "1rem" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleSubmit}
+            disabled={ban === undefined}
+          >
+            Submit
+          </Button>
         </FormControl>
       </CardContent>
     </Card>
@@ -183,7 +182,7 @@ const DetailReport = (props: { report: any }) => {
   });
   return (
     <Container>
-      <Grid container spacing={5}>
+      <Grid container spacing={5} style={{ paddingTop: "2rem" }}>
         <Grid item xs={12}>
           <Box>
             <ReportInformation report={props.report} />
