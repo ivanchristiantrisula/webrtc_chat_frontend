@@ -96,6 +96,12 @@ export default (props: propsInterface) => {
     props.socket.on("endVideoCall", () => {});
   }, []);
 
+  useEffect(() => {
+    return () => {
+      console.log("cleaned up");
+    };
+  }, []);
+
   const sendChatText = (text: string) => {
     let payload = {
       senderInfo: props.myInfo,

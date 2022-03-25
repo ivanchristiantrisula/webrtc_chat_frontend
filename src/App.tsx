@@ -44,24 +44,14 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <SnackbarProvider
-          maxSnack={5}
-          classes={{
-            variantSuccess: classes.snackbar,
-            variantError: classes.snackbar,
-            variantWarning: classes.snackbar,
-            variantInfo: classes.snackbar,
-          }}
-        >
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route path="/register" component={RegisterPage} />
-            <Route path="/chat" component={MainPage} />
-            <Route path="/admin" component={AdminPage} />
-            <Route path="/forgot-password" component={ForgotPasswordPage} />
-            <Route path="/verify-email" component={VerifyEmailPage} />
-          </Switch>
-        </SnackbarProvider>
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/chat" component={MainPage} />
+          <Route path="/admin" component={AdminPage} />
+          <Route path="/forgot-password" component={ForgotPasswordPage} />
+          <Route path="/verify-email" component={VerifyEmailPage} />
+        </Switch>
       </ThemeProvider>
     </BrowserRouter>
   );

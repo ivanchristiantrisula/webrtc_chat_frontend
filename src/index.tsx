@@ -1,14 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { SnackbarProvider } from "notistack";
+import { makeStyles } from "@material-ui/core";
+import ChatIcon from "@material-ui/icons/Chat";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <SnackbarProvider
+    style={{ whiteSpace: "pre-line" }}
+    maxSnack={5}
+    iconVariant={{
+      success: <ChatIcon style={{ marginRight: "0.5rem" }} />,
+    }}
+  >
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </SnackbarProvider>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderColor: "transparent",
     marginTop: "0.4rem",
     marginBottom: "0.4rem",
-    overflowY: "scroll",
+    overflowY: "auto",
   },
 
   chatContainer: {
@@ -148,6 +148,12 @@ const App = () => {
     fetchUserFriends();
     initSocketListener();
     loadChatFromDB();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      console.log("cleaned up");
+    };
   }, []);
 
   useEffect(() => {
@@ -362,6 +368,7 @@ const App = () => {
       };
 
       if (isJsonParsable(data)) {
+        console.log(chats);
         data = JSON.parse(data.toString());
         if (data.type === "file") {
           if (data.done) {
@@ -378,14 +385,12 @@ const App = () => {
           let parsedData = data;
           if (parsedData.kind) {
             let x = chats;
-            if (x[parsedData.senderInfo.id] === undefined) {
+            try {
+              x[parsedData.senderInfo.id].push(parsedData);
+            } catch (error) {
               x[parsedData.senderInfo.id] = new Array(parsedData);
-            } else {
-              x[parsedData.senderInfo.id] = [
-                ...x[parsedData.senderInfo.id],
-                parsedData,
-              ];
             }
+
             setChats({ ...x });
           }
           enqueueSnackbar(
@@ -439,15 +444,18 @@ const App = () => {
   const addChatFromSender = (data: any, sid?: any) => {
     //console.log(data);
     let user = getUserInfo();
-    if (!sid) sid = allUsers[openChatSocket].id;
-
-    let x = { ...chats };
-    if (x[sid] === undefined) {
-      x[sid] = new Array(data);
-    } else {
-      x[sid].push(data);
+    let id = sid;
+    if (!sid) {
+      id = allUsers[openChatSocket].id;
     }
-    setChats(x);
+
+    let x = chats;
+    if (x[id] === undefined) {
+      x[id] = new Array(data);
+    } else {
+      x[id].push(data);
+    }
+    setChats({ ...x });
   };
 
   const fetchUserFriends = () => {

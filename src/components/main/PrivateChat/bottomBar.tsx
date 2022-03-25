@@ -7,12 +7,13 @@ import {
   Grid,
   makeStyles,
   Theme,
+  IconButton,
 } from "@material-ui/core";
 import TextField, { TextFieldProps } from "@material-ui/core/TextField";
 import SendIcon from "@material-ui/icons/Send";
 import ImageIcon from "@material-ui/icons/Image";
 import PublishOutlinedIcon from "@material-ui/icons/PublishOutlined";
-import React, { useRef, useState, useLayoutEffect } from "react";
+import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,6 +35,12 @@ export default function (props: {
   let [text, setText] = useState("");
   let fileInputRef = useRef<HTMLInputElement>();
   let textInput = useRef<TextFieldProps>();
+
+  useEffect(() => {
+    return () => {
+      console.log("cleaned up");
+    };
+  }, []);
 
   const sendText = () => {
     if (text != "") {
@@ -71,9 +78,14 @@ export default function (props: {
       >
         <Grid item>
           <Box textAlign="center">
-            <ButtonBase onClick={handleClickUpload}>
+            <ButtonBase></ButtonBase>
+            <IconButton
+              aria-label=""
+              onClick={handleClickUpload}
+              color="primary"
+            >
               <PublishOutlinedIcon />
-            </ButtonBase>
+            </IconButton>
           </Box>
         </Grid>
         <Grid item xs>
@@ -91,9 +103,9 @@ export default function (props: {
         </Grid>
         <Grid item>
           <Box textAlign="center">
-            <ButtonBase onClick={sendText}>
+            <IconButton aria-label="" onClick={sendText} color="primary">
               <SendIcon />
-            </ButtonBase>
+            </IconButton>
           </Box>
         </Grid>
       </Grid>

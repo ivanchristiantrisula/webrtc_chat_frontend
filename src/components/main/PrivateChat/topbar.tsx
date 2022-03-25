@@ -8,6 +8,7 @@ import {
   Grid,
   makeStyles,
   Theme,
+  IconButton,
 } from "@material-ui/core";
 import VideocamOutlinedIcon from "@material-ui/icons/VideocamOutlined";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -44,18 +45,16 @@ export default (props: { startVideoCall: Function; user: any }) => {
       </Grid>
       <Grid item xs={3}>
         <Box textAlign="right">
-          <ButtonBase onClick={handleClickVideoCall}>
+          <IconButton
+            aria-label=""
+            onClick={handleClickVideoCall}
+            color="primary"
+          >
             <VideocamOutlinedIcon fontSize="large" />
-          </ButtonBase>
+          </IconButton>
         </Box>
       </Grid>
-      <Grid item xs={2}>
-        <Box textAlign="right">
-          <ButtonBase>
-            <MoreVertIcon fontSize="large" />
-          </ButtonBase>
-        </Box>
-      </Grid>
+      <Grid item xs={2}></Grid>
     </Grid>
   );
 };

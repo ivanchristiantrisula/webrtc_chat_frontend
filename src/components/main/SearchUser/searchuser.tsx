@@ -140,7 +140,7 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
           })
         );
 
-        enqueueSnackbar(`${target.name} is now in your friendlist`, {
+        enqueueSnackbar(`Friend invitation successfully accepted`, {
           variant: "info",
         });
 
@@ -165,12 +165,9 @@ export default (props: { refreshFriendlist: Function; socket: Socket }) => {
               return x !== target;
             })
           );
-          enqueueSnackbar(
-            `You have rejected friend request from ${target.name}`,
-            {
-              variant: "info",
-            }
-          );
+          enqueueSnackbar(`Friend invitation successfully rejected`, {
+            variant: "info",
+          });
         }
       });
   };
