@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -21,6 +21,7 @@ import {
 import axios from "axios";
 import { getToken } from "../../../helper/localstorage";
 import { useSnackbar } from "notistack";
+import Report from "../Report";
 
 const useStyles = makeStyles({
   root: {
@@ -43,6 +44,8 @@ export default function ProfileCard(props: {
 }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
+  const selectedProfile = useRef<any>({});
+  const [openReportDialog, setOpenReportDialog] = useState(false);
 
   const handleClickAway = () => {
     if (props.open) {
@@ -67,6 +70,11 @@ export default function ProfileCard(props: {
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const reportUser = (profile: {}) => {
+    selectedProfile.current = profile;
+    setOpenReportDialog(true);
   };
 
   return (
@@ -100,9 +108,16 @@ export default function ProfileCard(props: {
                     <Typography gutterBottom variant="h5" component="h2">
                       {props.user.name}
                     </Typography>
-                    <Typography gutterBottom variant="overline" component="h6">
-                      {props.user.friendFinderProfile.MBTI}
-                    </Typography>
+                    {props.user.friendFinderProfile ? (
+                      <Typography
+                        gutterBottom
+                        variant="overline"
+                        component="h6"
+                      >
+                        {props.user.friendFinderProfile.MBTI}
+                      </Typography>
+                    ) : null}
+
                     <Typography
                       variant="body2"
                       color="textSecondary"
@@ -141,27 +156,44 @@ export default function ProfileCard(props: {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Box display={props.isUserFriend ? "none" : "block"}>
-                    <Button
-                      size="small"
-                      color="secondary"
-                      onClick={() => blockUser()}
-                    >
-                      Block
-                    </Button>
-                    <Button
-                      size="small"
-                      color="primary"
-                      onClick={() => props.addFriendHandler(props.user.id)}
-                    >
-                      Add Friend
-                    </Button>
-                  </Box>
+                  <Button
+                    size="small"
+                    color="primary"
+                    onClick={() => props.addFriendHandler(props.user.id)}
+                    hidden={!props.isUserFriend}
+                  >
+                    Add Friend
+                  </Button>
+                  <Button
+                    size="small"
+                    color="secondary"
+                    onClick={() => blockUser()}
+                    hidden={!props.isUserFriend}
+                  >
+                    Block
+                  </Button>
+                  <Button
+                    size="small"
+                    color="secondary"
+                    onClick={() => setOpenReportDialog(true)}
+                  >
+                    Report
+                  </Button>
                 </CardActions>
               </Card>
             </Fade>
           )}
         </Popper>
+      ) : null}
+
+      {props.user ? (
+        <Report
+          open={openReportDialog}
+          targetUID={props.user.id}
+          closeDialog={() => setOpenReportDialog(false)}
+          profile={props.user}
+          chat={null}
+        />
       ) : null}
     </>
   );

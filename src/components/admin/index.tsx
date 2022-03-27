@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     visibility: "visible",
   },
   sidebar: {
-    width: "5rem",
+    width: "100px",
   },
   midContainer: {
     width: "30rem",

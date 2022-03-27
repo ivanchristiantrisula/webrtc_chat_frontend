@@ -5,30 +5,29 @@ import {
   CardContent,
   Grid,
   Container,
-  Avatar,
-  IconButton,
-  makeStyles,
-  Theme,
   InputLabel,
   Select,
   MenuItem,
-  NativeSelect,
   Button,
   FormControl,
   FormHelperText,
+  Avatar,
 } from "@material-ui/core";
-import { MoreVert as MoreVertIcon } from "@material-ui/icons";
 import axios from "axios";
-import { report } from "process";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getToken } from "../../../helper/localstorage";
 import ChatBubble from "../../main/ChatBubble/ChatBubble";
+import ProfileCard from "../../main/ProfileCard";
+import _ from "lodash";
 
 const ReportInformation = (props: { report: any }) => {
   return (
     <>
       <Card style={{ paddingLeft: "1rem" }}>
-        <CardHeader title="Report Information" subheader="Chat Report" />
+        <CardHeader
+          title="Report Information"
+          subheader={_.capitalize(props.report.type) + " Report"}
+        />
         <CardContent>
           <Box>
             <Box width="100%" height="" marginBottom="1rem">
@@ -62,8 +61,7 @@ const ReportInformation = (props: { report: any }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Box textAlign="left" fontWeight="fontWeightBold">
-                    {props.report.type}
-                    {" report"}
+                    {_.capitalize(props.report.type) + " Report"}
                   </Box>
                 </Grid>
               </Grid>
@@ -87,7 +85,7 @@ const ReportInformation = (props: { report: any }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <Box textAlign="left" fontWeight="fontWeightBold">
-                    {props.report.description}
+                    {props.report.description || "-"}
                   </Box>
                 </Grid>
               </Grid>
@@ -100,18 +98,86 @@ const ReportInformation = (props: { report: any }) => {
 };
 
 const ReportProof = (props: { report: any }) => {
+  let anchorElement = useRef<HTMLDivElement>();
   return (
     <>
       <Card style={{ padding: "0.5rem 0.5rem 1rem 0.5rem" }}>
-        <CardHeader title="Proof" subheader="" />
+        <CardHeader title="Evidence" subheader="" />
         <CardContent>
-          <Box>
-            {JSON.parse(props.report.proof).map((element: any, idx: number) => {
-              return (
-                <ChatBubble data={element} userID={element.senderInfo.id} />
-              );
-            })}
-          </Box>
+          {props.report.type == "chat" ? (
+            <Box>
+              {JSON.parse(props.report.proof).map(
+                (element: any, idx: number) => {
+                  return (
+                    <ChatBubble data={element} userID={element.senderInfo.id} />
+                  );
+                }
+              )}
+            </Box>
+          ) : (
+            <Box>
+              <Box width="100%" height="" marginBottom="1rem">
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Box textAlign="left">Name</Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Box textAlign="left" fontWeight="fontWeightBold">
+                      {JSON.parse(props.report.proof).name}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box width="100%" height="" marginBottom="1rem">
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Box textAlign="left">Username</Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Box textAlign="left" fontWeight="fontWeightBold">
+                      {JSON.parse(props.report.proof).username}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box width="100%" height="" marginBottom="1rem">
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Box textAlign="left">Biodata</Box>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Box textAlign="left" fontWeight="fontWeightBold">
+                      {JSON.parse(props.report.proof).biodata || "-"}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box width="100%" height="" marginBottom="1rem">
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Box textAlign="left">Profile Picture</Box>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box
+                      textAlign="left"
+                      fontWeight="fontWeightBold"
+                      style={{ textAlign: "center" }}
+                      marginTop="2rem"
+                    >
+                      <img
+                        src={JSON.parse(props.report.proof).profilepicture}
+                        onClick={() =>
+                          window.open(
+                            JSON.parse(props.report.proof).profilepicture
+                          )
+                        }
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          )}
         </CardContent>
       </Card>
     </>

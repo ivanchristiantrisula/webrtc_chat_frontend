@@ -18,10 +18,6 @@ import VerifyEmailPage from "./components/main/VerifyEmail/";
 
 const theme = createTheme({
   palette: {
-    secondary: {
-      main: "#112D4E",
-      light: "#112D4E",
-    },
     primary: {
       main: "#3F72AF",
       light: "#3F72AF",

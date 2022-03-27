@@ -119,8 +119,10 @@ const App = () => {
   const history = useHistory();
   let [allUsers, setAllUsers] = useState({});
   let socket: any = useRef();
-  let [meetingData, setMeetingData] =
-    useState<{ id: string; isPrivate: boolean }>();
+  let [meetingData, setMeetingData] = useState<{
+    id: string;
+    isPrivate: boolean;
+  }>();
   const [userSocketID, setUserSocketID] = useState("");
   const [friends, setFriends] = useState([]);
   let [socketConnection, setSocketConnection] = useState(false);

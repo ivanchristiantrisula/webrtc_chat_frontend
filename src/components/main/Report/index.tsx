@@ -16,16 +16,20 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { getToken, getUserInfo } from "../../../helper/localstorage";
+import { useSnackbar } from "notistack";
 
 export default function Report(props: {
   open: boolean;
   chat?: {};
   targetUID: string;
   closeDialog: Function;
+  profile?: any;
 }) {
   const [open, setOpen] = React.useState(false);
   const [category, setCategory] = useState("Spam");
   const [description, setDescription] = useState("");
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -44,12 +48,23 @@ export default function Report(props: {
   };
 
   const handleSubmit = () => {
+    let profile;
+    if (props.profile) {
+      profile = {
+        id: props.profile.id,
+        name: props.profile.name,
+        username: props.profile.username,
+        bio: props.profile.bio,
+        profilepicture: props.profile.profilepicture,
+        email: props.profile.email,
+      };
+    }
     const payload = {
       reporter: getUserInfo().id,
       reportee: props.targetUID,
       type: props.chat ? "chat" : "profile",
       category: category,
-      proof: props.chat || null,
+      proof: props.chat ? props.chat : profile,
       description: description,
       token: getToken(),
     };
@@ -57,10 +72,12 @@ export default function Report(props: {
       .post(`${process.env.REACT_APP_BACKEND_URI}/report/create`, payload)
       .then((res) => {
         //do something
+        enqueueSnackbar(`Report submitted`, { variant: "info" });
         if (res.status === 200) props.closeDialog();
       })
       .catch((err) => {
         //do something
+        enqueueSnackbar(`Error submitting report`, { variant: "error" });
       });
   };
 

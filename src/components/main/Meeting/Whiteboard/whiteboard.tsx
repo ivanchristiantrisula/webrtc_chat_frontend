@@ -14,7 +14,7 @@ const initState = {
   lineWidth: 8,
 };
 
-const canvasOffset = window.innerHeight + 500;
+const canvasOffset = window.innerHeight + 500 - 375;
 
 const Whiteboard = (props: { handleCaptureStream: Function }) => {
   const canvas = useRef<HTMLCanvasElement>();

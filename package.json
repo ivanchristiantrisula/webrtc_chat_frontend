@@ -22,6 +22,7 @@
     "file-loader": "^6.2.0",
     "form-data": "^2.3.3",
     "FormData": "^0.10.1",
+    "lodash": "^4.17.21",
     "node-sass": "^6.0.0",
     "notistack": "^1.0.9",
     "prop-types": "^15.7.2",
@@ -71,6 +72,7 @@
   "devDependencies": {
     "@types/crypto-js": "^4.0.2",
     "@types/jsonwebtoken": "^8.5.1",
+    "@types/lodash": "^4.14.180",
     "@types/simple-peer": "^9.11.0",
     "@types/streamsaver": "^2.0.0",
     "@types/underscore": "^1.11.2",
