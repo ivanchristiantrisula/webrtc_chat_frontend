@@ -159,14 +159,23 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    findIntersectBetweenOnlineUsersAndFriends();
+    const delayDebounceFn = setTimeout(
+      () => findIntersectBetweenOnlineUsersAndFriends(),
+      500
+    );
+
+    return () => clearTimeout(delayDebounceFn);
   }, [allUsers, friends]);
 
   useEffect(() => {
-    if (!_.isEmpty({ ...chats })) {
-      saveChatToDB();
-    }
     console.log(chats);
+    const delayDebounceFn = setTimeout(() => {
+      if (!_.isEmpty({ ...chats })) {
+        saveChatToDB();
+      }
+    }, 3000);
+
+    return () => clearTimeout(delayDebounceFn);
   }, [chats]);
 
   const checkWebRTCSupport = () => {

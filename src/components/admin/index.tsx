@@ -14,6 +14,7 @@ import AdminReports from "./reports";
 import Sidebar from "./sidebar";
 import ReportDetail from "./reports/detail";
 import BannedUsers from "./bans";
+import axios from "axios";
 
 const useStyles = makeStyles((theme: Theme) => ({
   hidden: {
@@ -24,17 +25,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     visibility: "visible",
   },
   sidebar: {
-    width: "100px",
+    width: "75px",
   },
   midContainer: {
-    width: "30rem",
+    width: "25rem",
     minWidth: 0,
     borderRight: "solid #d7d9d7 1px",
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: "white",
   },
   rightContainer: {
     width: "auto",
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: "white",
   },
 }));
 
@@ -42,6 +43,19 @@ export default function AdminPage() {
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState("reports");
   const [reportDetail, setReportDetail] = useState({});
+
+  const fetchReportDetail = (rid: string) => {
+    axios
+      .get(
+        `${process.env.REACT_APP_BACKEND_URI}/report/getReportDetail?id=${rid}`
+      )
+      .then((res) => {
+        if (res.status === 200) setReportDetail(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   const renderMidContent = () => {
     if (openMenu === "reports") {
@@ -51,7 +65,7 @@ export default function AdminPage() {
         />
       );
     } else if (openMenu === "bans") {
-      return <BannedUsers />;
+      return <BannedUsers showDetail={(id: string) => fetchReportDetail(id)} />;
     }
   };
 

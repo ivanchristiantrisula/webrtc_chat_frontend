@@ -113,7 +113,7 @@ export default (props: {
 }) => {
   const classes = useStyle();
   const [video, setVideo] = useState(true);
-  const [audio, setAudio] = useState(true);
+  const [audio, setAudio] = useState(false);
   const participantsAnchor = useRef<HTMLDivElement>();
   const [showParticipants, setShowParticipants] = useState(false);
 

@@ -14,12 +14,10 @@ import { classicNameResolver } from "typescript";
 import { getToken } from "../../../helper/localstorage";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    width: "100%",
-  },
+  root: {},
   card: {
     height: "auto",
-    margin: "7px",
+    marginBottom: "0.5rem",
   },
 }));
 
@@ -35,11 +33,7 @@ export default function AdminReports(props: { openReportDetail: Function }) {
 
   const fetchReports = () => {
     axios
-      .get(
-        `${
-          process.env.REACT_APP_BACKEND_URI
-        }/report/getAllReports?token=${getToken()}`
-      )
+      .get(`${process.env.REACT_APP_BACKEND_URI}/report/getAllReports`)
       .then((res) => {
         if (res.status === 200) {
           if (res.data.proof) {
@@ -70,7 +64,22 @@ export default function AdminReports(props: { openReportDetail: Function }) {
     props.openReportDetail(report);
   };
   return (
-    <Box className={classes.root}>
+    <Box
+      className={classes.root}
+      padding="1rem 0.5rem 0.5rem 0.5rem"
+      marginBottom="0rem"
+    >
+      <Typography
+        variant="h4"
+        color="textPrimary"
+        style={{
+          fontWeight: "bolder",
+          marginBottom: "2rem",
+          marginLeft: "1.5rem",
+        }}
+      >
+        Reports
+      </Typography>
       {reports.map((report) => {
         return (
           <Card className={classes.card} onClick={() => handleClick(report)}>
@@ -88,7 +97,7 @@ export default function AdminReports(props: { openReportDetail: Function }) {
                       variant="body1"
                       style={{ textAlign: "right" }}
                     >
-                      {new Date(report.timestamp).toLocaleString()}
+                      {new Date(report.timestamp).toLocaleDateString()}
                     </Typography>
                   </Box>
                 </Grid>

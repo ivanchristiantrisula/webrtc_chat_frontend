@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import ReportIcon from "@material-ui/icons/Report";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/styles";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const useStyles = makeStyles((theme: Theme) => ({
   open: {
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: "center",
     flexDirection: "column",
     borderRadius: 0,
+    width: "75px",
   },
   avatar: {
     position: "fixed",
@@ -42,8 +44,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {
     backgroundColor: theme.palette.secondary.main,
-    width: "5rem",
+    width: "75px",
     height: "100vh",
+    overflowY: "hidden",
+  },
+  logoutIcon: {
+    position: "fixed",
+    bottom: "0",
+    marginBottom: "10px",
+    width: "5rem",
+    borderRadius: 0,
   },
 }));
 
@@ -67,7 +77,7 @@ function App(props: { openMenu: Function }) {
   };
   return (
     <Box className={classes.root}>
-      <List>
+      <List style={{ width: "75px" }}>
         <ListItem
           button
           className={`${openMenu === "reports" ? classes.open : ""} ${
@@ -104,6 +114,17 @@ function App(props: { openMenu: Function }) {
               className={openMenu === "bans" ? classes.openIcon : classes.icon}
               fontSize="large"
             />
+          </ListItemIcon>
+        </ListItem>
+        <ListItem
+          button
+          className={classes.logoutIcon}
+          onClick={() => {
+            window.location.href = "/";
+          }}
+        >
+          <ListItemIcon>
+            <ExitToAppIcon fontSize="large" className={classes.icon} />
           </ListItemIcon>
         </ListItem>
       </List>

@@ -72,7 +72,6 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
     axios
       .post(`${process.env.REACT_APP_BACKEND_URI}/user/unbanUser`, {
         userID: props.user.id,
-        token: getToken(),
       })
       .then((res) => {
         if (res.status === 200) props.handleUserUnbanned();
@@ -87,59 +86,6 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
             <Avatar aria-label="" src={props.user.profilepicture}></Avatar>
           }
           action={
-            <IconButton aria-label="">
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={props.user.name}
-          subheader=""
-        />
-        {detail == undefined ? (
-          "Fetching"
-        ) : (
-          <>
-            <CardContent>
-              <Box>
-                <Box width="100%" height="">
-                  <Grid container>
-                    <Grid item xs={6}>
-                      <Box textAlign="left">Banned Date</Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box textAlign="right" fontWeight="fontWeightBold">
-                        {new Date(props.user.banDate).toLocaleString()}
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Box>
-              <Box>
-                <Box width="100%" height="">
-                  <Grid container>
-                    <Grid item xs={6}>
-                      <Box textAlign="left">Violation Type</Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box textAlign="right" fontWeight="fontWeightBold">
-                        {detail.category}
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Box>
-              <Box width="100%" height="">
-                <Grid container>
-                  <Grid item xs={6}>
-                    <Box textAlign="left">Notes</Box>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Box textAlign="right" fontWeight="fontWeightBold">
-                      {detail.description}
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </CardContent>
             <CardActions disableSpacing>
               <IconButton
                 className={clsx(classes.expand, {
@@ -152,22 +98,31 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
                 <ExpandMoreIcon />
               </IconButton>
             </CardActions>
-
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <CardContent>
-                <Box>
-                  <FormControl fullWidth>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleClick}
-                    >
-                      Unban User
-                    </Button>
-                  </FormControl>
-                </Box>
-              </CardContent>
-            </Collapse>
+          }
+          title={props.user.name}
+          subheader=""
+        />
+        {detail == undefined ? (
+          "Fetching"
+        ) : (
+          <>
+            <Card>
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <Box>
+                    <FormControl fullWidth>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleClick}
+                      >
+                        Unban User
+                      </Button>
+                    </FormControl>
+                  </Box>
+                </CardContent>
+              </Collapse>
+            </Card>
           </>
         )}
       </Card>
@@ -175,7 +130,7 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
   );
 };
 
-const BannedUsers = () => {
+const BannedUsers = (props: { showDetail: Function }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -188,11 +143,7 @@ const BannedUsers = () => {
 
   const fetchBannedUsers = () => {
     axios
-      .get(
-        `${
-          process.env.REACT_APP_BACKEND_URI
-        }/user/getBannedUsers?token=${getToken()}`
-      )
+      .get(`${process.env.REACT_APP_BACKEND_URI}/user/getBannedUsers`)
       .then((res) => {
         if (res.status === 200) setUsers(res.data);
       })
@@ -204,11 +155,15 @@ const BannedUsers = () => {
     <>
       {users.map((user, idx) => {
         return (
-          <BannedUserCard
-            key={idx}
-            user={user}
-            handleUserUnbanned={() => removeUser(user)}
-          />
+          <>
+            <Box onClick={() => props.showDetail(user.banReportID)}>
+              <BannedUserCard
+                key={idx}
+                user={user}
+                handleUserUnbanned={() => removeUser(user)}
+              />
+            </Box>
+          </>
         );
       })}
     </>

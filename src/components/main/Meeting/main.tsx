@@ -7,6 +7,7 @@ import BottomBar from "./bottombar";
 import { Socket } from "socket.io-client";
 import Whiteboard from "./Whiteboard/whiteboard";
 import { useSnackbar } from "notistack";
+import { isSafari } from "react-device-detect";
 
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,7 +72,16 @@ const Video = (props: { peer: any }) => {
   }, []);
 
   const handleDoubleClick = () => {
-    ref.current.requestFullscreen();
+    try {
+      if (isSafari) {
+        // @ts-ignore
+        ref.current.webkitRequestFullscreen();
+      } else {
+        ref.current.requestFullscreen();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -185,6 +195,7 @@ export default (props: {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((x: MediaStream) => {
+        x.getAudioTracks()[0].enabled = false;
         setMyStream(x);
         myStreamRef.current.srcObject = x;
       })

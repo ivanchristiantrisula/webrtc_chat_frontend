@@ -12,13 +12,12 @@ import {
   FormControl,
   FormHelperText,
   Avatar,
+  Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { getToken } from "../../../helper/localstorage";
-import ChatBubble from "../../main/ChatBubble/ChatBubble";
-import ProfileCard from "../../main/ProfileCard";
 import _ from "lodash";
+import { useSnackbar } from "notistack";
 
 const ReportInformation = (props: { report: any }) => {
   return (
@@ -102,17 +101,52 @@ const ReportProof = (props: { report: any }) => {
   return (
     <>
       <Card style={{ padding: "0.5rem 0.5rem 1rem 0.5rem" }}>
-        <CardHeader title="Evidence" subheader="" />
+        <CardHeader
+          title="Evidence"
+          subheader={
+            props.report.type == "chat" ? "Chat Log" : "Profile History"
+          }
+        />
         <CardContent>
           {props.report.type == "chat" ? (
             <Box>
+              <Typography variant="body1" color="textPrimary">
+                {"..."}
+              </Typography>
               {JSON.parse(props.report.proof).map(
                 (element: any, idx: number) => {
                   return (
-                    <ChatBubble data={element} userID={element.senderInfo.id} />
+                    <Box
+                      width="100%"
+                      height=""
+                      marginBottom="1rem"
+                      marginTop={"1rem"}
+                    >
+                      <Grid container>
+                        <Grid item xs={6}>
+                          <Box textAlign="left">
+                            <Typography variant="body1" color="textPrimary">
+                              [{new Date(element.timestamp).toLocaleString()}]{" "}
+                              {element.senderInfo.name}
+                              {" : "}
+                              {element.message || "no-text"}
+                              {element.isReported ? " (Reported)" : ""}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Box textAlign="left" fontWeight="fontWeightBold">
+                            {JSON.parse(props.report.proof).name}
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </Box>
                   );
                 }
               )}
+              <Typography variant="body1" color="textPrimary">
+                {"..."}
+              </Typography>
             </Box>
           ) : (
             <Box>
@@ -184,8 +218,10 @@ const ReportProof = (props: { report: any }) => {
   );
 };
 
-const ReportAction = (props: { report: any }) => {
+const ReportAction = (props: { report: any; onCloseReport: Function }) => {
   const [ban, setBan] = useState<Boolean>();
+  const { enqueueSnackbar } = useSnackbar();
+  const [display, setDisplay] = useState("block");
 
   const handleSubmit = () => {
     axios
@@ -194,11 +230,15 @@ const ReportAction = (props: { report: any }) => {
         reporterID: props.report.reporter.id,
         reporteeID: props.report.reportee.id,
         banReportee: ban,
-        token: getToken(),
       })
       .then((res) => {
         if (res.status === 200) {
           //props.handleCloseReport();
+          enqueueSnackbar(`${ban ? "User banned and" : ""} report is closed!`, {
+            variant: "info",
+          });
+          props.onCloseReport();
+          setDisplay("none");
         }
       })
       .catch((err) => {
@@ -210,7 +250,7 @@ const ReportAction = (props: { report: any }) => {
     setBan(event.target.value == 1 ? true : false);
   };
   return (
-    <Card style={{ minWidth: "100%" }}>
+    <Card style={{ minWidth: "100%", display: display }}>
       <CardHeader title="Action" subheader="" />
       <CardContent>
         <FormControl fullWidth>
@@ -261,7 +301,7 @@ const DetailReport = (props: { report: any }) => {
         </Grid>
         <Grid item xs={12} md={4}>
           {props.report.status !== "Closed" ? (
-            <ReportAction report={props.report} />
+            <ReportAction report={props.report} onCloseReport={() => {}} />
           ) : null}
         </Grid>
       </Grid>

@@ -81,7 +81,7 @@ export default (props: {
 
   return (
     <>
-      <Dialog open={props.isOpen}>
+      <Dialog open={props.isOpen} scroll="paper">
         <DialogTitle>{props.title}</DialogTitle>
         <DialogContent>
           {Object.keys(props.users).map((idx: any) => {
@@ -90,7 +90,7 @@ export default (props: {
                 onClick={() => {
                   handleClick(idx);
                 }}
-                style={{ width: "500px" }}
+                style={{ width: "500px", marginBottom: "1rem" }}
               >
                 <UserCard
                   user={props.users[idx]}
