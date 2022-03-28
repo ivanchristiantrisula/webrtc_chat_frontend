@@ -581,6 +581,7 @@ const App = () => {
               userID={userSocketID}
               setPrivateChatTarget={(e: any) => startPeerConnection(e)}
               chats={{ ...chats }}
+              updateChats={loadChatFromDB}
             />
           </Grid>
           {openMenu == "searchUser" ? (

@@ -1,11 +1,15 @@
 import { Box, createStyles, Theme, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChatCard from "./ChatCard";
-import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/styles";
-import axios from "axios";
-import { number } from "prop-types";
 import ChatContextMenu from "./ContextMenu";
+import { useSnackbar } from "notistack";
+
+import {
+  getUserChatHistory,
+  getUserInfo,
+  setUserChatHistory,
+} from "../../../helper/localstorage";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,7 +23,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function (props: any) {
+export default function (props: {
+  setPrivateChatTarget: Function;
+  chats: any;
+  users: any;
+  updateChats: Function;
+  userID: string;
+}) {
   useEffect(() => {
     //console.log(props.users);
   }, [props.chats]);
@@ -29,10 +39,13 @@ export default function (props: any) {
   const [openContextMenu, setOpenContextMenu] = useState(false);
   const [selectedContextMenuChatCardSid, setSelectedContextMenuChatCardSid] =
     useState("");
+  const { enqueueSnackbar } = useSnackbar();
+  const selectedContextMenuUserID = useRef("");
 
   const handleContextMenu = (
     e: React.MouseEvent<HTMLDivElement>,
-    sid: string
+    sid: string,
+    uid: string
   ) => {
     e.preventDefault();
     setMousePos({
@@ -40,11 +53,22 @@ export default function (props: any) {
       mouseY: e.clientY,
     });
     setSelectedContextMenuChatCardSid(sid);
+    selectedContextMenuUserID.current = uid;
     setOpenContextMenu(true);
   };
 
   const openChat = (key: string = selectedContextMenuChatCardSid) => {
     props.setPrivateChatTarget(key);
+  };
+
+  const deleteChat = () => {
+    let chats = getUserChatHistory();
+    let user = getUserInfo();
+    delete chats[selectedContextMenuUserID.current];
+    //console.log(chats[user.id][selectedContextMenuUserID.current]);
+    setUserChatHistory(chats);
+    props.updateChats();
+    enqueueSnackbar("Chat deleted!", { variant: "info" });
   };
 
   return (
@@ -67,7 +91,9 @@ export default function (props: any) {
           return (
             <div
               onClick={() => openChat(matchedSocketID)}
-              onContextMenu={(e) => handleContextMenu(e, matchedSocketID)}
+              onContextMenu={(e) =>
+                handleContextMenu(e, matchedSocketID, keyName)
+              }
               style={{ cursor: "context-menu" }}
             >
               <ChatCard
@@ -86,8 +112,8 @@ export default function (props: any) {
           openChat();
           setOpenContextMenu(false);
         }}
-        handleClickDeleteChat={() => {}}
-      />{" "}
+        handleClickDeleteChat={() => deleteChat()}
+      />
     </>
   );
 }

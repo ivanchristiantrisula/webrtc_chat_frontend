@@ -22,6 +22,7 @@ import clsx from "clsx";
 import { red } from "@material-ui/core/colors";
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
 import { getToken } from "../../../helper/localstorage";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,26 +48,11 @@ const useStyles = makeStyles((theme: Theme) =>
 const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState<boolean>(false);
-  const [detail, setDetail] = useState<any>();
+  const { enqueueSnackbar } = useSnackbar();
 
-  useEffect(() => {
-    fetchReportDetail();
-  }, []);
+  useEffect(() => {}, []);
 
   const handleExpandClick = () => setExpanded(!expanded);
-
-  const fetchReportDetail = () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_URI}/report/getReportDetail?id=${props.user.banReportID}`
-      )
-      .then((res) => {
-        if (res.status === 200) setDetail(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
 
   const handleClick = () => {
     axios
@@ -74,6 +60,7 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
         userID: props.user.id,
       })
       .then((res) => {
+        enqueueSnackbar("User successfully unbanned!", { variant: "info" });
         if (res.status === 200) props.handleUserUnbanned();
       })
       .catch((err) => console.error(err));
@@ -102,29 +89,23 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
           title={props.user.name}
           subheader=""
         />
-        {detail == undefined ? (
-          "Fetching"
-        ) : (
-          <>
-            <Card>
-              <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                  <Box>
-                    <FormControl fullWidth>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleClick}
-                      >
-                        Unban User
-                      </Button>
-                    </FormControl>
-                  </Box>
-                </CardContent>
-              </Collapse>
-            </Card>
-          </>
-        )}
+        <Card>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Box>
+                <FormControl fullWidth>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleClick}
+                  >
+                    Unban User
+                  </Button>
+                </FormControl>
+              </Box>
+            </CardContent>
+          </Collapse>
+        </Card>
       </Card>
     </>
   );
@@ -133,9 +114,7 @@ const BannedUserCard = (props: { user: any; handleUserUnbanned: Function }) => {
 const BannedUsers = (props: { showDetail: Function }) => {
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    fetchBannedUsers();
-  }, []);
+  useEffect(() => fetchBannedUsers(), []);
 
   const removeUser = (user: any) => {
     setUsers(users.filter((item) => user.id !== item.id));
@@ -153,19 +132,32 @@ const BannedUsers = (props: { showDetail: Function }) => {
   };
   return (
     <>
-      {users.map((user, idx) => {
-        return (
-          <>
-            <Box onClick={() => props.showDetail(user.banReportID)}>
-              <BannedUserCard
-                key={idx}
-                user={user}
-                handleUserUnbanned={() => removeUser(user)}
-              />
-            </Box>
-          </>
-        );
-      })}
+      <Box padding="1rem 0.5rem 0.5rem 0.5rem" marginBottom="0rem">
+        <Typography
+          variant="h4"
+          color="textPrimary"
+          style={{
+            fontWeight: "bolder",
+            marginBottom: "2rem",
+            marginLeft: "1.5rem",
+          }}
+        >
+          Banned Users
+        </Typography>
+        {users.map((user, idx) => {
+          return (
+            <>
+              <Box onClick={() => props.showDetail(user.banReportID)}>
+                <BannedUserCard
+                  key={idx}
+                  user={user}
+                  handleUserUnbanned={() => removeUser(user)}
+                />
+              </Box>
+            </>
+          );
+        })}
+      </Box>
     </>
   );
 };
