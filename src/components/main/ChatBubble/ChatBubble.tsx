@@ -1,5 +1,5 @@
 import "./style.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import React from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -59,6 +59,7 @@ export default function (props: {
   let [mouseX, setMouseX] = useState(null as number);
   let [mouseY, setMouseY] = useState(null as number);
   let [border, setBorder] = useState("");
+  let [contextType, setContextType] = useState("");
 
   useEffect(() => {
     if (props.data.isReported) {
@@ -110,9 +111,13 @@ export default function (props: {
     setMouseY(null);
   };
 
-  const handleContextMenu = (event: React.MouseEvent<HTMLLIElement>) => {
+  const handleContextMenu = (
+    event: React.MouseEvent<HTMLLIElement>,
+    type: string
+  ) => {
     event.preventDefault();
 
+    setContextType(type);
     setMouseX(event.clientX - 2);
     setMouseY(event.clientY - 4);
   };
@@ -131,7 +136,12 @@ export default function (props: {
           className={`${
             props.data.senderInfo.id == props.userID ? "me" : "them"
           }  ${props.data.isReported ? classes.reportBubble : ""}`}
-          onContextMenu={handleContextMenu}
+          onContextMenu={(e) =>
+            handleContextMenu(
+              e,
+              props.data.senderInfo.id == props.userID ? "sender" : "receiver"
+            )
+          }
           key={Math.random()}
         >
           {renderReplyBubble()}
@@ -170,6 +180,7 @@ export default function (props: {
             props.handleReport(props.data);
             handleClose();
           }}
+          style={{ display: contextType == "sender" ? "none" : "block" }}
         >
           Report
         </MenuItem>

@@ -5,11 +5,13 @@ import { createStyles } from "@material-ui/styles";
 const useStyle = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: "100%",
+      minWidth: "100%",
       marginBottom: "5px",
       borderRadius: "10px",
-      padding: "10px",
       border: "1px solid white",
+      marginLeft: "-5px",
+      marginRight: "0px",
+      padding: "10px 5px 10px 5px",
     },
   })
 );
