@@ -544,6 +544,11 @@ const App = () => {
     window.location.reload();
   };
 
+  const handleUnfriend = () => {
+    loadChatFromDB();
+    fetchUserFriends();
+  };
+
   return (
     <>
       <Box className={classes.root}>
@@ -566,7 +571,7 @@ const App = () => {
               users={onlineFriends}
               userID={userSocketID}
               setPrivateChatTarget={(e: any) => startPeerConnection(e)}
-              handleUnfriend={fetchUserFriends}
+              handleUnfriend={handleUnfriend}
               socket={socket.current}
             />
           </Grid>
@@ -657,6 +662,7 @@ const App = () => {
                   addChatFromSender(data);
                 }}
                 users={allUsers}
+                onlineFriends={onlineFriends}
                 sendForward={forwardChat}
                 myInfo={allUsers[userSocketID]}
               />

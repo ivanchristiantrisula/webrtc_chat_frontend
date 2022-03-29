@@ -60,11 +60,10 @@ const Video = (props: { peer: any }) => {
   const ref = useRef<HTMLVideoElement>();
   const classes = useStyle();
 
-  const [isConnectionAlive, setIsConnectionAlive] = useState(false);
+  const [isConnectionAlive, setIsConnectionAlive] = useState(true);
 
   useEffect(() => {
     props.peer.on("stream", (stream: any) => {
-      setIsConnectionAlive(true);
       ref.current.srcObject = stream;
     });
 

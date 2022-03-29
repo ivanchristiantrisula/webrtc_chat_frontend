@@ -61,6 +61,7 @@ interface propsInterface {
   users: any;
   sendForward: Function;
   myInfo: any;
+  onlineFriends: any;
 }
 
 export default (props: propsInterface) => {
@@ -310,7 +311,7 @@ export default (props: propsInterface) => {
       </Box>
       <UserPicker
         isOpen={openUserPickerModal}
-        users={props.users}
+        users={props.onlineFriends}
         onPickedUser={sendForward}
         multipleUser={true}
         title="Foward"
