@@ -143,9 +143,9 @@ export default function (props: {
       />
 
       <ProfileCard
-        user={openProfileCard !== "" ? props.users[openProfileCard] : null}
+        user={openProfileCard != "" ? props.users[openProfileCard] : null}
         anchor={anchorEl.current}
-        open={openProfileCard !== "" ? true : false}
+        open={openProfileCard != "" ? true : false}
         handleClose={() => setOpenProfileCard("")}
         isUserFriend
       />

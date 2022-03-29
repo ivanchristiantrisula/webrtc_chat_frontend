@@ -68,7 +68,9 @@ const Video = (props: { peer: any }) => {
       ref.current.srcObject = stream;
     });
 
-    props.peer.on("close", (stream: any) => setIsConnectionAlive(false));
+    props.peer.on("close", () => {
+      setIsConnectionAlive(false);
+    });
   }, []);
 
   const handleDoubleClick = () => {
@@ -87,12 +89,14 @@ const Video = (props: { peer: any }) => {
   return (
     <>
       {isConnectionAlive ? (
-        <video
-          className={classes.video}
-          autoPlay
-          ref={ref}
-          onDoubleClick={handleDoubleClick}
-        />
+        <Box className={classes.vidContainer}>
+          <video
+            className={classes.video}
+            autoPlay
+            ref={ref}
+            onDoubleClick={handleDoubleClick}
+          />
+        </Box>
       ) : (
         <></>
       )}
@@ -419,11 +423,7 @@ export default (props: {
           flexDirection="row"
         >
           {userSockets.map((socketID, i) => {
-            return (
-              <Box className={classes.vidContainer} key={i}>
-                <Video peer={peersRef.current[socketID]} />
-              </Box>
-            );
+            return <Video peer={peersRef.current[socketID]} key={i} />;
           })}
           <Box
             width="300px"
