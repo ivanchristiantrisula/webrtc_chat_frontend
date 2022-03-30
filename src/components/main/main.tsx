@@ -168,7 +168,6 @@ const App = () => {
   }, [allUsers, friends]);
 
   useEffect(() => {
-    console.log(chats);
     const delayDebounceFn = setTimeout(() => {
       if (!_.isEmpty({ ...chats })) {
         saveChatToDB();
@@ -379,7 +378,6 @@ const App = () => {
       };
 
       if (isJsonParsable(data)) {
-        console.log(chats);
         data = JSON.parse(data.toString());
         if (data.type === "file") {
           if (data.done) {
@@ -665,6 +663,7 @@ const App = () => {
                 onlineFriends={onlineFriends}
                 sendForward={forwardChat}
                 myInfo={allUsers[userSocketID]}
+                allowForCall={!meetingMode}
               />
             ) : (
               ""

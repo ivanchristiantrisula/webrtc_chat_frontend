@@ -202,6 +202,11 @@ export default (props: {
         setMyStream(x);
         myStreamRef.current.srcObject = x;
       })
+      .catch((err) => {
+        console.error(err);
+        alert("Failed accessing media device.");
+        window.location.reload();
+      })
       .finally(() => {
         requestMeetingMembers();
       });

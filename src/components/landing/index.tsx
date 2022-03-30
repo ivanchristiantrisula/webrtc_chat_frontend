@@ -111,8 +111,7 @@ function App() {
       })
       .catch((error) => {
         // console.log(error.response.data.errors);
-        setErrors(["Invalid Credential"]);
-        console.error(error);
+        setErrors(["Login Failed. " + error.response.data]);
       })
       .finally(() => {
         setLoginStatus(0);

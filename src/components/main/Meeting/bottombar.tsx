@@ -120,6 +120,16 @@ export default (props: {
   const toggleParticipantsPopover = () =>
     setShowParticipants(!showParticipants);
 
+  const handleScreenshare = () => {
+    if (props.whiteboardMode) return;
+    props.handleScreenShare();
+  };
+
+  const handleWhiteboard = () => {
+    if (props.sceensharingMode) return;
+    props.handleWhiteboard();
+  };
+
   return (
     <>
       <Grid className={classes.gridParent} container justify="center">
@@ -132,7 +142,7 @@ export default (props: {
             >
               <AirplayIcon
                 fontSize="large"
-                onClick={() => props.handleScreenShare()}
+                onClick={handleScreenshare}
                 color={props.whiteboardMode ? "disabled" : "inherit"}
               />
               Screen Share
@@ -141,7 +151,7 @@ export default (props: {
               className={`${classes.iconContainer} ${
                 props.isPrivate && classes.hidden
               }`}
-              onClick={() => props.handleWhiteboard()}
+              onClick={handleWhiteboard}
             >
               <VideoLabelIcon
                 fontSize="large"

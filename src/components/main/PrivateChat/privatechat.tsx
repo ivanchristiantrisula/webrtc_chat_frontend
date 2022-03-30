@@ -62,6 +62,7 @@ interface propsInterface {
   sendForward: Function;
   myInfo: any;
   onlineFriends: any;
+  allowForCall: boolean;
 }
 
 export default (props: propsInterface) => {
@@ -128,6 +129,12 @@ export default (props: propsInterface) => {
 
     // if (isInitiator)
     //   props.socket.emit("startVideoCall", { to: props.recipientSocketID });
+    if (!props.allowForCall) {
+      enqueueSnackbar(`Can't start a call while in meeting!`, {
+        variant: "error",
+      });
+      return;
+    }
     props.socket.emit("requestNewRoom", {
       invitedUser: props.recipientSocketID,
     });
