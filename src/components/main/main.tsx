@@ -411,9 +411,11 @@ const App = () => {
         }
       } else {
         //IF DATA ISNT PARSEABLE, THEN IT HAS TO BE ARRAY BUFFER
-        if (fileTransfers.current[socketid] === undefined)
+        if (fileTransfers.current[socketid] === undefined) {
           //CHECK IF SERVICE WORKER IS AVAILABLE FOR THIS PEER
           fileTransfers.current[socketid] = new Worker("../worker.js"); //CREATE NEW SERVICE WORKER TO RECEIVE ARRAY BUFFER
+          enqueueSnackbar(`Receving file. Please wait...`, { variant: "info" });
+        }
 
         fileTransfers.current[socketid].postMessage(
           new Uint8Array(data).buffer //convert buffer to arraybuffer then passes it to worker

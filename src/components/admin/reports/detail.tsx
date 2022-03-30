@@ -294,7 +294,7 @@ const DetailReport = (props: { report: any }) => {
             <ReportInformation report={props.report} />
           </Box>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} md>
           <Box width>
             <ReportProof report={props.report} />
           </Box>

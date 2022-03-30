@@ -62,7 +62,6 @@ export default function (props: {
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      e.preventDefault();
       sendText();
     }
   };

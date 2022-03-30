@@ -25,6 +25,7 @@ import Report from "../Report";
 
 const useStyles = makeStyles({
   root: {
+    minWidth: 200,
     maxWidth: 345,
   },
   media: {
@@ -106,7 +107,7 @@ export default function ProfileCard(props: {
 
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {props.user.name}
+                      {props.user.name + " · " + props.user.username}
                     </Typography>
                     {props.user.friendFinderProfile ? (
                       <Typography
@@ -156,14 +157,17 @@ export default function ProfileCard(props: {
                   </CardContent>
                 </CardActionArea>
                 <CardActions>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => props.addFriendHandler(props.user.id)}
-                    hidden={!props.isUserFriend}
-                  >
-                    Add Friend
-                  </Button>
+                  {props.addFriendHandler ? (
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() => props.addFriendHandler(props.user.id)}
+                      hidden={!props.isUserFriend}
+                    >
+                      Add Friend
+                    </Button>
+                  ) : null}
+
                   <Button
                     size="small"
                     color="secondary"

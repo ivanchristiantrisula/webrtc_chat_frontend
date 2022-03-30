@@ -25,13 +25,6 @@ const FriendlistContextMenu = (props: {
         <MenuItem disabled>
           <strong>Friendlist</strong>
         </MenuItem>
-        <MenuItem onClick={() => props.handleClickStartChat()}>
-          Start Chat
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => props.handleClickShowProfile()}>
-          Show Profile
-        </MenuItem>
         <Divider />
         <MenuItem onClick={() => props.handleClickRemoveFriend()}>
           Remove Friend

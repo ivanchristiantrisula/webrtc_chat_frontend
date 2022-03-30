@@ -11,6 +11,7 @@ import {
   CardHeader,
   Avatar,
   IconButton,
+  Card,
 } from "@material-ui/core";
 import AirplayIcon from "@material-ui/icons/Airplay";
 import VideoLabelIcon from "@material-ui/icons/VideoLabel";
@@ -84,13 +85,13 @@ const ParticipantsPopover = (props: {
       >
         <li>
           {props.users.map((user) => (
-            <ul>
+            <Card>
               <CardHeader
                 avatar={<Avatar aria-label="" src={user.profilepicture} />}
                 title={user.name}
                 subheader=""
               />
-            </ul>
+            </Card>
           ))}
         </li>
       </Popover>

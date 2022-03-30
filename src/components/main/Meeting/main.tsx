@@ -166,7 +166,9 @@ export default (props: {
           variant: "info",
         });
       }
-      setParticipantsInfo([...participantsInfo, userData]);
+      let x = participantsInfo;
+      x.push(userData);
+      setParticipantsInfo(x);
     });
 
     props.socket.on("meetingSDPTransfer", (data: any) => {
