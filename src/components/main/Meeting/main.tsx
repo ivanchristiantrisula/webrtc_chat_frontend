@@ -240,11 +240,11 @@ export default (props: {
       trickle: true,
       config: {
         iceServers: [
-          { urls: ["stun:stun.ivanchristian.me"] },
+          { urls: ["stun:coturn.ivanchristian.me"] },
           {
-            username: "ivan",
-            credential: "5521",
-            urls: ["turn:turn.ivanchristian.me"],
+            username: process.env.REACT_APP_TURN_USERNAME,
+            credential: process.env.REACT_APP_TURN_PASSWORD,
+            urls: ["turn:coturn.ivanchristian.me"],
           },
         ],
       },

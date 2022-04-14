@@ -346,8 +346,8 @@ const App = () => {
           { urls: ["stun:stun.ivanchristian.me"] },
           { urls: ["stun:stun1.l.google.com:19302"] },
           {
-            username: "ivan",
-            credential: "5521",
+            username: process.env.REACT_APP_TURN_USERNAME,
+            credential: process.env.REACT_APP_TURN_PASSWORD,
             urls: ["turn:turn.ivanchristian.me"],
           },
         ],
